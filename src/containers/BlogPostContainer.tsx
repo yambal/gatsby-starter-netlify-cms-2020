@@ -3,7 +3,7 @@ import Helmet from 'react-helmet'
 import { graphql} from 'gatsby'
 import Layout from '../components/Layout'
 import { HTMLContent } from '../components/Content'
-import BlogPostTemplate from '../components/Templates/BlogPostTemplate'
+import BlogPostPage from '../components/pages/BlogPostPage'
 
 export const pageQuery = graphql`
   query BlogPostByID($id: String!) {
@@ -35,7 +35,7 @@ const BlogPost:React.FC<iBlogPost> = (props) => {
 
   return (
     <Layout>
-      <BlogPostTemplate
+      <BlogPostPage
         content={post.html}
         contentComponent={HTMLContent}
         description={post.frontmatter.description}

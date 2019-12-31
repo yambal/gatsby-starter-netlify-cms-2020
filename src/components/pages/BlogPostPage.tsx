@@ -3,7 +3,7 @@ var _ = require('lodash');
 import { Link } from 'gatsby'
 import Content from '../Content'
 
-interface iBlogPostTemplate {
+interface iBlogPostPage {
   content: any
   contentComponent: any
   description: string
@@ -12,7 +12,7 @@ interface iBlogPostTemplate {
   helmet: any
 }
 
-export const BlogPostTemplate:React.FC<iBlogPostTemplate> = (props) => {
+export const BlogPostPage:React.FC<iBlogPostPage> = (props) => {
   const PostContent = props.contentComponent || Content
 
   return (
@@ -45,4 +45,4 @@ export const BlogPostTemplate:React.FC<iBlogPostTemplate> = (props) => {
   )
 }
 
-export default BlogPostTemplate
+export default BlogPostPage
