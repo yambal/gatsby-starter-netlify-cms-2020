@@ -5,5 +5,8 @@ declare module 'styled-components' {
     fontSize : {
         base: string
     }
+    font: {
+        base: string
+    }
   }
 }
