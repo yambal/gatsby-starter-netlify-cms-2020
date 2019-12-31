@@ -1,13 +1,13 @@
 import React from 'react'
 import Content from '../Content'
 
-interface iAboutPageTemplate {
+interface iAboutPagePage {
   title: string
   content: any
   contentComponent: any
 }
 
-const AboutPageTemplate:React.FC<iAboutPageTemplate> = (props) => {
+const AboutPagePage:React.FC<iAboutPagePage> = (props) => {
   const PageContent = props.contentComponent || Content
 
   return (
@@ -28,4 +28,4 @@ const AboutPageTemplate:React.FC<iAboutPageTemplate> = (props) => {
   )
 }
 
-export default AboutPageTemplate
+export default AboutPagePage

@@ -1,7 +1,7 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
-import IndexPageTemplate from '../components/Templates/IndexPageTemplate'
+import IndexPagePage from '../components/pages/IndexPagePage'
 
 export const pageQuery = graphql`
   query IndexContainer {
@@ -53,7 +53,7 @@ const IndexContainer:React.FC<iIndexContainer> = (props) => {
   const { frontmatter } = props.data.markdownRemark
   return (
     <Layout>
-      <IndexPageTemplate
+      <IndexPagePage
         image={frontmatter.image}
         title={frontmatter.title}
         heading={frontmatter.heading}

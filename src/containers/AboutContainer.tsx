@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import { HTMLContent } from '../components/Content'
-import AboutPageTemplate from '../components/Templates/AboutPageTemplate'
+import AboutPagePage from '../components/pages/AboutPagePage'
 
 interface iAboutContainer {
   data: {
@@ -15,7 +15,7 @@ const AboutPage:React.FC<iAboutContainer> = (props) => {
 
   return (
     <Layout>
-      <AboutPageTemplate
+      <AboutPagePage
         contentComponent={HTMLContent}
         title={post.frontmatter.title}
         content={post.html}

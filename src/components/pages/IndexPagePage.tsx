@@ -3,7 +3,7 @@ import { Link } from 'gatsby'
 import Features from '../Features'
 import BlogRoll from '../BlogRoll'
 
-interface iIndexPageTemplate {
+interface iIndexPagePage {
   image: any | string
   title: string
   heading: string
@@ -15,7 +15,7 @@ interface iIndexPageTemplate {
   }
 }
 
-const IndexPageTemplate:React.SFC<iIndexPageTemplate> = (props) => {
+const IndexPagePage:React.SFC<iIndexPagePage> = (props) => {
   const { image, title, heading, subheading, mainpitch, description, intro } = props
 
   return (
@@ -119,4 +119,4 @@ const IndexPageTemplate:React.SFC<iIndexPageTemplate> = (props) => {
   )
 }
 
-export default IndexPageTemplate
+export default IndexPagePage
