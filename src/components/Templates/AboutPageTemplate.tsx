@@ -7,7 +7,7 @@ interface iAboutPageTemplate {
   contentComponent: any
 }
 
-export const AboutPageTemplate:React.FC<iAboutPageTemplate> = (props) => {
+const AboutPageTemplate:React.FC<iAboutPageTemplate> = (props) => {
   const PageContent = props.contentComponent || Content
 
   return (
