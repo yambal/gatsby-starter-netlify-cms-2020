@@ -20,7 +20,7 @@ const Layout:React.FC = (props) => {
           <meta name="description" content={description} />
         </Helmet>
         <Navbar />
-        <div>{props.children}</div>
+        {props.children}
         <Footer />
       </React.Fragment>
     </ThemeProvider>

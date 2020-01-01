@@ -2,6 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
+import Container from '../components/Container'
 
 export const pageQuery = graphql`
   query IndexContainer {
@@ -53,15 +54,17 @@ const IndexContainer:React.FC<iIndexContainer> = (props) => {
   const { frontmatter } = props.data.markdownRemark
   return (
     <Layout>
-      <IndexPagePage
-        image={frontmatter.image}
-        title={frontmatter.title}
-        heading={frontmatter.heading}
-        subheading={frontmatter.subheading}
-        mainpitch={frontmatter.mainpitch}
-        description={frontmatter.description}
-        intro={frontmatter.intro}
-      />
+      <Container>
+        <IndexPagePage
+          image={frontmatter.image}
+          title={frontmatter.title}
+          heading={frontmatter.heading}
+          subheading={frontmatter.subheading}
+          mainpitch={frontmatter.mainpitch}
+          description={frontmatter.description}
+          intro={frontmatter.intro}
+        />
+      </Container>
     </Layout>
   )
 }
