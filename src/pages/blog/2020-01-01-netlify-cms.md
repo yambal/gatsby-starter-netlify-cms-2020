@@ -8,6 +8,6 @@ description: >-
 featuredpost: true
 featuredimage: /img/2019.jpg
 tags:
-  - ノート
+  - note
 ---
 Gatsby と組み合わせる Headless CMS にもいくつか選択肢がある。例えば Contentful などは事例や参考文献などがネットに散見できて魅力的だ。
