@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 const Column = styled.div`
   columns: 2;
 
-  h2 {
+  h2, h3 {
     column-span: all;
   }
 

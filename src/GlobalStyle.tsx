@@ -7,11 +7,11 @@ const GlobalStyle = createGlobalStyle`
   ${SanitizeCss}
   html {
     font-size: ${props=> props.theme.fontSize.basePx}px;
-    font-family: ${props=>props.theme.font.base};
   }
 
   body {
     color: ${props => props.theme.color.font.base};
+    font-family: ${props=>props.theme.font.base};
     line-height: ${props => props.theme.lineHeight.baseRem}rem;
   }
 
