@@ -5,7 +5,7 @@ const theme:DefaultTheme = {
     baseRem: 1.75
   },
   fontSize: {
-    basePx: 14
+    basePx: 16
   },
   font: {
     base: 'system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Segoe UI", "Meiryo", sans-serif'
