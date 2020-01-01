@@ -3,13 +3,11 @@ import { lighten, modularScale } from 'polished'
 
 export const ButtonCSS = css`
   display: inline-block;
-  font-weight: 400;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
   ser-select: none;
   /* border-radius: .25rem; */
-  font-size: 1rem;
 `
 
 export const ACss = css`

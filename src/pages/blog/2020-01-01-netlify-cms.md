@@ -1,5 +1,5 @@
 ---
-templateKey: blog
+templateKey: BlogPost
 title: 'Netlify CMS '
 date: 2020-01-01T17:50:20.283Z
 description: >-
