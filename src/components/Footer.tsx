@@ -11,6 +11,7 @@ const Footer = class extends React.Component {
       <Wrapper>
         <Container>
           Footer
+          <Link to="/site/">このサイトについて</Link>
         </Container>
       </Wrapper>
     )
