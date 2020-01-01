@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import Features from '../Features'
 import BlogRoll from '../BlogRoll'
+import styled from 'styled-components'
 
 interface iIndexPagePage {
   image: any | string
@@ -15,11 +16,13 @@ interface iIndexPagePage {
   }
 }
 
+const Wrapper = styled.div``
+
 const IndexPagePage:React.SFC<iIndexPagePage> = (props) => {
   const { image, title, heading, subheading, mainpitch, description, intro } = props
 
   return (
-    <div>
+    <Wrapper>
       <div
         className="full-width-image margin-top-0"
         style={{
@@ -115,7 +118,7 @@ const IndexPagePage:React.SFC<iIndexPagePage> = (props) => {
           </div>
         </div>
       </section>
-    </div>
+    </Wrapper>
   )
 }
 

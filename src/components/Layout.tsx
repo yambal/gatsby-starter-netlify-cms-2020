@@ -6,6 +6,7 @@ import useSiteMetadata from '../utils/SiteMetadata'
 import { ThemeProvider } from 'styled-components'
 import theme from '../theme'
 import GlobalStyle from '../GlobalStyle'
+import '../../node_modules/sanitize.css/sanitize.css'
 
 const Layout:React.FC = (props) => {
   const { title, description, lang } = useSiteMetadata()
@@ -19,7 +20,7 @@ const Layout:React.FC = (props) => {
           <meta name="description" content={description} />
         </Helmet>
         <Navbar />
-        <div>{props.children}</div>
+        {props.children}
         <Footer />
       </React.Fragment>
     </ThemeProvider>
