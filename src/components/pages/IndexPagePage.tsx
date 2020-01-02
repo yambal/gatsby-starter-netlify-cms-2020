@@ -4,6 +4,8 @@ import Features from '../Features'
 import BlogRoll from '../BlogRoll'
 import styled from 'styled-components'
 import Column from '../atoms/Column'
+import PageTitle from '../atoms/PageTitle'
+import Container from '../Container'
 
 interface iIndexPagePage {
   image: any | string
@@ -24,35 +26,42 @@ const IndexPagePage:React.SFC<iIndexPagePage> = (props) => {
 
   return (
     <Wrapper>
-      <Column>
-        <div
-          className="full-width-image margin-top-0"
-          style={{
-            backgroundImage: `url(${
-              !!image.childImageSharp ? image.childImageSharp.fluid.src : image
-            })`,
-            backgroundPosition: `top left`,
-            backgroundAttachment: `fixed`,
-          }}
-        >
-          <h2>{title}</h2>
-          {subheading}
-        </div>
-        <h3>{mainpitch.title}</h3>
-        {mainpitch.description}
+      <PageTitle
+        description={subheading}
+      >
+        {title}
+      </PageTitle>
+      <Container>
+        <Column>
+          <div
+            className="full-width-image margin-top-0"
+            style={{
+              backgroundImage: `url(${
+                !!image.childImageSharp ? image.childImageSharp.fluid.src : image
+              })`,
+              backgroundPosition: `top left`,
+              backgroundAttachment: `fixed`,
+            }}
+          >
+            <h2>{title}</h2>
+            {subheading}
+          </div>
+          <h3>{mainpitch.title}</h3>
+          {mainpitch.description}
 
-        {heading}
-        {description}
-        <Features gridItems={intro.blurbs} />
+          {heading}
+          {description}
+          <Features gridItems={intro.blurbs} />
 
-        <h3 className="has-text-weight-semibold is-size-2">
-          Latest stories
-        </h3>
-        <BlogRoll />
-        <Link className="btn" to="/blog">
-          Read more
-        </Link>
-      </Column>
+          <h3 className="has-text-weight-semibold is-size-2">
+            Latest stories
+          </h3>
+          <BlogRoll />
+          <Link className="btn" to="/blog">
+            Read more
+          </Link>
+        </Column>
+      </Container>
     </Wrapper>
   )
 }

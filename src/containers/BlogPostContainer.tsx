@@ -11,7 +11,7 @@ export const pageQuery = graphql`
       id
       html
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
+        date
         title
         description
         tags
@@ -24,7 +24,12 @@ interface iBlogPost {
   data:{
     markdownRemark: {
       html: any
-      frontmatter: any
+      frontmatter: {
+        date: string
+        title: string
+        description: string
+        tags: string[]
+      }
     }
   }
 }
@@ -39,17 +44,9 @@ const BlogPost:React.FC<iBlogPost> = (props) => {
         content={post.html}
         contentComponent={HTMLContent}
         description={post.frontmatter.description}
-        helmet={
-          <Helmet titleTemplate="%s | Blog">
-            <title>{`${post.frontmatter.title}`}</title>
-            <meta
-              name="description"
-              content={`${post.frontmatter.description}`}
-            />
-          </Helmet>
-        }
         tags={post.frontmatter.tags}
         title={post.frontmatter.title}
+        date={new Date(post.frontmatter.date)}
       />
     </Layout>
   )

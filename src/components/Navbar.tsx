@@ -6,11 +6,8 @@ import styled from 'styled-components'
 import Flex, { FlexItem } from './Flex'
 
 const Wrapper = styled.header`
-  margin-bottom: 50px;
-
   & ${Flex} {
     height: ${props => 50 / props.theme.fontSize.basePx}rem;
-    border-bottom: solid 1px black;
   }
 `
 

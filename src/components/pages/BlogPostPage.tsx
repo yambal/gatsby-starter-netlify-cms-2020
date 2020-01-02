@@ -5,6 +5,8 @@ import Content from '../Content'
 import styled from 'styled-components';
 import Container from '../Container';
 import Column from '../atoms/Column';
+import { Helmet } from 'react-helmet';
+import PageTitle from '../atoms/PageTitle';
 
 interface iBlogPostPage {
   content: any
@@ -12,7 +14,7 @@ interface iBlogPostPage {
   description: string
   tags: string[]
   title: string
-  helmet: any
+  date: Date
 }
 
 const Wrapper = styled.section``
@@ -22,10 +24,21 @@ export const BlogPostPage:React.FC<iBlogPostPage> = (props) => {
 
   return (
     <Wrapper>
+      <Helmet>
+        <title>{`${props.title}`}</title>
+        <meta
+          name="description"
+          content={`${props.description}`}
+        />
+      </Helmet>
+      <PageTitle
+        description={props.description}
+        date={props.date}
+      >
+        {props.title}
+      </PageTitle>
       <Container>
-        <h1>{props.title}</h1>
         <Column>
-          <p>{props.description}</p>
           <PostContent content={props.content} />
           {props.tags && props.tags.length ? (
             <div style={{ marginTop: `4rem` }}>

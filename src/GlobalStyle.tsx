@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     color: ${props => props.theme.color.font.base};
     font-family: ${props=>props.theme.font.base};
+    font-family: 'Noto Sans JP', sans-serif;
     line-height: ${props => props.theme.lineHeight.baseRem}rem;
   }
 
