@@ -54,17 +54,15 @@ const IndexContainer:React.FC<iIndexContainer> = (props) => {
   const { frontmatter } = props.data.markdownRemark
   return (
     <Layout>
-      <Container>
-        <IndexPagePage
-          image={frontmatter.image}
-          title={frontmatter.title}
-          heading={frontmatter.heading}
-          subheading={frontmatter.subheading}
-          mainpitch={frontmatter.mainpitch}
-          description={frontmatter.description}
-          intro={frontmatter.intro}
-        />
-      </Container>
+      <IndexPagePage
+        image={frontmatter.image}
+        title={frontmatter.title}
+        heading={frontmatter.heading}
+        subheading={frontmatter.subheading}
+        mainpitch={frontmatter.mainpitch}
+        description={frontmatter.description}
+        intro={frontmatter.intro}
+      />
     </Layout>
   )
 }
