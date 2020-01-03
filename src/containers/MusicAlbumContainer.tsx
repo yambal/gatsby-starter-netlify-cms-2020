@@ -20,18 +20,16 @@ export const pageQuery = graphql`
   }
 `
 
-export interface iSongs {
-  title: string
-  file: string
-}
-
 interface iMusicAlbumContainer {
   data: {
     markdownRemark: {
       id: string
       frontmatter: {
         title: string
-        songs: iSongs[]
+        songs: {
+          songfile: string
+          title: string
+        }
       }
     }
   }

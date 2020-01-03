@@ -7,11 +7,13 @@ import Container from '../Container';
 import Column from '../atoms/Column';
 import { Helmet } from 'react-helmet';
 import PageTitle from '../atoms/PageTitle';
-import { iSongs } from '../../containers/MusicAlbumContainer';
 
 interface iMusicAlbum {
   albumTitle: string
-  songList : iSongs[]
+  songList : {
+    songfile: string
+    title: string
+  }[]
 }
 
 export const MusicAlbum:React.FC<iMusicAlbum> = (props) => {
