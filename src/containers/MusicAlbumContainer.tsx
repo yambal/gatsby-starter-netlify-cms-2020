@@ -13,6 +13,7 @@ export const pageQuery = graphql`
           file {
             id
             name
+            uri
           }
           title
         }
