@@ -14,6 +14,7 @@ export const pageQuery = graphql`
             id
             name
             publicURL
+            prettySize
           }
           title
         }
