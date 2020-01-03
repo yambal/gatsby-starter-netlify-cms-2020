@@ -7,20 +7,22 @@ import useSiteMetadata from '../utils/SiteMetadata'
 
 const { activeEnv } = useSiteMetadata()
 
+const file = `file {
+  publicURL
+  prettySize
+  internal {
+    mediaType
+    contentDigest
+  }
+}`
+
 export const pageQuery = graphql`
   query MusicAlbumByID($id: String!) {
     markdownRemark(id: { eq: $id }) {
       id
       frontmatter {
         songs {
-          file {
-            publicURL
-            prettySize
-            internal {
-              mediaType
-              contentDigest
-            }
-          }
+          $file
           title
         }
         title
