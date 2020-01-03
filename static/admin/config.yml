@@ -12,6 +12,15 @@ media_folder: static/img
 public_folder: /img
 
 collections:
+  - name: "MusicAlbum"
+    label: "Music Album"
+    folder: "src/pages/albums"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "MusicAlbum"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
   - name: "BlogPost"
     label: "Blog"
     folder: "src/pages/blog"
