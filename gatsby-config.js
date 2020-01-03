@@ -5,7 +5,8 @@ module.exports = {
   siteMetadata: {
     title: 'WWW.YAMBAL.NET',
     description: 'テスト中',
-    lang: 'ja'
+    lang: 'ja',
+    activeEnv
   },
   plugins: [
     `gatsby-plugin-typescript`,

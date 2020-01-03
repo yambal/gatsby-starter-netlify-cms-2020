@@ -3,6 +3,9 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
+import useSiteMetadata from '../utils/SiteMetadata'
+
+const { activeEnv } = useSiteMetadata()
 
 export const pageQuery = graphql`
   query MusicAlbumByID($id: String!) {
@@ -44,6 +47,7 @@ interface iMusicAlbumContainer {
 const MusicAlbumContainer:React.FC = (props) => {
   return (
     <Layout>
+      { activeEnv }
       <pre>{JSON.stringify(props, null, 2)}</pre>
     </Layout>
   )
