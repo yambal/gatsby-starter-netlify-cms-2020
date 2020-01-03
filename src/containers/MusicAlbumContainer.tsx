@@ -12,6 +12,7 @@ export const pageQuery = graphql`
         songs {
           file {
             id
+            source
           }
           title
         }
