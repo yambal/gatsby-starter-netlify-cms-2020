@@ -12,9 +12,12 @@ export const pageQuery = graphql`
         songs {
           file {
             id
-            name
             publicURL
             prettySize
+            internal {
+              mediaType
+              contentDigest
+            }
           }
           title
         }
