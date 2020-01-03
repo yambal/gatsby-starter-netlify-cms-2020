@@ -3,51 +3,70 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
+import useSiteMetadata from '../utils/SiteMetadata'
 
-/*
+const { activeEnv } = useSiteMetadata()
+
 export const pageQuery = graphql`
-  query IndexContainer {
-    markdownRemark(frontmatter: { templateKey: { eq: "Index" } }) {
+  query MusicAlbumByID($id: String!) {
+    markdownRemark(id: { eq: $id }) {
+      id
       frontmatter {
-        title
-        image {
-          childImageSharp {
-            fluid(maxWidth: 2048, quality: 100) {
-              ...GatsbyImageSharpFluid
+        songs {
+          file {
+            publicURL
+            prettySize
+            internal {
+              mediaType
+              contentDigest
             }
           }
-        }
-        heading
-        subheading
-        mainpitch {
           title
-          description
         }
-        description
-        intro {
-          blurbs {
-            image {
-              childImageSharp {
-                fluid(maxWidth: 240, quality: 64) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-            text
-          }
-          heading
-          description
-        }
+        title
       }
     }
   }
 `
-*/
 
-const MusicAlbumContainer:React.FC = (props) => {
+interface iMusicAlbumContainer {
+  data: {
+    markdownRemark: {
+      id: string
+      frontmatter: {
+        title: string
+        songs: {
+          title: string
+          file: {
+            publicURL: string
+            prettySize: string
+            internal: {
+              mediaType: string
+              contentDigest: string
+            }
+          }
+        }[]
+      }
+    }
+  }
+}
+
+const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
+  const { data: { markdownRemark: {frontmatter: album} } } = props
+  const { title: albumTitle, songs: songFiles } = album
   return (
     <Layout>
-        <pre>{JSON.stringify(props, null, 2)}</pre>
+      { activeEnv }
+      { albumTitle }
+      { songFiles.map((songFile, index) => {
+        const { title: songTitle, file: {publicURL, prettySize, internal: {mediaType, contentDigest} } } = songFile
+        return (
+          <React.Fragment>
+            {index} {songTitle} {publicURL} {prettySize} {mediaType} {contentDigest}
+            <audio src={publicURL} controls></audio>
+          </React.Fragment>
+        )
+      }) }
     </Layout>
   )
 }

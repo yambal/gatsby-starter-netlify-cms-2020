@@ -4,6 +4,7 @@ interface iSiteMetaData {
   title: string
   description: string
   lang: string
+  activeEnv: string
 }
 
 const useSiteMetadata = ():iSiteMetaData => {
@@ -15,6 +16,7 @@ const useSiteMetadata = ():iSiteMetaData => {
             title
             description
             lang
+            activeEnv
           }
         }
       }
