@@ -19,7 +19,21 @@ export const pageQuery = graphql`
   }
 `
 
-const MusicAlbumContainer:React.FC = (props) => {
+interface iMusicAlbumContainer {
+  data: {
+    markdownRemark: {
+      id: string
+      frontmatter: {
+        songs: {
+          file: File
+          title: string
+        }[]
+      }
+    }
+  }
+}
+
+const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   return (
     <Layout>
       <pre>{JSON.stringify(props, null, 2)}</pre>
