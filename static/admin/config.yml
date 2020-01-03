@@ -21,6 +21,12 @@ collections:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "MusicAlbum"}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Slug", name: "slug", widget: "string"}
+      label: "Song"
+      name: "Song"
+      widget: list
+        - {label: "Title", name: "title", widget: "string"}
+        - {label: "Song", name: "SongFile", widget: "file", required: false}
+
   - name: "BlogPost"
     label: "Blog"
     folder: "src/pages/blog"
