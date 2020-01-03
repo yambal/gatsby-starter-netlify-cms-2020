@@ -21,11 +21,12 @@ collections:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "MusicAlbum"}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Slug", name: "slug", widget: "string"}
-      label: "Song"
-      name: "song"
-      widget: list
-        - {label: "Title", name: "title", widget: "string"}
-        - {label: "Song", name: "songfile", widget: "file", required: false}
+      - label: "Song"
+        name: "song"
+        widget: list
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Song", name: "songfile", widget: "file", required: false}
   - name: "BlogPost"
     label: "Blog"
     folder: "src/pages/blog"
