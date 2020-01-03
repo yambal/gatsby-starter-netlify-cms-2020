@@ -25,7 +25,7 @@ interface iMusicAlbumContainer {
       id: string
       frontmatter: {
         songs: {
-          file: File
+          file: any
           title: string
         }[]
       }
