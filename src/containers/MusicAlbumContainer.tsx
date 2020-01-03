@@ -3,51 +3,49 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
+import MusicAlbum from '../components/pages/MusicAlbum'
 
-/*
 export const pageQuery = graphql`
-  query IndexContainer {
-    markdownRemark(frontmatter: { templateKey: { eq: "Index" } }) {
+  query MusicAlbumByID($id: String!) {
+    markdownRemark(id: { eq: $id }) {
+      id
       frontmatter {
         title
-        image {
-          childImageSharp {
-            fluid(maxWidth: 2048, quality: 100) {
-              ...GatsbyImageSharpFluid
-            }
-          }
-        }
-        heading
-        subheading
-        mainpitch {
+        songs {
+          songfile
           title
-          description
-        }
-        description
-        intro {
-          blurbs {
-            image {
-              childImageSharp {
-                fluid(maxWidth: 240, quality: 64) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-            text
-          }
-          heading
-          description
         }
       }
     }
   }
 `
-*/
 
-const MusicAlbumContainer:React.FC = (props) => {
+export interface iSongs {
+  title: string
+  file: string
+}
+
+interface iMusicAlbumContainer {
+  data: {
+    markdownRemark: {
+      id: string
+      frontmatter: {
+        title: string
+        songs: iSongs[]
+      }
+    }
+  }
+}
+
+const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
+  const { data: { markdownRemark: id } } = props
+  const { data: { markdownRemark: { frontmatter } } } = props
   return (
     <Layout>
-        <pre>{JSON.stringify(props, null, 2)}</pre>
+      <MusicAlbum
+        albumTitle={frontmatter.title}
+        songList={frontmatter.songs}
+      />
     </Layout>
   )
 }

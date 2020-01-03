@@ -21,8 +21,8 @@ collections:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "MusicAlbum"}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Slug", name: "slug", widget: "string"}
-      - label: "Song"
-        name: "song"
+      - label: "Songs"
+        name: "songs"
         widget: list
         fields:
           - {label: "Title", name: "title", widget: "string"}

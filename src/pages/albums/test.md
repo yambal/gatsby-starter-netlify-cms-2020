@@ -2,7 +2,7 @@
 templateKey: MusicAlbum
 title: test
 slug: test
-song:
+songs:
   - songfile: /img/米津玄師-lemon.mp3
     title: 米津玄師 lemon
 ---
