@@ -14,7 +14,6 @@ export const pageQuery = graphql`
       frontmatter {
         songs {
           file {
-            id
             publicURL
             prettySize
             internal {
@@ -35,20 +34,38 @@ interface iMusicAlbumContainer {
     markdownRemark: {
       id: string
       frontmatter: {
+        title: string
         songs: {
-          file: any
           title: string
+          file: {
+            publicURL: string
+            prettySize: string
+            internal: {
+              mediaType: string
+              contentDigest: string
+            }
+          }
         }[]
       }
     }
   }
 }
 
-const MusicAlbumContainer:React.FC = (props) => {
+const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
+  const { data: { markdownRemark: {frontmatter: album} } } = props
+  const { title: albumTitle, songs: songFiles } = album
   return (
     <Layout>
       { activeEnv }
-      <pre>{JSON.stringify(props, null, 2)}</pre>
+      { albumTitle }
+      { songFiles.map((songFile, index) => {
+        const { title: songTitle, file: {publicURL, prettySize, internal: {mediaType, contentDigest} } } = songFile
+        return (
+          <React.Fragment>
+            {index} {songTitle} {publicURL} {prettySize} {mediaType} {contentDigest}
+          </React.Fragment>
+        )
+      }) }
     </Layout>
   )
 }
