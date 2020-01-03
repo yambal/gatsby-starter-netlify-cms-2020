@@ -24,8 +24,8 @@ collections:
       label: "Song"
       name: "Song"
       widget: list
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Song", name: "SongFile", widget: "file", required: false}
+        - {label: "Title", name: "title", widget: "string"}
+        - {label: "Song", name: "SongFile", widget: "file", required: false}
 
   - name: "BlogPost"
     label: "Blog"
