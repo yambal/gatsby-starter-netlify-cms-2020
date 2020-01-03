@@ -22,7 +22,7 @@ export const pageQuery = graphql`
       id
       frontmatter {
         songs {
-          $file
+          ${file}
           title
         }
         title
