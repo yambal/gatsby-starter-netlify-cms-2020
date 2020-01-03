@@ -33,7 +33,7 @@ interface iMusicAlbumContainer {
   }
 }
 
-const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
+const MusicAlbumContainer:React.FC = (props) => {
   return (
     <Layout>
       <pre>{JSON.stringify(props, null, 2)}</pre>
