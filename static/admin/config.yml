@@ -42,7 +42,7 @@ collections:
       - {label: "Body", name: "body", widget: "markdown"}
       - {label: "Tags", name: "tags", widget: "list"}
 
-  - name: "pages"
+  - name: "Pages"
     label: "Pages"
     files:
       - file: "src/pages/index.md"
