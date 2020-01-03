@@ -27,7 +27,7 @@ interface iMusicAlbumContainer {
       frontmatter: {
         title: string
         songs: {
-          songfile: string
+          songfile: any
           title: string
         }
       }
@@ -40,10 +40,7 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { data: { markdownRemark: { frontmatter } } } = props
   return (
     <Layout>
-      <MusicAlbum
-        albumTitle={frontmatter.title}
-        songList={frontmatter.songs}
-      />
+      <pre>{JSON.stringify(frontmatter)}</pre>
     </Layout>
   )
 }
