@@ -63,6 +63,7 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
         return (
           <React.Fragment>
             {index} {songTitle} {publicURL} {prettySize} {mediaType} {contentDigest}
+            <audio src={publicURL} controls></audio>
           </React.Fragment>
         )
       }) }
