@@ -25,8 +25,7 @@ collections:
       name: "song"
       widget: list
         - {label: "Title", name: "title", widget: "string"}
-        - {label: "Song", name: "SongFile", widget: "file", required: false}
-
+        - {label: "Song", name: "songfile", widget: "file", required: false}
   - name: "BlogPost"
     label: "Blog"
     folder: "src/pages/blog"
