@@ -25,10 +25,12 @@ interface iMusicAlbumContainer {
     }
   }
   pageResources: {
-    pageContext: {
-      songs: {
-        file: any
-        title: string
+    json: {
+      pageContext: {
+        songs: {
+          file: any
+          title: string
+        }
       }
     }
   }
@@ -37,10 +39,10 @@ interface iMusicAlbumContainer {
 const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { data:{ markdownRemark:{ frontmatter: album }}} = props
   const { title: albumTitle } = album
-  const { pageResources = {} } = props
+  const { pageResources } = props
   return (
     <Layout>
-      <pre>{JSON.stringify(pageResources, null, 2)}</pre>
+      <pre>{JSON.stringify(pageResources.json, null, 2)}</pre>
       { albumTitle }
     </Layout>
   )
