@@ -9,7 +9,7 @@ interface iSong {
 const Song:React.FC<iSong> = (props) => {
   return (
     <div>
-      {props.songTitle}
+      <h2>{props.songTitle}</h2>
       {JSON.stringify(props.songFile, null, 2)}
     </div>
   )

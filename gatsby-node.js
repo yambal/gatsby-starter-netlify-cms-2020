@@ -8,6 +8,9 @@ const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "deve
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
+  /**
+   * develop(ローカル) と Release では File の 振る舞いが違うので ここで切り分け
+   */
   let musicAlbumsSongs = `songs {
     file {
       publicURL
@@ -21,7 +24,7 @@ exports.createPages = ({ actions, graphql }) => {
   }`
 
  if(activeEnv === 'development') {
-  musicAlbumsSongs = `songs {
+    musicAlbumsSongs = `songs {
       file
       title
     }`
