@@ -39,7 +39,7 @@ interface iMusicAlbumContainer {
 const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { data:{ markdownRemark:{ frontmatter: album }}} = props
   const { title: albumTitle } = album
-  const { pageResources } = props
+  const { pageResources = { json: null} } = props
   const { json = {} } = pageResources
   return (
     <Layout>
