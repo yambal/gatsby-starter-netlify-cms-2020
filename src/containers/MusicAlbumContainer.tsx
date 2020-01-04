@@ -3,26 +3,12 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
-import useSiteMetadata from '../utils/SiteMetadata'
-
-const { activeEnv } = useSiteMetadata()
-
 export const pageQuery = graphql`
   query MusicAlbumByID($id: String!) {
     markdownRemark(id: { eq: $id }) {
       id
       frontmatter {
-        songs {
-          file {
-            publicURL
-            prettySize
-            internal {
-              mediaType
-              contentDigest
-            }
-          }
-          title
-        }
+        
         title
       }
     }
@@ -35,38 +21,29 @@ interface iMusicAlbumContainer {
       id: string
       frontmatter: {
         title: string
-        songs: {
-          title: string
-          file: {
-            publicURL: string
-            prettySize: string
-            internal: {
-              mediaType: string
-              contentDigest: string
-            }
-          }
-        }[]
       }
+    }
+  }
+  pageResources: {
+    json: {
+        pageContext: {
+          songs: {
+            file: any
+            title: string
+          }
+        }
     }
   }
 }
 
 const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
-  const { data: { markdownRemark: {frontmatter: album} } } = props
-  const { title: albumTitle, songs: songFiles } = album
+  const { data:{ markdownRemark:{ frontmatter: album }}} = props
+  const { title: albumTitle } = album
+  const { pageResources:{ json:{ pageContext:{songs} } }} = props
   return (
     <Layout>
-      { activeEnv }
+      <pre>{JSON.stringify(songs, null, 2)}</pre>
       { albumTitle }
-      { songFiles.map((songFile, index) => {
-        const { title: songTitle, file: {publicURL, prettySize, internal: {mediaType, contentDigest} } } = songFile
-        return (
-          <React.Fragment>
-            {index} {songTitle} {publicURL} {prettySize} {mediaType} {contentDigest}
-            <audio src={publicURL} controls></audio>
-          </React.Fragment>
-        )
-      }) }
     </Layout>
   )
 }
