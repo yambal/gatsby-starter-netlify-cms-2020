@@ -10,7 +10,7 @@ const Song:React.FC<iSong> = (props) => {
   return (
     <div>
       <h2>{props.songTitle}</h2>
-      {JSON.stringify(props.songFile, null, 2)}
+      {typeof props.songFile === 'object' ? <pre>{JSON.stringify(props.songFile, null, 2)}</pre> : <p>Dummy</p>}
     </div>
   )
 }
