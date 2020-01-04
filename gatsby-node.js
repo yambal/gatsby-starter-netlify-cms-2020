@@ -3,8 +3,32 @@ const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 const { fmImagesToRelative } = require('gatsby-remark-relative-images')
 
+const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development"
+
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
+
+  /**
+   * develop(ローカル) と Release では File の 振る舞いが違うので ここで切り分け
+   */
+  let musicAlbumsSongs = `songs {
+    file {
+      publicURL
+      prettySize
+      internal {
+        mediaType
+        contentDigest
+      }
+    }
+    title
+  }`
+
+ if(activeEnv === 'development') {
+    musicAlbumsSongs = `songs {
+      file
+      title
+    }`
+  }
 
   return graphql(`
     {
@@ -18,6 +42,7 @@ exports.createPages = ({ actions, graphql }) => {
             frontmatter {
               tags
               templateKey
+              ${musicAlbumsSongs}
             }
           }
         }
@@ -33,16 +58,16 @@ exports.createPages = ({ actions, graphql }) => {
 
     posts.forEach(edge => {
       const id = edge.node.id
-      console.log(36, edge.node.frontmatter.templateKey)
+      const songs = edge.node.frontmatter.songs
       createPage({
         path: edge.node.fields.slug,
         tags: edge.node.frontmatter.tags,
         component: path.resolve(
           `src/containers/${String(edge.node.frontmatter.templateKey)}Container.tsx`
         ),
-        // additional data can be passed via context
         context: {
           id,
+          songs
         },
       })
     })
