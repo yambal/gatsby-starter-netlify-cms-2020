@@ -43,7 +43,8 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { json = { pageContext: null} } = pageResources
   return (
     <Layout>
-      <pre>{JSON.stringify(json.pageContext, null, 2)}</pre>
+      <pre>{typeof pageResources}</pre>
+      <pre>{JSON.stringify(pageResources, null, 2)}</pre>
       { albumTitle }
     </Layout>
   )
