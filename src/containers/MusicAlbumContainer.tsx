@@ -64,10 +64,10 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   }
   return (
     <Layout>
-      <pre>{typeof songs}</pre>
-      <pre>{JSON.stringify(songs, null, 2)}</pre>
       { albumTitle }
+      <pre>{JSON.stringify(songs, null, 2)}</pre>
       {songs.map((song) => {
+        console.log(JSON.stringify(song, null, 2))
         return(
           <Song songTitle={song.title} songFile={song.file}/>
         )
