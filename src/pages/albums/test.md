@@ -3,7 +3,7 @@ templateKey: MusicAlbum
 title: test
 slug: test
 songs:
-  - file: /img/米津玄師-lemon.mp3
-    title: 米津玄師 lemon
+  - file: /img/brilliant-intelligence_1563286982117.mp3.mp3
+    title: Brilliant Intelligence
 ---
 
