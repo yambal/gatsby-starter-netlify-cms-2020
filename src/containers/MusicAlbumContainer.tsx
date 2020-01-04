@@ -42,7 +42,7 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { pageResources } = props
   let json
   if (pageResources) {
-    json = pageResources
+    json = pageResources.json
   }
   return (
     <Layout>
