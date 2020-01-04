@@ -3,6 +3,7 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
+import Song from '../components/atoms/Song'
 export const pageQuery = graphql`
   query MusicAlbumByID($id: String!) {
     markdownRemark(id: { eq: $id }) {
@@ -14,6 +15,15 @@ export const pageQuery = graphql`
     }
   }
 `
+
+export interface iReleaseSongFile {
+  publicURL: string
+  prettySize: string
+  internal: {
+    mediaType:string
+    contentDigest: string
+  }
+}
 
 interface iMusicAlbumContainer {
   data: {
@@ -28,7 +38,7 @@ interface iMusicAlbumContainer {
     json: {
       pageContext: {
         songs: {
-          file: any
+          file: iReleaseSongFile | string
           title: string
         }[]
       }
@@ -42,13 +52,13 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { pageResources } = props
   let json
   let pageContext
-  let songs
+  let songs = []
   if (pageResources) {
     json = pageResources.json
     if(json){
       pageContext = json.pageContext
       if(pageContext){
-        songs= pageContext.songs
+        songs = pageContext.songs
       }
     }
   }
@@ -57,6 +67,11 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
       <pre>{typeof songs}</pre>
       <pre>{JSON.stringify(songs, null, 2)}</pre>
       { albumTitle }
+      {songs.map((song) => {
+        return(
+          <Song songTitle={song.title} songFile={song.file}/>
+        )
+      })}
     </Layout>
   )
 }
