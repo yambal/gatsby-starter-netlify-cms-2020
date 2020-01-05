@@ -56,24 +56,17 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { data:{ markdownRemark:{ frontmatter: album }}} = props
   const { title: albumTitle } = album
 
-  const pageResources = props.pageResources
-  let json:iMusicAlbumContainerPageResourcesJson
-  let pageContext:iMusicAlbumContainerPageResourcesJsonPageContext
-  let songs:iSong[]
-  if(pageResources){
-    json = pageResources.json
-    if(json) {
-      pageContext = json.pageContext
-      if(pageContext){
-        songs = pageContext.songs
-      }
-    }
+  const { pageResources } = props
+
+  if(pageResources.json){
+    const { json:{pageContext:{songs}}} = pageResources
+    return (
+      <Layout>
+        {songs && <MusicAlbum albumTitle={albumTitle} songs={songs} />}
+      </Layout>
+      )
   }
-  return (
-    <Layout>
-      {songs && <MusicAlbum albumTitle={albumTitle} songs={songs} />}
-    </Layout>
-  )
+  return null
 }
 
 export default MusicAlbumContainer
