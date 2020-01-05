@@ -9,5 +9,7 @@ songs:
     title: そんな風になれたらね
   - file: /img/brilliant-intelligence.mp3
     title: 灰色の知性
+  - file: /img/cloudy-sky-tango.mp3
+    title: 曇天のタンゴ
 ---
 
