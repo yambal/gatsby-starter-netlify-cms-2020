@@ -7,7 +7,7 @@ import Container from '../Container';
 import Column from '../atoms/Column';
 import { Helmet } from 'react-helmet';
 import PageTitle from '../atoms/PageTitle';
-import Song, {iSong} from '../atoms/Song'
+import Song, { iSong } from '../atoms/Song'
 
 interface iMusicAlbum {
   albumTitle: string
@@ -20,7 +20,7 @@ export const MusicAlbum:React.FC<iMusicAlbum> = (props) => {
       <h1>{ props.albumTitle }</h1>
       {props.songs.map((song, index) => {
         return(
-          <Song songTitle={song.songTitle} songFile={song.songTitle} key={`song-${index}`}/>
+          <Song song={song} key={`song-${index}`}/>
         )
       })}
     </Container>
@@ -28,3 +28,11 @@ export const MusicAlbum:React.FC<iMusicAlbum> = (props) => {
 }
 
 export default MusicAlbum
+
+/*
+{props.songs.map((song, index) => {
+        return(
+          <Song song={song} key={`song-${index}`}/>
+        )
+      })}
+*/

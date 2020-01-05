@@ -1,22 +1,39 @@
 import React from 'react'
-import { iReleaseSongFile } from '../../containers/MusicAlbumContainer'
 
 export interface iSong {
-  songTitle: string
-  songFile: iReleaseSongFile | string
+    file: {
+      publicURL: string
+      prettySize: string
+      internal: {
+        mediaType: string
+        contentDigest: string
+      }
+
+    }
+    title: string
 }
 
-const Song:React.FC<iSong> = (props) => {
+interface iSongCompo {
+  song: iSong
+}
+
+const Song:React.FC<iSongCompo> = (props) => {
+  const audioRef = React.useRef(null)
+
+  const handlePlay = React.useCallback(
+    () => {
+      const a:HTMLAudioElement = audioRef.current
+      a.play()
+    },
+    []
+  )
+
   return (
     <div>
-      <h2>{props.songTitle}</h2>
-      {typeof props.songFile === 'object'
-        ? <pre>
-          {JSON.stringify(props.songFile, null, 2)}
-          <audio src={props.songFile.publicURL} controls/>
-        </pre>
-        : <p>Dummy</p>
-      }
+      <h2>{props.song.title}</h2>
+      <pre>{JSON.stringify(props.song.file.publicURL, null, 2)}</pre>
+      <div onClick={handlePlay} >play</div>
+      <audio src={props.song.file.publicURL} ref={audioRef}/>
     </div>
   )
 }
