@@ -71,7 +71,7 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   }
   return (
     <Layout>
-      <MusicAlbum albumTitle={albumTitle} songs={songs} />
+      {songs && <MusicAlbum albumTitle={albumTitle} songs={songs} />}
     </Layout>
   )
 }
