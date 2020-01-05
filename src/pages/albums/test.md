@@ -7,5 +7,7 @@ slug: ' anger'
 songs:
   - file: /img/i-want-to-fight-like-you.mp3
     title: そんな風になれたらね
+  - file: /img/brilliant-intelligence.mp3
+    title: 灰色の知性
 ---
 
