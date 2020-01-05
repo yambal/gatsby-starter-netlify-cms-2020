@@ -71,13 +71,9 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   }
   return (
     <Layout>
-      <pre>{JSON.stringify(songs, null, 2)}</pre>
+      <MusicAlbum albumTitle={albumTitle} songs={songs} />
     </Layout>
   )
 }
 
 export default MusicAlbumContainer
-
-/*
-<MusicAlbum albumTitle={albumTitle} songs={songs} />
-*/
