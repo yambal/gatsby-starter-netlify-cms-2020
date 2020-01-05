@@ -18,12 +18,7 @@ export const MusicAlbum:React.FC<iMusicAlbum> = (props) => {
   return (
     <Container>
       <h1>{ props.albumTitle }</h1>
-      {props.songs.map((song, index) => {
-        return(
-          /*<Song song={song} key={`song-${index}`}/> */
-          <pre>{JSON.stringify(song, null, 2)}</pre>
-        )
-      })}
+      <pre>{JSON.stringify(props.songs, null, 2)}</pre>
     </Container>
   )
 }
