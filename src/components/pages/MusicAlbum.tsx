@@ -7,10 +7,23 @@ import Container from '../Container';
 import Column from '../atoms/Column';
 import { Helmet } from 'react-helmet';
 import PageTitle from '../atoms/PageTitle';
+import Song, {iSong} from '../atoms/Song'
 
-export const MusicAlbum:React.FC = (props) => {
+interface iMusicAlbum {
+  albumTitle: string
+  songs: iSong[]
+}
+
+export const MusicAlbum:React.FC<iMusicAlbum> = (props) => {
   return (
-    <pre>{JSON.stringify(props, null, 2)}</pre>
+    <Container>
+      <h1>{ props.albumTitle }</h1>
+      {props.songs.map((song, index) => {
+        return(
+          <Song songTitle={song.songTitle} songFile={song.songTitle} key={`song-${index}`}/>
+        )
+      })}
+    </Container>
   )
 }
 

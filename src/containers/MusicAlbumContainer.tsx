@@ -3,7 +3,8 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
-import Song from '../components/atoms/Song'
+import MusicAlbum from '../components/pages/MusicAlbum'
+
 export const pageQuery = graphql`
   query MusicAlbumByID($id: String!) {
     markdownRemark(id: { eq: $id }) {
@@ -64,14 +65,7 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   }
   return (
     <Layout>
-      <Container>
-        <h1>{ albumTitle }</h1>
-        {songs.map((song, index) => {
-          return(
-            <Song songTitle={song.title} songFile={song.file} key={`song-${index}`}/>
-          )
-        })}
-      </Container>
+      <MusicAlbum albumTitle={albumTitle} songs={songs} />
     </Layout>
   )
 }
