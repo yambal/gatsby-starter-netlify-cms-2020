@@ -50,12 +50,16 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
 
   const { pageResources } = props
   let json
+  let pageContext
   if(pageResources){
     json = pageResources.json
+    if(json) {
+      pageContext = json.pageContext
+    }
   }
   return (
     <Layout>
-      <pre>{JSON.stringify(json, null, 2)}</pre>
+      <pre>{JSON.stringify(pageContext, null, 2)}</pre>
     </Layout>
   )
 }
