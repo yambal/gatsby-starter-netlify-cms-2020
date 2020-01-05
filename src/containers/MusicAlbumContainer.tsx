@@ -47,10 +47,11 @@ interface iMusicAlbumContainer {
 const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { data:{ markdownRemark:{ frontmatter: album }}} = props
   const { title: albumTitle } = album
-  const { pageResources: { json: { pageContext: { songs } } } } = props
+
+  // const { pageResources: { json: { pageContext: { songs } } } } = props
   return (
     <Layout>
-      <MusicAlbum albumTitle={albumTitle} songs={songs} />
+      <pre>{JSON.stringify(props, null, 2)}</pre>
     </Layout>
   )
 }
@@ -58,5 +59,5 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
 export default MusicAlbumContainer
 
 /*
-
+<MusicAlbum albumTitle={albumTitle} songs={songs} />
 */

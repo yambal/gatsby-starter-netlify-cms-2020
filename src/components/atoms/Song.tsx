@@ -19,15 +19,23 @@ interface iSongCompo {
 }
 
 const Song:React.FC<iSongCompo> = (props) => {
-  console.log(props.song.file.publicURL)
+  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null)
+  React.useEffect(
+    () => {
+      if(audio) {
+        audio.pause()
+      }
+      setAudio(new Audio(props.song.file.publicURL))
+    },
+    [props.song.file.publicURL]
+  )
+
   return (
     <div>
+      <h2>{props.song.title}</h2>
       <pre>{JSON.stringify(props.song.file.publicURL, null, 2)}</pre>
     </div>
   )
 }
 
 export default Song
-/*
-<audio src={props.songFile.publicURL} controls/>
-*/
