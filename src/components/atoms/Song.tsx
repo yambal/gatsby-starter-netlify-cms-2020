@@ -1,5 +1,4 @@
 import React from 'react'
-import { iReleaseSongFile } from '../../containers/MusicAlbumContainer'
 
 export interface iSong {
     file: {
@@ -19,21 +18,22 @@ interface iSongCompo {
 }
 
 const Song:React.FC<iSongCompo> = (props) => {
-  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null)
-  React.useEffect(
+  const audioRef = React.useRef(null)
+
+  const handlePlay = React.useCallback(
     () => {
-      if(audio) {
-        audio.pause()
-      }
-      setAudio(new Audio(props.song.file.publicURL))
+      const a:HTMLAudioElement = audioRef.current
+      a.play()
     },
-    [props.song.file.publicURL]
+    []
   )
 
   return (
     <div>
       <h2>{props.song.title}</h2>
       <pre>{JSON.stringify(props.song.file.publicURL, null, 2)}</pre>
+      <div onClick={handlePlay} >play</div>
+      <audio src={props.song.file.publicURL} ref={audioRef}/>
     </div>
   )
 }
