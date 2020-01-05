@@ -4,13 +4,13 @@ import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
 import MusicAlbum from '../components/pages/MusicAlbum'
+import { iSong } from '../components/atoms/Song'
 
 export const pageQuery = graphql`
   query MusicAlbumByID($id: String!) {
     markdownRemark(id: { eq: $id }) {
       id
       frontmatter {
-        
         title
       }
     }
@@ -38,10 +38,7 @@ interface iMusicAlbumContainer {
   pageResources: {
     json: {
       pageContext: {
-        songs: {
-          file: iReleaseSongFile | string
-          title: string
-        }[]
+        songs: iSong[]
       }
     }
   }
@@ -50,19 +47,7 @@ interface iMusicAlbumContainer {
 const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { data:{ markdownRemark:{ frontmatter: album }}} = props
   const { title: albumTitle } = album
-  const { pageResources } = props
-  let json
-  let pageContext
-  let songs = []
-  if (pageResources) {
-    json = pageResources.json
-    if(json){
-      pageContext = json.pageContext
-      if(pageContext){
-        songs = pageContext.songs
-      }
-    }
-  }
+  const { pageResources: { json: { pageContext: { songs } } } } = props
   return (
     <Layout>
       <MusicAlbum albumTitle={albumTitle} songs={songs} />
@@ -71,3 +56,7 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
 }
 
 export default MusicAlbumContainer
+
+/*
+
+*/

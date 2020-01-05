@@ -22,14 +22,15 @@ exports.createPages = ({ actions, graphql }) => {
     }
     title
   }`
-
- if(activeEnv === 'development') {
+/*
+  if(activeEnv === 'development') {
+    console.log(27, activeEnv)
     musicAlbumsSongs = `songs {
       file
       title
     }`
   }
-
+*/
   return graphql(`
     {
       allMarkdownRemark(limit: 1000) {
