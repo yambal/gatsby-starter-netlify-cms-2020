@@ -17,6 +17,7 @@ export const pageQuery = graphql`
   }
 `
 
+/*
 export interface iReleaseSongFile {
   publicURL: string
   prettySize: string
@@ -24,6 +25,19 @@ export interface iReleaseSongFile {
     mediaType:string
     contentDigest: string
   }
+}
+*/
+
+interface iMusicAlbumContainerPageResourcesJsonPageContext {
+  songs: iSong[]
+}
+
+interface iMusicAlbumContainerPageResourcesJson {
+  pageContext: iMusicAlbumContainerPageResourcesJsonPageContext
+}
+
+interface iMusicAlbumContainerPageResources {
+  json: iMusicAlbumContainerPageResourcesJson
 }
 
 interface iMusicAlbumContainer {
@@ -35,23 +49,17 @@ interface iMusicAlbumContainer {
       }
     }
   }
-  pageResources: {
-    json: {
-      pageContext: {
-        songs: iSong[]
-      }
-    }
-  }
+  pageResources: iMusicAlbumContainerPageResources
 }
 
 const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   const { data:{ markdownRemark:{ frontmatter: album }}} = props
   const { title: albumTitle } = album
 
-  const { pageResources } = props
-  let json
-  let pageContext
-  let songs
+  const pageResources = props.pageResources
+  let json:iMusicAlbumContainerPageResourcesJson
+  let pageContext:iMusicAlbumContainerPageResourcesJsonPageContext
+  let songs:iSong[]
   if(pageResources){
     json = pageResources.json
     if(json) {
