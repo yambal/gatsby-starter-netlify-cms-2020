@@ -64,7 +64,7 @@ class MusicAlbum extends React.Component<iMusicAlbum, iMusicAlbumState> {
 
   render() {
     return (
-      <Container>
+      <React.Fragment>
         <h1>{ this.props.albumTitle }</h1>
         {this.props.songs.map((song, index) => {
           return(
@@ -81,7 +81,7 @@ class MusicAlbum extends React.Component<iMusicAlbum, iMusicAlbumState> {
             />
           )
         })}
-      </Container>
+      </React.Fragment>
     )
   }
 }
