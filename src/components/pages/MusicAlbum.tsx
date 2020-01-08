@@ -1,23 +1,66 @@
 import React from 'react'
-var _ = require('lodash');
-import { Link } from 'gatsby'
-import Content from '../Content'
-import styled from 'styled-components';
 import Container from '../Container';
-import Column from '../atoms/Column';
-import { Helmet } from 'react-helmet';
-import PageTitle from '../atoms/PageTitle';
-import Song, { iSong, iSongRef } from '../atoms/Song'
-import { number } from 'prop-types';
+import { iSong, iSongRef } from '../atoms/Song'
+import SquareBoxImg from '../atoms/SquareBoxImg';
+import Songs from '../morequles/Songs';
+import styled from 'styled-components';
+import { Border } from '../atoms/font';
 
 interface iMusicAlbum {
+  fluid: any
   albumTitle: string
+  description: string
   songs: iSong[]
 }
 
 interface iMusicAlbumState {
   refs: iSongRef[]
 }
+
+const AlbumTitle = styled.h1`
+  margin-bottom: 0;
+  mix-blend-mode: normal;
+  top: 0;
+`
+const AlbumTitleWrapper = styled.div`
+  position: absolute;
+  mix-blend-mode: difference;
+  padding: 2rem;
+  background-color: ${props => props.theme.color.background.dark};
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
+
+const Paper = styled.div`
+  position: relative;
+  max-width: calc(100vmin - 150px);
+  margin-left: auto;
+  margin-right: auto;
+
+  &:before,
+  &:after {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: 15px;
+    left: 10px;
+    width: 50%;
+    top: 80%;
+    max-width:300px;
+    background: #000;
+    box-shadow: 0 15px 10px #000;
+    transform: rotate(-3deg);
+    mix-blend-mode: multiply;
+  }
+  &:after {
+    transform: rotate(3deg);
+    right: 10px;
+    left: auto;
+    mix-blend-mode: multiply;
+  }
+`
 
 class MusicAlbum extends React.Component<iMusicAlbum, iMusicAlbumState> {
   constructor(props: iMusicAlbum) {
@@ -64,24 +107,27 @@ class MusicAlbum extends React.Component<iMusicAlbum, iMusicAlbumState> {
 
   render() {
     return (
-      <React.Fragment>
-        <h1>{ this.props.albumTitle }</h1>
-        {this.props.songs.map((song, index) => {
-          return(
-            <Song
-              song={song}
-              key={`song-${index}`}
-              track={index}
-              ref={this.pushRef}
-              onPlayHandler={(track: number) => {
-                this.onPlay(track)
-              }}
-              onPauseHandler={this.onPause}
-              onEndHandler={this.onEnd}
-            />
-          )
-        })}
-      </React.Fragment>
+      <Container>
+        <Paper>
+        <SquareBoxImg
+          fluid={this.props.fluid}
+          style={{
+            backgroundColor: 'black'
+          }}
+        >
+          <div style={{
+            height: '100%',
+          }}>
+            <div style={{position: 'relative', marginTop: '4rem', padding: '2rem'}}>
+              <AlbumTitle>{ this.props.albumTitle }</AlbumTitle>
+              <AlbumTitleWrapper />
+            </div>
+            {this.props.description}
+            <Songs songs={this.props.songs} />
+          </div>
+        </SquareBoxImg>
+        </Paper>
+      </Container>
     )
   }
 }

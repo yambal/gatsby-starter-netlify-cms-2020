@@ -12,6 +12,10 @@ declare module 'styled-components' {
         base: string
     },
     color: {
+        background: {
+            base: string
+            dark: string
+        }
         font: {
             base: string
             link: string

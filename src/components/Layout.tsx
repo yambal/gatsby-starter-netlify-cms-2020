@@ -7,12 +7,16 @@ import { ThemeProvider } from 'styled-components'
 import theme from '../theme'
 import GlobalStyle from '../GlobalStyle'
 
-const Layout:React.FC = (props) => {
+interface iLayout {
+  dark?: boolean
+}
+
+const Layout:React.FC<iLayout> = props => {
   const { title, description, lang } = useSiteMetadata()
   return (
     <ThemeProvider theme={theme}>
       <React.Fragment>
-        <GlobalStyle/>
+        <GlobalStyle dark={props.dark} />
         <Helmet>
           <html lang={lang} />
           <title>{title}</title>

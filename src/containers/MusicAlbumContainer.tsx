@@ -5,7 +5,7 @@ import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
 import MusicAlbum from '../components/pages/MusicAlbum'
 import { iSong } from '../components/atoms/Song'
-import Img from "gatsby-image"
+
 import Column from '../components/atoms/Column'
 
 export const pageQuery = graphql`
@@ -65,17 +65,13 @@ const MusicAlbumContainer:React.FC<iMusicAlbumContainer> = (props) => {
   if(pageResources && pageResources.json){
     const { json:{pageContext:{songs}}} = pageResources
     return (
-      <Layout>
-        <Container>
-          <Column>
-            <Img fluid={f} style={{width:'100%'}}/>
-            <p>{description}</p>
-            {songs && <MusicAlbum
-              albumTitle={albumTitle}
-              songs={songs}
-            />}
-          </Column>
-        </Container>
+      <Layout dark>
+        {songs && <MusicAlbum
+          fluid={f}
+          albumTitle={albumTitle}
+          description={description}
+          songs={songs}
+        />}
       </Layout>
       )
   }

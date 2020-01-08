@@ -35,6 +35,9 @@ const Navbar:React.FC = () => {
               <Link className="navbar-item" to="/blog">
                 Blog
               </Link>
+              <Link className="navbar-item" to="/albums/test">
+                Albums
+              </Link>
             </FlexItem>
           </Flex>
         </Container>

@@ -108,7 +108,7 @@ const SongBase: React.RefForwardingComponent<any, iSongCompo> = (props, ref) => 
 
   return (
     <Wrapper style={{
-      background: `linear-gradient(to right, rgba(0,0,0,0.125) 0%,rgba(0,0,0,0.125) ${currentTime / duration * 100}%, transparent ${currentTime / duration * 100}%, transparent 100% )`
+      background: `linear-gradient(to right, red 0%, red ${currentTime / duration * 100}%, transparent ${currentTime / duration * 100}%, transparent 100% )`
     }}>
       {props.track}.{props.song.title}
       {!isPlaying && <button onClick={handlePlay}>play</button>}
