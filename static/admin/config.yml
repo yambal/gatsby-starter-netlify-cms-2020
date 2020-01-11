@@ -61,7 +61,7 @@ collections:
           - {label: "Page Title", name: "pagetitle", widget: "string"}
           - {label: "Page Description", name: "pagedescription", widget: "text"}
           - label: "Sections"
-            name: "section"
+            name: "sections"
             widget: list
             fields:
               - {label: "Sections Title", name: "sectiontitle", widget: "string"}
