@@ -22,15 +22,7 @@ exports.createPages = ({ actions, graphql }) => {
     }
     title
   }`
-/*
-  if(activeEnv === 'development') {
-    console.log(27, activeEnv)
-    musicAlbumsSongs = `songs {
-      file
-      title
-    }`
-  }
-*/
+
   return graphql(`
     {
       allMarkdownRemark(limit: 1000) {
@@ -60,17 +52,24 @@ exports.createPages = ({ actions, graphql }) => {
     posts.forEach(edge => {
       const id = edge.node.id
       const songs = edge.node.frontmatter.songs
-      createPage({
-        path: edge.node.fields.slug,
-        tags: edge.node.frontmatter.tags,
-        component: path.resolve(
-          `src/containers/${String(edge.node.frontmatter.templateKey)}Container.tsx`
-        ),
-        context: {
-          id,
-          songs
-        },
-      })
+      const tamplateKey = edge.node.frontmatter.templateKey
+
+      switch (tamplateKey) {
+        case 'StudyPages' :
+          break;
+        default:
+          createPage({
+            path: edge.node.fields.slug,
+            tags: edge.node.frontmatter.tags,
+            component: path.resolve(
+              `src/containers/${String(tamplateKey)}Container.tsx`
+            ),
+            context: {
+              id,
+              songs
+            },
+          })
+      }
     })
 
     // Tag pages:
@@ -101,7 +100,7 @@ exports.createPages = ({ actions, graphql }) => {
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
-  fmImagesToRelative(node) // convert image paths for gatsby images
+  fmImagesToRelative(node)
 
   if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })
@@ -110,5 +109,14 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       node,
       value,
     })
+  }
+  
+}
+
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage } = actions
+  if (page.path.match(/^\/study/)) {
+    page.matchPath = "/study/*"
+    createPage(page)
   }
 }

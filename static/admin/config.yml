@@ -29,6 +29,7 @@ collections:
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Song", name: "file", widget: "file", required: false}
+
   - name: "BlogPost"
     label: "Blog"
     folder: "src/pages/blog"
@@ -43,6 +44,16 @@ collections:
       - {label: "Featured Image", name: "featuredimage", widget: image}
       - {label: "Body", name: "body", widget: "markdown"}
       - {label: "Tags", name: "tags", widget: "list"}
+
+  - name: "studypages"
+    label: "Study Pages"
+    folder: "src/pages/study"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "StudyPages"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
 
   - name: "pages"
     label: "Pages"
