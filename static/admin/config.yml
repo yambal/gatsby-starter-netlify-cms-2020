@@ -54,6 +54,18 @@ collections:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "StudyPages"}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Slug", name: "slug", widget: "string"}
+      - label: "Pages"
+        name: "pages"
+        widget: list
+        fields:
+          - {label: "Page Title", name: "pagetitle", widget: "string"}
+          - {label: "Page Description", name: "pagedescription", widget: "text"}
+          - label: "Sections"
+            name: "section"
+            widget: list
+            fields:
+              - {label: "Sections Title", name: "sectiontitle", widget: "string"}
+              - {label: "Sections Description", name: "sectionescription", widget: "text"}
 
   - name: "pages"
     label: "Pages"
