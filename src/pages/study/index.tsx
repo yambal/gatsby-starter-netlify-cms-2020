@@ -41,14 +41,10 @@ const RouterPage = (
 ) => props.pageComponent;
 
 const StudyIndex: React.FC<iStudyIndexProps> = (props) => {
-  let Home = () => <div>Home</div>
-  let Dash = () => <div>Dash</div>
-
   const { data: { allMarkdownRemark: { edges } } } = props
 
   return(
     <Layout dark>
-      <pre>{JSON.stringify(props, null, 2)}</pre>
       <Container>
         <Link to="study">test</Link>
         <Link to="study/react-spring">react-spring</Link>
@@ -71,10 +67,13 @@ query StudyIndexQuery {
       node {
         id
         frontmatter {
+          description
           pages {
             pagedescription
             pagetitle
             sections {
+              body
+              component
               sectionescription
               sectiontitle
             }

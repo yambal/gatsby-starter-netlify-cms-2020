@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router } from "@reach/router"
+import StudyPage from '../pages/StadyPage';
 
 interface iStudyRouterPage {
   path: string
@@ -40,7 +40,6 @@ const StudyRouterPage:React.FC<iStudyRouterPage> = (props) => {
     [props['*']]
   )
 
-
   const [page, setPage] = React.useState(null)
   React.useEffect(
     () => {
@@ -55,23 +54,12 @@ const StudyRouterPage:React.FC<iStudyRouterPage> = (props) => {
 
   return (
     <React.Fragment>
-      {study &&
-        <React.Fragment>
-        <h1>{study.node.frontmatter.title}</h1>
-        {page && <React.Fragment>
-        <h2>{pageNum}. {page.pagetitle}</h2>
-            <p>{page.pagedescription}</p>
-            {page.sections.map(
-              (s) => {
-                return <React.Fragment>
-                    <h3>{s.sectiontitle}</h3>
-                    <p>{s.sectionescription}</p>
-                  </React.Fragment>
-              }
-            )}
-          </React.Fragment>}
-        </React.Fragment>
-      }
+      {study && page && <StudyPage
+        title={study.node.frontmatter.title}
+        pageTitle={page.pagetitle}
+        pageNum={pageNum}
+        pageSections={page.sections}
+      />}
     </React.Fragment>
   )
 }
