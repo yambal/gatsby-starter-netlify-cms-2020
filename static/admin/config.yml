@@ -66,6 +66,8 @@ collections:
             fields:
               - {label: "Sections Title", name: "sectiontitle", widget: "string"}
               - {label: "Sections Description", name: "sectionescription", widget: "text"}
+              - {label: "Body", name: "body", widget: "markdown"}
+              - {label: "Component", name: "component", widget: "string", required: false}
 
   - name: "pages"
     label: "Pages"
