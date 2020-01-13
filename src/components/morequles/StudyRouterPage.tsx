@@ -54,7 +54,7 @@ const StudyRouterPage:React.FC<iStudyRouterPage> = (props) => {
   )
 
   return (
-    <div>
+    <React.Fragment>
       {study &&
         <React.Fragment>
         <h1>{study.node.frontmatter.title}</h1>
@@ -72,7 +72,7 @@ const StudyRouterPage:React.FC<iStudyRouterPage> = (props) => {
           </React.Fragment>}
         </React.Fragment>
       }
-    </div>
+    </React.Fragment>
   )
 }
 

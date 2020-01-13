@@ -6,6 +6,19 @@ import { Link } from 'gatsby'
 import StudyRouterPage from '../../components/morequles/StudyRouterPage'
 import styled from 'styled-components'
 
+interface iStudySections {
+  sectiontitle: string
+  sectionescription: string
+  body: string
+  component?: string
+}
+
+interface iStudyPage {
+  pagetitle: string
+  pagedescription: string
+  sections: iStudySections[]
+}
+
 interface iStudyIndexProps {
   data: {
     allMarkdownRemark: {
@@ -15,7 +28,7 @@ interface iStudyIndexProps {
           frontmatter: {
             title: string
             slug: string
-            pages: any[]
+            pages: iStudyPage[]
           }
         }
       }[]
@@ -35,6 +48,7 @@ const StudyIndex: React.FC<iStudyIndexProps> = (props) => {
 
   return(
     <Layout dark>
+      <pre>{JSON.stringify(props, null, 2)}</pre>
       <Container>
         <Link to="study">test</Link>
         <Link to="study/react-spring">react-spring</Link>
