@@ -12,7 +12,7 @@ pages:
         sectionescription: |-
           Section Desc
 
-          [google](Google)
+          [google](https://www.google.com/)
         sectiontitle: Section Title
   - pagedescription: Page Desc 2
     pagetitle: Page Title 2
