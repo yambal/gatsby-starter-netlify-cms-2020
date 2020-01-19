@@ -66,6 +66,19 @@ collections:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Slug", name: "slug", widget: "string"}
       - {label: "Description", name: "description", widget: "text"}
+      - label: "Pages"
+        name: "pages"
+        widget: list
+        fields:
+          - {label: "Page Title", name: "pagetitle", widget: "string"}
+          - {label: "Page Description", name: "pagedescription", widget: "text"}
+          - label: "Sections"
+            name: "sections"
+            widget: list
+            fields:
+              - {label: "Sections Title", name: "sectiontitle", widget: "string"}
+              - {label: "Sections Description", name: "sectionescription", widget: "markdown"}
+              - {label: "Body", name: "body", widget: "markdown"}
 
   - name: "studypages"
     label: "Study Pages"

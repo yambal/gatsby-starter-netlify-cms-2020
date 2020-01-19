@@ -36,10 +36,6 @@ interface iStudyIndexProps {
   }
 }
 
-const RouterPage = (
-  props: { pageComponent: JSX.Element } & RouteComponentProps
-) => props.pageComponent;
-
 const StudyIndex: React.FC<iStudyIndexProps> = (props) => {
   const { data: { allMarkdownRemark: { edges } } } = props
 
