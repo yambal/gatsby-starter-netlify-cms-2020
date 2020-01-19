@@ -9,7 +9,10 @@ pages:
     sections:
       - body: body **body**
         component: component
-        sectionescription: Section Desc
+        sectionescription: |-
+          Section Desc
+
+          [google](https://www.google.com/)
         sectiontitle: Section Title
   - pagedescription: Page Desc 2
     pagetitle: Page Title 2
