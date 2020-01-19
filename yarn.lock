@@ -6519,10 +6519,10 @@ gatsby-telemetry@^1.1.46:
     stack-utils "1.0.2"
     uuid "3.3.3"
 
-gatsby-transformer-md-opengraph@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/gatsby-transformer-md-opengraph/-/gatsby-transformer-md-opengraph-0.0.7.tgz#2a3d15f31029e23226b59fd181517367e3e9b741"
-  integrity sha512-vEDVEx7Fimt2bAQXZveWJ+K8B/I7NrSdh1gfj9mu2SC92tFLoKmMX1Es7ZGQhQZPrbW4GM0r5v/F2zfOqY3ylg==
+gatsby-transformer-md-opengraph@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/gatsby-transformer-md-opengraph/-/gatsby-transformer-md-opengraph-0.0.8.tgz#9eba4db4b1959980d6b725b79ae8febaa21ae6d1"
+  integrity sha512-xQVvFi4VOqr1XnFK1HZT6NU6RGll/AzLm2L8Zie90jIgygtw/GCmlc8UsYI0Y5eUjIMpRDfFKxanR+aw3+eq9g==
   dependencies:
     crypto "^1.0.1"
     open-graph-scraper "^3.6.2"
