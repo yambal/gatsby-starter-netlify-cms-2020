@@ -56,6 +56,17 @@ collections:
       - {label: "Slug", name: "slug", widget: "string"}
       - {label: "Description", name: "description", widget: "text"}
 
+  - name: "topic"
+    label: "Topic"
+    folder: "src/pages/topics"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "TopicPages"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+
   - name: "studypages"
     label: "Study Pages"
     folder: "src/pages/study"
