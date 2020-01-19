@@ -10,7 +10,7 @@ interface iTopicsIndex {
 
 }
 
-const StudyIndex: React.FC<iTopicsIndex> = (props) => {
+const TopicsIndex: React.FC<iTopicsIndex> = (props) => {
     return(
       <Layout dark>
         <Container>
@@ -19,3 +19,5 @@ const StudyIndex: React.FC<iTopicsIndex> = (props) => {
       </Layout>
     )
   }
+
+export default TopicsIndex
