@@ -12,7 +12,7 @@ pages:
         sectionescription: |-
           Section Desc
 
-          [google](https://www.google.com/)
+          [google](https://www.google.com/) and [yahoo](https://www.yahoo.co.jp/)
         sectiontitle: Section Title
   - pagedescription: Page Desc 2
     pagetitle: Page Title 2
