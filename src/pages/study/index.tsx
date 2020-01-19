@@ -4,7 +4,7 @@ import Container from '../../components/Container'
 import { Router, RouteComponentProps } from "@reach/router"
 import { Link } from 'gatsby'
 import StudyRouterPage from '../../components/morequles/StudyRouterPage'
-import styled from 'styled-components'
+import { graphql } from 'gatsby'
 
 interface iStudySections {
   sectiontitle: string

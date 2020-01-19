@@ -57,6 +57,8 @@ exports.createPages = ({ actions, graphql }) => {
       switch (tamplateKey) {
         case 'StudyPages' :
           break;
+        case 'TopicPages' :
+          break;
         default:
           createPage({
             path: edge.node.fields.slug,
@@ -115,8 +117,14 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 
 exports.onCreatePage = async ({ page, actions }) => {
   const { createPage } = actions
+  // study配下のPageはRouting で処理する
   if (page.path.match(/^\/study/)) {
     page.matchPath = "/study/*"
+    createPage(page)
+  }
+
+  if (page.path.match(/^\/topics/)) {
+    page.matchPath = "/topics/*"
     createPage(page)
   }
 }
