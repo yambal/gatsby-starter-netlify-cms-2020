@@ -9,6 +9,7 @@ module.exports = {
     activeEnv
   },
   plugins: [
+    // 'gatsby-source-file',
     'gatsby-transformer-md-opengraph',
     `gatsby-plugin-typescript`,
     'gatsby-plugin-react-helmet',
