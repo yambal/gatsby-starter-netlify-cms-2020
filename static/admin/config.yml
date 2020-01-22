@@ -47,6 +47,7 @@ collections:
 
   - name: "PodCast"
     label: "PodCast"
+    create: true
     folder: "src/pages/podcasts"
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
