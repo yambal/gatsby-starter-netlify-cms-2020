@@ -1,8 +1,8 @@
 const mp3 = require('./mp3');
 const audioPath = 'audio'
+var crypto = require("crypto");
 
-exports.createPages = ({ cache, actions, graphql }) => {
-  const { createPage } = actions
+exports.createPages = ({ cache, actions, graphql }, pluginOptions, cb) => {
 
   return graphql(`
   {
@@ -34,25 +34,34 @@ exports.createPages = ({ cache, actions, graphql }) => {
       (edge) => {
         console.log(edge.node.id)
 
-        cache.get(edge.node.id)
+        const md = edge.node.rawMarkdownBody
+        const title = edge.node.frontmatter.title
+        const ssml = title + md
+
+        const hashKey = `podcast-${edge.node.id}`
+        const hsashSeed = `${edge.node.id} ${title} ${md}`
+        const hash = crypto.createHash('md5').update(hsashSeed , 'utf8').digest('hex')
+
+        cache.get(hashKey)
           .then(
-            (a) => {
-              if (!a){
-                mp3(edge.node.rawMarkdownBody, edge.node.frontmatter.slug, audioPath)
+            (nodeIdHash) => {
+              if (nodeIdHash !== hash){
+                mp3(ssml, edge.node.frontmatter.slug, audioPath)
                   .then(
                     (uri) => {
-                      console.log(39, uri)
-                      console.log(uri)
-                      cache.set(edge.node.id)
+                      console.log(`\t${uri}`)
+                      cache.set(hash)
                     }
                   )
               } else {
-                console.log('cache')
+                console.log(`\tskip: hash ${hash}`)
               }
             }
           )
       }
     )
+
+    cb && cb()
   })
 }
 
