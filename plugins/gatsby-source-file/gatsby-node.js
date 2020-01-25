@@ -1,9 +1,7 @@
 const mp3 = require('./mp3');
-const path = require('path')
-
 const audioPath = 'audio'
 
-exports.createPages = ({ actions, graphql }) => {
+exports.createPages = ({ cache, actions, graphql }) => {
   const { createPage } = actions
 
   return graphql(`
@@ -31,15 +29,26 @@ exports.createPages = ({ actions, graphql }) => {
     }
 
     const edges = result.data.allMarkdownRemark.edges
-    
+
     edges.forEach(
       (edge) => {
-        console.log(JSON.stringify(edge, null, 2))
-        mp3('Hello', edge.node.frontmatter.slug, audioPath)
+        console.log(edge.node.id)
+
+        cache.get(edge.node.id)
           .then(
-            (uri) => {
-              console.log(39, uri)
-              console.log(uri)
+            (a) => {
+              if (!a){
+                mp3(edge.node.rawMarkdownBody, edge.node.frontmatter.slug, audioPath)
+                  .then(
+                    (uri) => {
+                      console.log(39, uri)
+                      console.log(uri)
+                      cache.set(edge.node.id)
+                    }
+                  )
+              } else {
+                console.log('cache')
+              }
             }
           )
       }
