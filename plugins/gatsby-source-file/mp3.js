@@ -3,9 +3,15 @@ const fs = require('fs');
 const util = require('util');
 const mkdirp = require('mkdirp');
 
-module.exports = async function getMp3(ssml, slug) {
+module.exports = async function getMp3(ssml, slug, path) {
   console.group('getMp3')
   console.group(ssml)
+
+  const mp3FilePath = `./public/${path}/${slug}.mp3`
+  const uri = `/${path}/${slug}.mp3`
+
+  console.log(13, mp3FilePath)
+  console.log(14, uri)
 
   const client = new textToSpeech.TextToSpeechClient({
     projectId: 'texttospeach-261314',
@@ -19,15 +25,12 @@ module.exports = async function getMp3(ssml, slug) {
 
   const [response] = await client.synthesizeSpeech(request);
 
-  const dir = `./public/audio`
-
-  console.log('dir', dir, process.cwd())
-  await mkdirp(dir)
+  await mkdirp(`./public/${path}`)
 
   const writeFile = util.promisify(fs.writeFile);
-  await writeFile(`${dir}/${slug}.mp3`, response.audioContent, 'binary');
+  await writeFile(mp3FilePath, response.audioContent, 'binary');
   console.log(`Audio content written to file: ${slug}.mp3`);
   console.groupEnd()
   
-  return response.audioContent
+  return uri
 }

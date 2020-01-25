@@ -2,6 +2,8 @@ const mp3 = require('./mp3');
 const path = require('path')
 
 exports.createPages = ({ actions, graphql }) => {
+  const { createPage } = actions
+
   return graphql(`
   {
     allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "PodCast"}}}, limit: 10) {
@@ -31,14 +33,51 @@ exports.createPages = ({ actions, graphql }) => {
     edges.forEach(
       (edge) => {
         console.log(JSON.stringify(edge, null, 2))
-        console.log('.fields.slug', edge.node.fields.slug)
-
-        // const dir = `${process.cwd()}/public/audio${edge.node.fields.slug}`
-        
-        // console.log('rootParh', dir)
-
-        mp3('Hello', edge.node.frontmatter.slug)
+        mp3('Hello', edge.node.frontmatter.slug, 'audio')
+          .then(
+            (uri) => {
+              console.log(39, uri)
+              console.log(uri)
+            }
+          )
       }
     )
   })
+}
+
+// =====================================================
+const {
+  GraphQLString
+} = require(`gatsby/graphql`);
+
+exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+  console.log(52, 'setFieldsOnGraphQLNodeType')
+
+  if (type.name !== `MarkdownRemark`) {
+    return {}
+  }
+
+  return {
+    mp3: {
+      type: GraphQLString,
+      args: {
+        prefix: {
+          type: GraphQLString,
+        }
+      },
+      resolve: (MDNode, args) => {
+        const {
+          frontmatter
+        } = MDNode
+
+        const { templateKey, slug } = frontmatter
+
+        if (templateKey === 'PodCast'){
+          return `${slug}`
+        }
+
+        return null
+      }
+    }
+  }
 }
