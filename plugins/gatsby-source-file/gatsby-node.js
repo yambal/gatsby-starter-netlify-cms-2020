@@ -1,6 +1,8 @@
 const mp3 = require('./mp3');
 const path = require('path')
 
+const audioPath = 'audio'
+
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
@@ -33,7 +35,7 @@ exports.createPages = ({ actions, graphql }) => {
     edges.forEach(
       (edge) => {
         console.log(JSON.stringify(edge, null, 2))
-        mp3('Hello', edge.node.frontmatter.slug, 'audio')
+        mp3('Hello', edge.node.frontmatter.slug, audioPath)
           .then(
             (uri) => {
               console.log(39, uri)
@@ -73,7 +75,7 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
         const { templateKey, slug } = frontmatter
 
         if (templateKey === 'PodCast'){
-          return `${slug}`
+          return `/${audioPath}/${slug}.mp3`
         }
 
         return null

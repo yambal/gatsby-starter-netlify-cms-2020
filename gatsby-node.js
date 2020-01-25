@@ -59,8 +59,6 @@ exports.createPages = ({ actions, graphql }) => {
           break;
         case 'TopicPages' :
           break;
-        case 'PodCast' :
-          break;
         default:
           createPage({
             path: edge.node.fields.slug,
