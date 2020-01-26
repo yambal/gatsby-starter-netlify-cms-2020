@@ -3,12 +3,13 @@ const fs = require('fs');
 const util = require('util');
 const mkdirp = require('mkdirp');
 
-module.exports = async function getMp3(ssml, slug, path) {
+module.exports = async function getMp3(ssml, fileName, path) {
   console.group('- - - - - -')
   console.log('\tgetMp3')
+  console.log(ssml)
 
-  const mp3FilePath = `./public/${path}/${slug}.mp3`
-  const uri = `/${path}/${slug}.mp3`
+  const mp3FilePath = `./public/${path}/${fileName}`
+  const uri = `/${path}/${fileName}`
 
   console.log(`\t${mp3FilePath}`)
   console.log(`\t${uri}`)
@@ -36,7 +37,7 @@ module.exports = async function getMp3(ssml, slug, path) {
 
   const writeFile = util.promisify(fs.writeFile);
   await writeFile(mp3FilePath, response.audioContent, 'binary');
-  console.log(`\tAudio content written to file: ${slug}.mp3`);
+  console.log(`\tAudio content written to file: ${fileName}`);
   console.log('- - - - - -')
   console.groupEnd()
   
