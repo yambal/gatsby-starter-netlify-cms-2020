@@ -3,9 +3,12 @@ const HtmlToSSML = require('./HtmlToSSML');
 const audioPath = 'audio'
 var crypto = require("crypto");
 
-const buildFileName = (slag, rawMarkdownBody, exe) => {
-  const hash = crypto.createHash('md5').update(rawMarkdownBody , 'utf8').digest('hex')
-  return `${slag}-${hash}.${exe}`
+const buildMDHash = (title, rawMarkdownBody) => {
+  return crypto.createHash('md5').update(`${title}-${rawMarkdownBody}` , 'utf8').digest('hex')
+}
+
+const buildFileName = (slag, title, rawMarkdownBody, exe) => {
+  return `${slag}-${buildMDHash(title, rawMarkdownBody)}.${exe}`
 }
 
 exports.createPages = ({ cache, actions, graphql }, pluginOptions, cb) => {
@@ -39,28 +42,26 @@ exports.createPages = ({ cache, actions, graphql }, pluginOptions, cb) => {
 
     edges.forEach(
       (edge) => {
-        console.log(edge.node.id)
-
         const html = edge.node.html
         const title = edge.node.frontmatter.title
-        const hashKey = `podcast-${edge.node.id}`
-        const hsashSeed = `${edge.node.id} ${title} ${html}`
-        const hash = crypto.createHash('md5').update(hsashSeed , 'utf8').digest('hex')
-        const fileName = buildFileName(edge.node.frontmatter.slug, edge.node.rawMarkdownBody, 'mp3')
+        
+        const cacheKey = `podcast-${edge.node.id}`
+        const hash = buildMDHash(title, edge.node.rawMarkdownBody)
+        const fileName = buildFileName(edge.node.frontmatter.slug, title, edge.node.rawMarkdownBody, 'mp3')
 
-        cache.get(hashKey)
+        return cache.get(cacheKey)
           .then(
             (nodeIdHash) => {
               if (nodeIdHash !== hash){
-                mp3(HtmlToSSML(title, html), fileName, audioPath)
+                return mp3(HtmlToSSML(title, html), fileName, audioPath)
                   .then(
                     (uri) => {
-                      console.log(`\t${uri}`)
-                      cache.set(hash)
+                      return cache.set(cacheKey, hash)
                     }
                   )
               } else {
                 console.log(`\tskip: hash ${hash}`)
+                return
               }
             }
           )
@@ -97,11 +98,9 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
           rawMarkdownBody
         } = MDNode
 
-        console.log(94, rawMarkdownBody)
+        const { templateKey, slug, title } = frontmatter
 
-        const { templateKey, slug } = frontmatter
-
-        const fileName = buildFileName(slug, rawMarkdownBody, 'mp3')
+        const fileName = buildFileName(slug, title, rawMarkdownBody, 'mp3')
 
         if (templateKey === 'PodCast'){
           return `/${audioPath}/${fileName}`
