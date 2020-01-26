@@ -19,8 +19,14 @@ module.exports = async function getMp3(ssml, slug, path) {
   });
 
   const request = {
-    input: {text: ssml},
-    voice: {languageCode: 'ja-JP', ssmlGender: 'NEUTRAL'},
+    input: {
+      ssml
+    },
+    voice: {
+      languageCode: 'ja-JP',
+      name: 'ja-JP-Standard-A',
+      ssmlGender: 'NEUTRAL'
+    },
     audioConfig: {audioEncoding: 'MP3'},
   };
 

@@ -1,4 +1,5 @@
 const mp3 = require('./mp3');
+const HtmlToSSML = require('./HtmlToSSML');
 const audioPath = 'audio'
 var crypto = require("crypto");
 
@@ -18,6 +19,7 @@ exports.createPages = ({ cache, actions, graphql }, pluginOptions, cb) => {
             title
           }
           rawMarkdownBody
+          html
         }
       }
     }
@@ -34,19 +36,17 @@ exports.createPages = ({ cache, actions, graphql }, pluginOptions, cb) => {
       (edge) => {
         console.log(edge.node.id)
 
-        const md = edge.node.rawMarkdownBody
+        const html = edge.node.html
         const title = edge.node.frontmatter.title
-        const ssml = title + md
-
         const hashKey = `podcast-${edge.node.id}`
-        const hsashSeed = `${edge.node.id} ${title} ${md}`
+        const hsashSeed = `${edge.node.id} ${title} ${html}`
         const hash = crypto.createHash('md5').update(hsashSeed , 'utf8').digest('hex')
 
         cache.get(hashKey)
           .then(
             (nodeIdHash) => {
               if (nodeIdHash !== hash){
-                mp3(ssml, edge.node.frontmatter.slug, audioPath)
+                mp3(HtmlToSSML(title, html), edge.node.frontmatter.slug, audioPath)
                   .then(
                     (uri) => {
                       console.log(`\t${uri}`)
