@@ -20,8 +20,8 @@ var getMp3 = function (ssml, fileName, path) {
             },
             voice: {
                 languageCode: 'ja-JP',
-                name: 'ja-JP-Standard-A',
-                ssmlGender: 'NEUTRAL'
+                name: 'ja-JP-Wavenet-A', // ja-JP-Standard-A
+                ssmlGender: 'FEMALE' // MALE, FEMALE, NEUTRAL
             },
             audioConfig: { audioEncoding: 'MP3' }
         };
