@@ -1,45 +1,46 @@
-const textToSpeech = require('@google-cloud/text-to-speech');
-const fs = require('fs');
-const util = require('util');
-const mkdirp = require('mkdirp');
-
-module.exports = async function getMp3(ssml, fileName, path) {
-  console.group('- - - - - -')
-  console.log('\tgetMp3')
-  console.log(ssml)
-
-  const mp3FilePath = `./public/${path}/${fileName}`
-  const uri = `/${path}/${fileName}`
-
-  console.log(`\t${mp3FilePath}`)
-  console.log(`\t${uri}`)
-
-  const client = new textToSpeech.TextToSpeechClient({
-    projectId: 'texttospeach-261314',
-    keyFilename: 'TextToSpeach-e373fcafd2ef.json'
-  });
-
-  const request = {
-    input: {
-      ssml
-    },
-    voice: {
-      languageCode: 'ja-JP',
-      name: 'ja-JP-Standard-A',
-      ssmlGender: 'NEUTRAL'
-    },
-    audioConfig: {audioEncoding: 'MP3'},
-  };
-
-  const [response] = await client.synthesizeSpeech(request);
-
-  await mkdirp(`./public/${path}`)
-
-  const writeFile = util.promisify(fs.writeFile);
-  await writeFile(mp3FilePath, response.audioContent, 'binary');
-  console.log(`\tAudio content written to file: ${fileName}`);
-  console.log('- - - - - -')
-  console.groupEnd()
-  
-  return uri
-}
+"use strict";
+exports.__esModule = true;
+var text_to_speech_1 = require("@google-cloud/text-to-speech");
+var fs = require("fs");
+var util = require("util");
+var mkdirp = require("mkdirp-then");
+var getMp3 = function (ssml, fileName, path) {
+    return new Promise(function (resolve, reject) {
+        console.group('- - - - - -');
+        console.log('\tgetMp3');
+        var mp3FilePath = "./public/" + path + "/" + fileName;
+        var uri = "/" + path + "/" + fileName;
+        var client = new text_to_speech_1["default"].TextToSpeechClient({
+            projectId: 'texttospeach-261314',
+            keyFilename: 'TextToSpeach-e373fcafd2ef.json'
+        });
+        var request = {
+            input: {
+                ssml: ssml
+            },
+            voice: {
+                languageCode: 'ja-JP',
+                name: 'ja-JP-Standard-A',
+                ssmlGender: 'NEUTRAL'
+            },
+            audioConfig: { audioEncoding: 'MP3' }
+        };
+        return client.synthesizeSpeech(request)
+            .then(function (responses) {
+            var response = responses[0];
+            return mkdirp("./public/" + path)
+                .then(function (made) {
+                console.log("mkdir -p:" + made);
+                var writeFile = util.promisify(fs.writeFile);
+                return writeFile(mp3FilePath, response.audioContent, 'binary')
+                    .then(function () {
+                    console.log("\tAudio content written to file: " + fileName);
+                    console.log('- - - - - -');
+                    console.groupEnd();
+                    resolve(uri);
+                });
+            });
+        });
+    });
+};
+exports["default"] = getMp3;

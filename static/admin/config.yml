@@ -49,7 +49,7 @@ collections:
     label: "PodCast"
     create: true
     folder: "src/pages/podcasts"
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "PodCast"}
       - {label: "Title", name: "title", widget: "string"}
