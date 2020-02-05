@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var mp3_1 = require("./mp3");
-var HtmlToSSML = require("./HtmlToSSML");
+var HtmlToSSML_1 = require("./HtmlToSSML");
 var crypto = require("crypto");
 var graphql_1 = require("gatsby/graphql");
 var audioPath = 'audio';
@@ -28,7 +28,7 @@ exports.createPages = function (_a, pluginOptions, cb) {
             return cache.get(cacheKey)
                 .then(function (nodeIdHash) {
                 if (nodeIdHash !== hash) {
-                    return mp3_1["default"](HtmlToSSML(title, html), fileName, audioPath)
+                    return mp3_1["default"](HtmlToSSML_1["default"](title, html), fileName, audioPath)
                         .then(function (uri) {
                         return cache.set(cacheKey, hash)
                             .then(function () {
@@ -72,4 +72,8 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
             }
         }
     };
+};
+exports.onPostBuild = function (_a) {
+    var actions = _a.actions, reporter = _a.reporter;
+    console.log(123, reporter);
 };

@@ -1,7 +1,8 @@
 import mp3 from './mp3';
-import * as HtmlToSSML from './HtmlToSSML';
+import HtmlToSSML from './HtmlToSSML';
 import * as crypto from 'crypto';
 import { GraphQLString } from 'gatsby/graphql';
+import { createFilePath } from 'gatsby-source-filesystem'
 
 const audioPath = 'audio'
 
@@ -116,4 +117,8 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
       }
     }
   }
+}
+
+exports.onPostBuild = ({ actions, reporter }) => {
+  console.log(123, reporter)
 }
