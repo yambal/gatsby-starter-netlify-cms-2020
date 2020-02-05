@@ -46,6 +46,7 @@ exports.createPages = (
 
     const edges = result.data.allMarkdownRemark.edges
 
+    // MP3
     edges.forEach(
       (edge) => {
         const html = edge.node.html
@@ -119,6 +120,33 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
   }
 }
 
-exports.onPostBuild = ({ actions, reporter }) => {
-  console.log(123, reporter)
+/**
+ * https://www.gatsbyjs.org/docs/node-apis/#onPostBuild
+ * ビルドプロセスの他のすべての部分が完了した後に呼び出される最後の拡張ポイント。
+ */
+exports.onPostBuild = ({ actions, reporter, graphql }) => {
+  console.log(123, '---------------------------------------')
+  // console.log(123, reporter)
+
+  graphql(`
+  {
+    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "PodCast"}}}, limit: 10) {
+      edges {
+        node {
+          frontmatter {
+            title
+          }
+          mp3
+        }
+      }
+    }
+  }
+  `).then(result => {
+    const edges = result.data.allMarkdownRemark.edges
+    edges.forEach(
+      edge => {
+        console.log(JSON.stringify(edge.node))
+      }
+    )
+  })
 }
