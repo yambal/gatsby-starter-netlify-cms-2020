@@ -11,7 +11,9 @@ export const pageQuery = graphql`
       }
       rawMarkdownBody
       html
-      mp3
+      mp3 {
+        url
+      }
     }
   }
 `
@@ -20,7 +22,9 @@ interface iPodCastContainer {
   data: {
     markdownRemark: {
       rawMarkdownBody: string
-      mp3: string
+      mp3: {
+        url: string
+      }
     }
   }
 }
@@ -31,7 +35,7 @@ const PodCastContainer:React.FC<iPodCastContainer> = (props) => {
 
   return (
     <Layout>
-      <a href={mp3}>MP3</a>
+      <a href={mp3.url}>MP3</a>
       <pre>{JSON.stringify(props, null, 2)}</pre>
     </Layout>
   )

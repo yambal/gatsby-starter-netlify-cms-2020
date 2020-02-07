@@ -1,8 +1,13 @@
 import mp3 from './mp3';
 import HtmlToSSML from './HtmlToSSML';
 import * as crypto from 'crypto';
-import { GraphQLString } from 'gatsby/graphql';
+import { GraphQLObjectType, GraphQLString } from 'gatsby/graphql';
+/*
 import { createFilePath } from 'gatsby-source-filesystem'
+*/
+import { getMp3Duration } from './getMp3Duration'
+var fs = require('fs');
+
 
 const audioPath = 'audio'
 
@@ -62,11 +67,11 @@ exports.createPages = (
               if (nodeIdHash !== hash){
                 return mp3(HtmlToSSML(title, html), fileName, audioPath)
                   .then(
-                    (uri) => {
+                    (response) => {
+                      console.log(response)
                       return cache.set(cacheKey, hash)
                         .then(
                           () => {
-                            console.log(`\tmake cache:${cacheKey} = ${hash}`)
                             cb && cb()
                           }
                         )
@@ -85,6 +90,14 @@ exports.createPages = (
 }
 
 // =====================================================
+let MP3Type = new GraphQLObjectType({
+  name: 'Mp3',
+  fields: {
+    url: { type: GraphQLString },
+    path: { type: GraphQLString }
+  },
+});
+
 exports.setFieldsOnGraphQLNodeType = ({ type }) => {
   console.log(52, 'setFieldsOnGraphQLNodeType')
 
@@ -94,7 +107,7 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
 
   return {
     mp3: {
-      type: GraphQLString,
+      type: MP3Type,
       args: {
         prefix: {
           type: GraphQLString,
@@ -109,9 +122,18 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
         const { templateKey, slug, title } = frontmatter
 
         const fileName = buildFileName(slug, title, rawMarkdownBody, 'mp3')
+        const mp3FilePath = `${process.cwd()}/public/${audioPath}/${fileName}`
+        /*
+        const buffer = fs.readFileSync(mp3FilePath)
+        const duration = getMp3Duration(buffer)
+        console.log(118, duration)
+        */
 
         if (templateKey === 'PodCast'){
-          return `/${audioPath}/${fileName}`
+          return {
+            url: `/${audioPath}/${fileName}`,
+            path: mp3FilePath
+          }
         }
 
         return null
@@ -140,24 +162,43 @@ exports.onPostBuild = ({ actions, reporter, graphql }) => {
           frontmatter {
             title
             description
+            date
           }
-          mp3
+          mp3 {
+            url
+            path
+          }
         }
       }
     }
   }
   `).then(result => {
     const edges = result.data.allMarkdownRemark.edges
+
     edges.forEach(
       edge => {
         console.log(JSON.stringify(edge.node))
+
+        /** Duration(MP3の長さ)を取得する */
+        const path = edge.node.mp3.path
+        const buffer = fs.readFileSync(path)
+        const duration = getMp3Duration(buffer) // ms
+        const h = Math.floor(duration / 1000 / 3600)
+        const m = Math.floor((duration / 1000 - h * 3600) / 60)
+        const s = Math.floor(duration / 1000 - h * 3600 - m * 60) + 1
+        const strDuration = `${('00' + h).slice(-2)}:${('00' + m).slice(-2)}:${('00' + s).slice(-2)}`
+
+        /** Length(ファイルサイズ)を取得する */
+        const size = fs.statSync(path).size
+
         const item = `<item>
         <title>${edge.node.frontmatter.title}</title>
         <description>${edge.node.frontmatter.description}</description>
         <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>
-        <enclosure url="${edge.node.mp3}" type="audio/mpeg" length="34216300"/>
-        <itunes:duration>30:00</itunes:duration>
-        <guid isPermaLink="false">dzpodtop10</guid>
+        <enclosure url="${edge.node.mp3.url}" type="audio/mpeg" length="${size}"/>
+        <itunes:duration>${strDuration}</itunes:duration>
+        <guid isPermaLink="false">${edge.node.mp3.url}</guid>
+        <link>${edge.node.fields.slug}</link>
       </item>`
         console.log(item)
       }

@@ -4,6 +4,11 @@ var mp3_1 = require("./mp3");
 var HtmlToSSML_1 = require("./HtmlToSSML");
 var crypto = require("crypto");
 var graphql_1 = require("gatsby/graphql");
+/*
+import { createFilePath } from 'gatsby-source-filesystem'
+*/
+var getMp3Duration_1 = require("./getMp3Duration");
+var fs = require('fs');
 var audioPath = 'audio';
 var buildMDHash = function (title, rawMarkdownBody) {
     return crypto.createHash('md5').update(title + "-" + rawMarkdownBody, 'utf8').digest('hex');
@@ -30,10 +35,10 @@ exports.createPages = function (_a, pluginOptions, cb) {
                 .then(function (nodeIdHash) {
                 if (nodeIdHash !== hash) {
                     return mp3_1["default"](HtmlToSSML_1["default"](title, html), fileName, audioPath)
-                        .then(function (uri) {
+                        .then(function (response) {
+                        console.log(response);
                         return cache.set(cacheKey, hash)
                             .then(function () {
-                            console.log("\tmake cache:" + cacheKey + " = " + hash);
                             cb && cb();
                         });
                     });
@@ -48,6 +53,13 @@ exports.createPages = function (_a, pluginOptions, cb) {
     });
 };
 // =====================================================
+var MP3Type = new graphql_1.GraphQLObjectType({
+    name: 'Mp3',
+    fields: {
+        url: { type: graphql_1.GraphQLString },
+        path: { type: graphql_1.GraphQLString }
+    }
+});
 exports.setFieldsOnGraphQLNodeType = function (_a) {
     var type = _a.type;
     console.log(52, 'setFieldsOnGraphQLNodeType');
@@ -56,7 +68,7 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
     }
     return {
         mp3: {
-            type: graphql_1.GraphQLString,
+            type: MP3Type,
             args: {
                 prefix: {
                     type: graphql_1.GraphQLString
@@ -66,8 +78,17 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
                 var frontmatter = MDNode.frontmatter, rawMarkdownBody = MDNode.rawMarkdownBody;
                 var templateKey = frontmatter.templateKey, slug = frontmatter.slug, title = frontmatter.title;
                 var fileName = buildFileName(slug, title, rawMarkdownBody, 'mp3');
+                var mp3FilePath = process.cwd() + "/public/" + audioPath + "/" + fileName;
+                /*
+                const buffer = fs.readFileSync(mp3FilePath)
+                const duration = getMp3Duration(buffer)
+                console.log(118, duration)
+                */
                 if (templateKey === 'PodCast') {
-                    return "/" + audioPath + "/" + fileName;
+                    return {
+                        url: "/" + audioPath + "/" + fileName,
+                        path: mp3FilePath
+                    };
                 }
                 return null;
             }
@@ -83,11 +104,21 @@ exports.onPostBuild = function (_a) {
     var actions = _a.actions, reporter = _a.reporter, graphql = _a.graphql;
     console.log(123, '---------------------------------------');
     // console.log(123, reporter)
-    graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          fields {\n            slug\n          }\n          frontmatter {\n            title\n          }\n          mp3\n        }\n      }\n    }\n  }\n  ").then(function (result) {
+    graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          fields {\n            slug\n          }\n          frontmatter {\n            title\n            description\n            date\n          }\n          mp3 {\n            url\n            path\n          }\n        }\n      }\n    }\n  }\n  ").then(function (result) {
         var edges = result.data.allMarkdownRemark.edges;
         edges.forEach(function (edge) {
             console.log(JSON.stringify(edge.node));
-            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>Here are the top 10 misunderstandings about the care, feeding, and breeding of these lovable striped animals.</description>\n        <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>\n        <enclosure url=\"" + edge.node.mp3 + "\" type=\"audio/mpeg\" length=\"34216300\"/>\n        <itunes:duration>30:00</itunes:duration>\n        <guid isPermaLink=\"false\">dzpodtop10</guid>\n      </item>";
+            /** Duration(MP3の長さ)を取得する */
+            var path = edge.node.mp3.path;
+            var buffer = fs.readFileSync(path);
+            var duration = getMp3Duration_1.getMp3Duration(buffer); // ms
+            var h = Math.floor(duration / 1000 / 3600);
+            var m = Math.floor((duration / 1000 - h * 3600) / 60);
+            var s = Math.floor(duration / 1000 - h * 3600 - m * 60) + 1;
+            var strDuration = ('00' + h).slice(-2) + ":" + ('00' + m).slice(-2) + ":" + ('00' + s).slice(-2);
+            /** Length(ファイルサイズ)を取得する */
+            var size = fs.statSync(path).size;
+            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>" + edge.node.frontmatter.description + "</description>\n        <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>\n        <enclosure url=\"" + edge.node.mp3.url + "\" type=\"audio/mpeg\" length=\"" + size + "\"/>\n        <itunes:duration>" + strDuration + "</itunes:duration>\n        <guid isPermaLink=\"false\">" + edge.node.mp3.url + "</guid>\n        <link>" + edge.node.fields.slug + "</link>\n      </item>";
             console.log(item);
         });
     });

@@ -1,10 +1,12 @@
 import textToSpeech from '@google-cloud/text-to-speech'
+import { getMp3Duration } from './getMp3Duration'
+import * as arrayBufferToBuffer from 'arraybuffer-to-buffer'
 import * as fs from 'fs'
 import * as util from 'util'
 import * as mkdirp from 'mkdirp-then'
 
 const getMp3 = (ssml: string, fileName: string, path: string) => {
-  return new Promise((resolve: (url: string) => void, reject) => {
+  return new Promise((resolve: ({uri: string, dulation:number} ) => void, reject) => {
     console.group('- - - - - -')
     console.log('\tgetMp3')
 
@@ -31,6 +33,8 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
     return client.synthesizeSpeech(request)
       .then((responses) => {
         const response = responses[0]
+        const duration = getMp3Duration(arrayBufferToBuffer(response.audioContent.buffer))
+
         return mkdirp(`./public/${path}`)
           .then(made => {
             console.log(`mkdir -p:${made}`)
@@ -41,7 +45,10 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
                   console.log(`\tAudio content written to file: ${fileName}`);
                   console.log('- - - - - -')
                   console.groupEnd()
-                  resolve(uri)
+                  resolve({
+                    uri: uri,
+                    dulation: duration
+                  })
                 }
               )
           })
