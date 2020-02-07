@@ -77,15 +77,50 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
 /**
  * https://www.gatsbyjs.org/docs/node-apis/#onPostBuild
  * ビルドプロセスの他のすべての部分が完了した後に呼び出される最後の拡張ポイント。
+ * https://www.npmjs.com/package/get-mp3-duration
  */
 exports.onPostBuild = function (_a) {
     var actions = _a.actions, reporter = _a.reporter, graphql = _a.graphql;
     console.log(123, '---------------------------------------');
     // console.log(123, reporter)
-    graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          frontmatter {\n            title\n          }\n          mp3\n        }\n      }\n    }\n  }\n  ").then(function (result) {
+    graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          fields {\n            slug\n          }\n          frontmatter {\n            title\n          }\n          mp3\n        }\n      }\n    }\n  }\n  ").then(function (result) {
         var edges = result.data.allMarkdownRemark.edges;
         edges.forEach(function (edge) {
             console.log(JSON.stringify(edge.node));
+            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>Here are the top 10 misunderstandings about the care, feeding, and breeding of these lovable striped animals.</description>\n        <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>\n        <enclosure url=\"" + edge.node.mp3 + "\" type=\"audio/mpeg\" length=\"34216300\"/>\n        <itunes:duration>30:00</itunes:duration>\n        <guid isPermaLink=\"false\">dzpodtop10</guid>\n      </item>";
+            console.log(item);
         });
     });
 };
+/**
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>Dafna's Zebra Podcast</title>
+    <googleplay:author>Dafna</googleplay:author>
+    <description>A pet-owner's guide to the popular striped equine.</description>
+    <googleplay:image href="http://www.example.com/podcasts/dafnas-zebras/img/dafna-zebra-pod-logo.jpg"/>
+    <language>en-us</language>
+    <link>https://www.example.com/podcasts/dafnas-zebras/</link>
+    <item>
+      <title>Top 10 myths about caring for a zebra</title>
+      <description>Here are the top 10 misunderstandings about the care, feeding, and breeding of these lovable striped animals.</description>
+      <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>
+      <enclosure url="https://www.example.com/podcasts/dafnas-zebras/audio/toptenmyths.mp3"
+                 type="audio/mpeg" length="34216300"/>
+      <itunes:duration>30:00</itunes:duration>
+      <guid isPermaLink="false">dzpodtop10</guid>
+    </item>
+    <item>
+      <title>Keeping those stripes neat and clean</title>
+      <description>Keeping your zebra clean is time consuming, but worth the effort.</description>
+      <pubDate>Fri, 24 Feb 2017 12:00:00 GMT</pubDate>
+      <enclosure url="https://www.example.com/podcasts/dafnas-zebras/audio/cleanstripes.mp3"
+                 type="audio/mpeg" length="26004388"/>
+      <itunes:duration>22:48</itunes:duration>
+      <guid>dzpodclean</guid>
+    </item>
+  </channel>
+</rss>
+ */
