@@ -10,7 +10,6 @@
   "description": "",
   "dependencies": {
     "arraybuffer-to-buffer": "^0.0.7",
-    "get-mp3-duration": "^1.0.0",
     "mkdirp-then": "^1.2.0"
   }
 }
