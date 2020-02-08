@@ -13,6 +13,15 @@ module.exports = {
       resolve: 'gatsby-source-file',
       options: {
         siteURL: 'https://www.yambal.net',
+        audioDir: 'audio',
+        channels: {
+          default : {
+            title: 'WWW.YAMBAL.NET'
+          },
+          test :{
+            title: 'テスト'
+          }
+        }
       }
     },
     // 'gatsby-transformer-md-opengraph',

@@ -1,5 +1,4 @@
 import textToSpeech from '@google-cloud/text-to-speech'
-import { getMp3Duration } from './getMp3Duration'
 import * as fs from 'fs'
 import * as util from 'util'
 import * as mkdirp from 'mkdirp-then'
