@@ -9,7 +9,12 @@ module.exports = {
     activeEnv
   },
   plugins: [
-    'gatsby-source-file',
+    {
+      resolve: 'gatsby-source-file',
+      options: {
+        siteURL: 'https://www.yambal.net'
+      }
+    },
     // 'gatsby-transformer-md-opengraph',
     `gatsby-plugin-typescript`,
     'gatsby-plugin-react-helmet',

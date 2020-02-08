@@ -57,9 +57,10 @@ var MP3Type = new graphql_1.GraphQLObjectType({
         path: { type: graphql_1.GraphQLString }
     }
 });
-exports.setFieldsOnGraphQLNodeType = function (_a) {
+exports.setFieldsOnGraphQLNodeType = function (_a, option) {
     var type = _a.type;
     console.log(52, 'setFieldsOnGraphQLNodeType');
+    console.log(option.siteURL);
     if (type.name !== "MarkdownRemark") {
         return {};
     }
@@ -78,7 +79,7 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
                 var mp3FilePath = process.cwd() + "/public/" + audioPath + "/" + fileName;
                 if (templateKey === 'PodCast') {
                     return {
-                        url: "/" + audioPath + "/" + fileName,
+                        url: option.siteURL + "/" + audioPath + "/" + fileName,
                         path: mp3FilePath
                     };
                 }
@@ -92,7 +93,7 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
  * ビルドプロセスの他のすべての部分が完了した後に呼び出される最後の拡張ポイント。
  * https://www.npmjs.com/package/get-mp3-duration
  */
-exports.onPostBuild = function (_a) {
+exports.onPostBuild = function (_a, option) {
     var actions = _a.actions, reporter = _a.reporter, graphql = _a.graphql;
     console.log(123, '---------------------------------------');
     graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          fields {\n            slug\n          }\n          frontmatter {\n            title\n            description\n            date\n          }\n          mp3 {\n            url\n            path\n          }\n        }\n      }\n    }\n  }\n  ").then(function (result) {
@@ -112,7 +113,7 @@ exports.onPostBuild = function (_a) {
             /** pubDate */
             var pub = new Date(edge.node.frontmatter.date);
             var UTCPubDate = pub.toUTCString();
-            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>" + edge.node.frontmatter.description + "</description>\n        <pubDate>" + UTCPubDate + "</pubDate>\n        <enclosure url=\"" + edge.node.mp3.url + "\" type=\"audio/mpeg\" length=\"" + size + "\"/>\n        <itunes:duration>" + strDuration + "</itunes:duration>\n        <guid isPermaLink=\"false\">" + edge.node.mp3.url + "</guid>\n        <link>" + edge.node.fields.slug + "</link>\n      </item>";
+            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>" + edge.node.frontmatter.description + "</description>\n        <pubDate>" + UTCPubDate + "</pubDate>\n        <enclosure url=\"" + edge.node.mp3.url + "\" type=\"audio/mpeg\" length=\"" + size + "\"/>\n        <itunes:duration>" + strDuration + "</itunes:duration>\n        <guid isPermaLink=\"false\">" + edge.node.mp3.url + "</guid>\n        <link>" + option.siteURL + edge.node.fields.slug + "</link>\n      </item>";
             items.push(item);
         });
         var rss = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <rss version=\"2.0\" xmlns:googleplay=\"http://www.google.com/schemas/play-podcasts/1.0\"\n         xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\">\n      <channel>\n        <title>Dafna's Zebra Podcast</title>\n        <googleplay:author>Dafna</googleplay:author>\n        <description>A pet-owner's guide to the popular striped equine.</description>\n        <googleplay:image href=\"http://www.example.com/podcasts/dafnas-zebras/img/dafna-zebra-pod-logo.jpg\"/>\n        <language>en-us</language>\n        <link>https://www.example.com/podcasts/dafnas-zebras/</link>\n        " + items.join('\n') + "\n      </channel>\n    </rss>";

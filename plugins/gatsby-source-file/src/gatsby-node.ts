@@ -95,8 +95,9 @@ let MP3Type = new GraphQLObjectType({
   },
 });
 
-exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+exports.setFieldsOnGraphQLNodeType = ({ type }, option) => {
   console.log(52, 'setFieldsOnGraphQLNodeType')
+  console.log(option.siteURL)
 
   if (type.name !== `MarkdownRemark`) {
     return {}
@@ -123,7 +124,7 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
 
         if (templateKey === 'PodCast'){
           return {
-            url: `/${audioPath}/${fileName}`,
+            url: `${option.siteURL}/${audioPath}/${fileName}`,
             path: mp3FilePath
           }
         }
@@ -139,8 +140,9 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
  * ビルドプロセスの他のすべての部分が完了した後に呼び出される最後の拡張ポイント。
  * https://www.npmjs.com/package/get-mp3-duration
  */
-exports.onPostBuild = ({ actions, reporter, graphql }) => {
+exports.onPostBuild = ({ actions, reporter, graphql }, option) => {
   console.log(123, '---------------------------------------')
+  
 
   graphql(`
   {
@@ -192,7 +194,7 @@ exports.onPostBuild = ({ actions, reporter, graphql }) => {
         <enclosure url="${edge.node.mp3.url}" type="audio/mpeg" length="${size}"/>
         <itunes:duration>${strDuration}</itunes:duration>
         <guid isPermaLink="false">${edge.node.mp3.url}</guid>
-        <link>${edge.node.fields.slug}</link>
+        <link>${option.siteURL}${edge.node.fields.slug}</link>
       </item>`
         items.push(item)
       }
