@@ -14,7 +14,7 @@ var MP3Type = new graphql_1.GraphQLObjectType({
 });
 module.exports = function (_a, option) {
     var type = _a.type;
-    var _b = option.siteUrl, siteUrl = _b === void 0 ? null : _b;
+    var siteUrl = option_parser_1.getSiteUrl(option);
     if (type.name !== "MarkdownRemark") {
         return {};
     }
