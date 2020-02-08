@@ -38,7 +38,7 @@ const PodCastContainer:React.FC<iPodCastContainer> = (props) => {
   return (
     <Layout>
       <Helmet>
-        <link rel="alternate" type="application/rss+xml" href="/podcast.rss" title="WWW.YAMBAL.NET" />
+        <link rel="alternate" type="application/rss+xml" href="/podcast.rss" title="WWW.YAMBAL.NET Podcast" />
       </Helmet>
       <a href={mp3.url}>MP3</a>
     </Layout>
