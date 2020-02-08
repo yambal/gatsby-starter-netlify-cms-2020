@@ -26,7 +26,7 @@ var getMp3 = function (ssml, fileName, path) {
         return client.synthesizeSpeech(request)
             .then(function (responses) {
             var response = responses[0];
-            return mkdirp("./public/" + path)
+            return mkdirp(process.cwd() + "/public/" + path)
                 .then(function (made) {
                 console.log("mkdir -p:" + made);
                 var writeFile = util.promisify(fs.writeFile);

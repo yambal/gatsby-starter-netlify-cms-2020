@@ -2,6 +2,7 @@ import mp3 from './libs/mp3'
 import HtmlToSSML from './libs/html-to-ssml'
 import { buildMDHash, buildFileName } from './libs/file-name-builder'
 import { getAudioPath } from './libs/option-parser'
+import * as fs from 'fs'
 
 module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) => {
     return graphql(`
@@ -31,16 +32,36 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
   
       const edges = result.data.allMarkdownRemark.edges
   
+
       // MP3
+      let edgeNum = edges.length
       edges.forEach(
         (edge) => {
           const html = edge.node.html
           const title = edge.node.frontmatter.title
           
-          const cacheKey = `podcast-${edge.node.id}`
-          const hash = buildMDHash(title, edge.node.rawMarkdownBody)
+          // const cacheKey = `podcast-${edge.node.id}`
+          // const hash = buildMDHash(title, edge.node.rawMarkdownBody)
           const fileName = buildFileName(edge.node.frontmatter.slug, title, edge.node.rawMarkdownBody, 'mp3')
+          const checkPath = `${process.cwd()}/public/${getAudioPath(pluginOptions)}/${fileName}`
+
+          try {
+            fs.statSync(checkPath);
+            console.log(`${checkPath} is exists (${edgeNum}/${edges.length})`);
+            edgeNum--
+            edgeNum <= 0 && cb && cb()
+          } catch (error) {
+            return mp3(HtmlToSSML(title, html), fileName, getAudioPath(pluginOptions))
+            .then(
+              () => {
+                console.log(`${checkPath} saved (${edgeNum}/${edges.length})`);
+                edgeNum--
+                edgeNum <= 0 && cb && cb()
+              }
+            )
+          }
   
+          /*
           return cache.get(cacheKey)
             .then(
               nodeIdHash => {
@@ -67,6 +88,7 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
                 }
               }
             )
+          */
         }
       )
     })

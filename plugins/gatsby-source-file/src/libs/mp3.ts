@@ -29,7 +29,7 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
     return client.synthesizeSpeech(request)
       .then((responses) => {
         const response = responses[0]
-        return mkdirp(`./public/${path}`)
+        return mkdirp(`${process.cwd()}/public/${path}`)
           .then(made => {
             console.log(`mkdir -p:${made}`)
             const writeFile = util.promisify(fs.writeFile);
