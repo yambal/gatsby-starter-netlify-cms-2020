@@ -12,7 +12,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-file',
       options: {
-        siteURL: 'https://www.yambal.net'
+        siteURL: 'https://www.yambal.net',
       }
     },
     // 'gatsby-transformer-md-opengraph',

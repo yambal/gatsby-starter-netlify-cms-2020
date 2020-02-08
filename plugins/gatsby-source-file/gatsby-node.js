@@ -4,7 +4,7 @@ var mp3_1 = require("./mp3");
 var HtmlToSSML_1 = require("./HtmlToSSML");
 var crypto = require("crypto");
 var graphql_1 = require("gatsby/graphql");
-var getMp3Duration_1 = require("./getMp3Duration");
+var getITunesDuration_1 = require("./getITunesDuration");
 var fs = require('fs');
 var audioPath = 'audio';
 var buildMDHash = function (title, rawMarkdownBody) {
@@ -53,6 +53,7 @@ exports.createPages = function (_a, pluginOptions, cb) {
 var MP3Type = new graphql_1.GraphQLObjectType({
     name: 'Mp3',
     fields: {
+        absoluteUrl: { type: graphql_1.GraphQLString },
         url: { type: graphql_1.GraphQLString },
         path: { type: graphql_1.GraphQLString }
     }
@@ -60,7 +61,7 @@ var MP3Type = new graphql_1.GraphQLObjectType({
 exports.setFieldsOnGraphQLNodeType = function (_a, option) {
     var type = _a.type;
     console.log(52, 'setFieldsOnGraphQLNodeType');
-    console.log(option.siteURL);
+    var _b = option.siteUrl, siteUrl = _b === void 0 ? null : _b;
     if (type.name !== "MarkdownRemark") {
         return {};
     }
@@ -77,9 +78,11 @@ exports.setFieldsOnGraphQLNodeType = function (_a, option) {
                 var templateKey = frontmatter.templateKey, slug = frontmatter.slug, title = frontmatter.title;
                 var fileName = buildFileName(slug, title, rawMarkdownBody, 'mp3');
                 var mp3FilePath = process.cwd() + "/public/" + audioPath + "/" + fileName;
+                var absoluteUrl = siteUrl ? siteUrl + "/" + audioPath + "/" + fileName : 'siteUrl not set @option';
                 if (templateKey === 'PodCast') {
                     return {
-                        url: option.siteURL + "/" + audioPath + "/" + fileName,
+                        absoluteUrl: absoluteUrl,
+                        url: "/" + audioPath + "/" + fileName,
                         path: mp3FilePath
                     };
                 }
@@ -88,69 +91,30 @@ exports.setFieldsOnGraphQLNodeType = function (_a, option) {
         }
     };
 };
-/**
- * https://www.gatsbyjs.org/docs/node-apis/#onPostBuild
- * ビルドプロセスの他のすべての部分が完了した後に呼び出される最後の拡張ポイント。
- * https://www.npmjs.com/package/get-mp3-duration
- */
 exports.onPostBuild = function (_a, option) {
     var actions = _a.actions, reporter = _a.reporter, graphql = _a.graphql;
-    console.log(123, '---------------------------------------');
-    graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          fields {\n            slug\n          }\n          frontmatter {\n            title\n            description\n            date\n          }\n          mp3 {\n            url\n            path\n          }\n        }\n      }\n    }\n  }\n  ").then(function (result) {
+    var _b = option.siteUrl, siteUrl = _b === void 0 ? null : _b;
+    graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          fields {\n            slug\n          }\n          frontmatter {\n            title\n            description\n            date\n          }\n          mp3 {\n            absoluteUrl\n            url\n            path\n          }\n        }\n      }\n    }\n  }\n  ").then(function (result) {
         var edges = result.data.allMarkdownRemark.edges;
         var items = [];
         edges.forEach(function (edge) {
+            var _a = edge.node, slug = _a.fields.slug, _b = _a.mp3, path = _b.path, url = _b.url, absoluteUrl = _b.absoluteUrl, _c = _a.frontmatter, pubDateStr = _c.date, description = _c.description, title = _c.title;
             /** Duration(MP3の長さ)を取得する */
-            var path = edge.node.mp3.path;
-            var buffer = fs.readFileSync(path);
-            var duration = getMp3Duration_1.getMp3Duration(buffer); // ms
-            var h = Math.floor(duration / 1000 / 3600);
-            var m = Math.floor((duration / 1000 - h * 3600) / 60);
-            var s = Math.floor(duration / 1000 - h * 3600 - m * 60) + 1;
-            var strDuration = ('00' + h).slice(-2) + ":" + ('00' + m).slice(-2) + ":" + ('00' + s).slice(-2);
+            var iTunesDuration = getITunesDuration_1.getITunesDuration(path);
             /** Length(ファイルサイズ)を取得する */
             var size = fs.statSync(path).size;
             /** pubDate */
-            var pub = new Date(edge.node.frontmatter.date);
-            var UTCPubDate = pub.toUTCString();
-            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>" + edge.node.frontmatter.description + "</description>\n        <pubDate>" + UTCPubDate + "</pubDate>\n        <enclosure url=\"" + edge.node.mp3.url + "\" type=\"audio/mpeg\" length=\"" + size + "\"/>\n        <itunes:duration>" + strDuration + "</itunes:duration>\n        <guid isPermaLink=\"false\">" + edge.node.mp3.url + "</guid>\n        <link>" + option.siteURL + edge.node.fields.slug + "</link>\n      </item>";
+            var pubDateUTC = new Date(pubDateStr).toUTCString();
+            /** Link 記事ページへのリンク */
+            var link = siteUrl ? "" + siteUrl + slug : slug;
+            /** MP3 ファイルのTRL */
+            var enclosureUrl = siteUrl ? absoluteUrl : url;
+            var item = "<item>\n        <title>" + title + "</title>\n        <description>" + description + "</description>\n        <pubDate>" + pubDateUTC + "</pubDate>\n        <enclosure url=\"" + enclosureUrl + "\" type=\"audio/mpeg\" length=\"" + size + "\"/>\n        <itunes:duration>" + iTunesDuration + "</itunes:duration>\n        <guid isPermaLink=\"false\">" + absoluteUrl + "</guid>\n        <link>" + link + "</link>\n      </item>";
             items.push(item);
         });
-        var rss = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <rss version=\"2.0\" xmlns:googleplay=\"http://www.google.com/schemas/play-podcasts/1.0\"\n         xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\">\n      <channel>\n        <title>WWW.YAMBAL.NET</title>\n        <googleplay:author>June YAMAMOTO</googleplay:author>\n        <description>\u30C6\u30B9\u30C8\u3067\u3059</description>\n        <googleplay:image href=\"http://placehold.jp/36/99ccff/003366/600x600.png?text=WWW.YAMBAL.NET\"/>\n        <language>ja-JP</language>\n        <link>" + option.siteURL + "/</link>\n        " + items.join('\n') + "\n      </channel>\n    </rss>";
+        var rss = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <rss version=\"2.0\" xmlns:googleplay=\"http://www.google.com/schemas/play-podcasts/1.0\"\n         xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\">\n      <channel>\n        <title>WWW.YAMBAL.NET</title>\n        <googleplay:author>June YAMAMOTO</googleplay:author>\n        <description>\u30C6\u30B9\u30C8\u3067\u3059</description>\n        <googleplay:image href=\"http://placehold.jp/36/99ccff/003366/600x600.png?text=WWW.YAMBAL.NET\"/>\n        <language>ja-JP</language>\n        <link>" + siteUrl + "/</link>\n        " + items.join('\n') + "\n      </channel>\n    </rss>";
         var path = process.cwd() + "/public/podcast.rss";
         fs.writeFileSync(path, rss);
         console.log(rss, path);
     });
 };
-/**
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0"
-     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
-  <channel>
-    <title>Dafna's Zebra Podcast</title>
-    <googleplay:author>Dafna</googleplay:author>
-    <description>A pet-owner's guide to the popular striped equine.</description>
-    <googleplay:image href="http://www.example.com/podcasts/dafnas-zebras/img/dafna-zebra-pod-logo.jpg"/>
-    <language>en-us</language>
-    <link>https://www.example.com/podcasts/dafnas-zebras/</link>
-    <item>
-      <title>Top 10 myths about caring for a zebra</title>
-      <description>Here are the top 10 misunderstandings about the care, feeding, and breeding of these lovable striped animals.</description>
-      <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>
-      <enclosure url="https://www.example.com/podcasts/dafnas-zebras/audio/toptenmyths.mp3"
-                 type="audio/mpeg" length="34216300"/>
-      <itunes:duration>30:00</itunes:duration>
-      <guid isPermaLink="false">dzpodtop10</guid>
-    </item>
-    <item>
-      <title>Keeping those stripes neat and clean</title>
-      <description>Keeping your zebra clean is time consuming, but worth the effort.</description>
-      <pubDate>Fri, 24 Feb 2017 12:00:00 GMT</pubDate>
-      <enclosure url="https://www.example.com/podcasts/dafnas-zebras/audio/cleanstripes.mp3"
-                 type="audio/mpeg" length="26004388"/>
-      <itunes:duration>22:48</itunes:duration>
-      <guid>dzpodclean</guid>
-    </item>
-  </channel>
-</rss>
- */
