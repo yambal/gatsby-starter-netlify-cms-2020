@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLString } from 'gatsby/graphql'
 import { buildMDHash, buildFileName } from './libs/file-name-builder'
-import { getAudioPath } from './libs/option-parser'
+import { getAudioPath, getSiteUrl } from './libs/option-parser'
 
 // =====================================================
 let MP3Type = new GraphQLObjectType({
@@ -13,7 +13,7 @@ let MP3Type = new GraphQLObjectType({
   });
   
   module.exports = ({ type }, option) => {
-    const { siteUrl = null } = option
+    const siteUrl = getSiteUrl(option)
   
     if (type.name !== `MarkdownRemark`) {
       return {}
