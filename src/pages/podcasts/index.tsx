@@ -2,7 +2,6 @@ import React from 'react'
 import { graphql } from 'gatsby'
 
 import Layout from '../../components/Layout'
-import BlogRoll from '../../components/BlogRoll'
 import Container from '../../components/Container'
 import Column from '../../components/atoms/Column'
 import { Helmet } from 'react-helmet'
@@ -15,7 +14,7 @@ const BlogIndexPage:React.FC = props => {
       </Helmet>
       <Container>
         <h1>PODCASTS</h1>
-        <pre>{JSON.stringify(props)}</pre>
+        <pre>{JSON.stringify(props, null, 2)}</pre>
       </Container>
     </Layout>
   )
