@@ -5,8 +5,6 @@ import * as mkdirp from 'mkdirp-then'
 
 const getMp3 = (ssml: string, fileName: string, path: string) => {
   return new Promise((resolve: (uri: string) => void, reject) => {
-    console.group('- - - - - -')
-    console.log('\tgetMp3')
 
     const mp3FilePath = `./public/${path}/${fileName}`
     const uri = `/${path}/${fileName}`

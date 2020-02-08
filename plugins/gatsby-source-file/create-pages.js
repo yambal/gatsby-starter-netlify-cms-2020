@@ -21,6 +21,7 @@ module.exports = function (_a, pluginOptions, cb) {
             var fileName = file_name_builder_1.buildFileName(edge.node.frontmatter.slug, title, edge.node.rawMarkdownBody, 'mp3');
             return cache.get(cacheKey)
                 .then(function (nodeIdHash) {
+                console.log('cache check:', cacheKey, nodeIdHash, hash);
                 if (nodeIdHash !== hash) {
                     return mp3_1["default"](html_to_ssml_1["default"](title, html), fileName, option_parser_1.getAudioPath(pluginOptions))
                         .then(function (response) {

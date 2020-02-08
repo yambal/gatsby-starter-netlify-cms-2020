@@ -43,7 +43,9 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
   
           return cache.get(cacheKey)
             .then(
-              (nodeIdHash) => {
+              nodeIdHash => {
+                console.log('cache check:', cacheKey, nodeIdHash, hash)
+
                 if (nodeIdHash !== hash){
                   return mp3(HtmlToSSML(title, html), fileName, getAudioPath(pluginOptions))
                     .then(
