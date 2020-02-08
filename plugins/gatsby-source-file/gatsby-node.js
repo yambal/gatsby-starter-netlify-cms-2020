@@ -4,9 +4,6 @@ var mp3_1 = require("./mp3");
 var HtmlToSSML_1 = require("./HtmlToSSML");
 var crypto = require("crypto");
 var graphql_1 = require("gatsby/graphql");
-/*
-import { createFilePath } from 'gatsby-source-filesystem'
-*/
 var getMp3Duration_1 = require("./getMp3Duration");
 var fs = require('fs');
 var audioPath = 'audio';
@@ -79,11 +76,6 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
                 var templateKey = frontmatter.templateKey, slug = frontmatter.slug, title = frontmatter.title;
                 var fileName = buildFileName(slug, title, rawMarkdownBody, 'mp3');
                 var mp3FilePath = process.cwd() + "/public/" + audioPath + "/" + fileName;
-                /*
-                const buffer = fs.readFileSync(mp3FilePath)
-                const duration = getMp3Duration(buffer)
-                console.log(118, duration)
-                */
                 if (templateKey === 'PodCast') {
                     return {
                         url: "/" + audioPath + "/" + fileName,
@@ -103,11 +95,10 @@ exports.setFieldsOnGraphQLNodeType = function (_a) {
 exports.onPostBuild = function (_a) {
     var actions = _a.actions, reporter = _a.reporter, graphql = _a.graphql;
     console.log(123, '---------------------------------------');
-    // console.log(123, reporter)
     graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          fields {\n            slug\n          }\n          frontmatter {\n            title\n            description\n            date\n          }\n          mp3 {\n            url\n            path\n          }\n        }\n      }\n    }\n  }\n  ").then(function (result) {
         var edges = result.data.allMarkdownRemark.edges;
+        var items = [];
         edges.forEach(function (edge) {
-            console.log(JSON.stringify(edge.node));
             /** Duration(MP3の長さ)を取得する */
             var path = edge.node.mp3.path;
             var buffer = fs.readFileSync(path);
@@ -118,9 +109,16 @@ exports.onPostBuild = function (_a) {
             var strDuration = ('00' + h).slice(-2) + ":" + ('00' + m).slice(-2) + ":" + ('00' + s).slice(-2);
             /** Length(ファイルサイズ)を取得する */
             var size = fs.statSync(path).size;
-            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>" + edge.node.frontmatter.description + "</description>\n        <pubDate>Tue, 14 Mar 2017 12:00:00 GMT</pubDate>\n        <enclosure url=\"" + edge.node.mp3.url + "\" type=\"audio/mpeg\" length=\"" + size + "\"/>\n        <itunes:duration>" + strDuration + "</itunes:duration>\n        <guid isPermaLink=\"false\">" + edge.node.mp3.url + "</guid>\n        <link>" + edge.node.fields.slug + "</link>\n      </item>";
-            console.log(item);
+            /** pubDate */
+            var pub = new Date(edge.node.frontmatter.date);
+            var UTCPubDate = pub.toUTCString();
+            var item = "<item>\n        <title>" + edge.node.frontmatter.title + "</title>\n        <description>" + edge.node.frontmatter.description + "</description>\n        <pubDate>" + UTCPubDate + "</pubDate>\n        <enclosure url=\"" + edge.node.mp3.url + "\" type=\"audio/mpeg\" length=\"" + size + "\"/>\n        <itunes:duration>" + strDuration + "</itunes:duration>\n        <guid isPermaLink=\"false\">" + edge.node.mp3.url + "</guid>\n        <link>" + edge.node.fields.slug + "</link>\n      </item>";
+            items.push(item);
         });
+        var rss = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <rss version=\"2.0\" xmlns:googleplay=\"http://www.google.com/schemas/play-podcasts/1.0\"\n         xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\">\n      <channel>\n        <title>Dafna's Zebra Podcast</title>\n        <googleplay:author>Dafna</googleplay:author>\n        <description>A pet-owner's guide to the popular striped equine.</description>\n        <googleplay:image href=\"http://www.example.com/podcasts/dafnas-zebras/img/dafna-zebra-pod-logo.jpg\"/>\n        <language>en-us</language>\n        <link>https://www.example.com/podcasts/dafnas-zebras/</link>\n        " + items.join('\n') + "\n      </channel>\n    </rss>";
+        var path = process.cwd() + "/public/podcast.rss";
+        fs.writeFileSync(path, rss);
+        console.log(rss, path);
     });
 };
 /**

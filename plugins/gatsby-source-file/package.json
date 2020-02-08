@@ -9,7 +9,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "arraybuffer-to-buffer": "^0.0.7",
     "mkdirp-then": "^1.2.0"
   }
 }
