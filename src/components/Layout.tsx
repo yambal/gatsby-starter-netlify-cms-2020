@@ -21,6 +21,7 @@ const Layout:React.FC<iLayout> = props => {
           <html lang={lang} />
           <title>{title}</title>
           <meta name="description" content={description} />
+          <meta name="google-site-verification" content="w6usTsTWrWRLKf0S6C5g9O0G-jb5eWISBKXOTQoObd0" />
         </Helmet>
         <Navbar />
         {props.children}
