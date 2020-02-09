@@ -1,17 +1,9 @@
 "use strict";
 exports.__esModule = true;
 var text_to_speech_1 = require("@google-cloud/text-to-speech");
-var fs = require("fs");
-var util = require("util");
-var mkdirp = require("mkdirp-then");
-var getMp3 = function (ssml, fileName, path) {
+// const getMp3 = (ssml: string, fileName: string, path: string) => {
+var getMp3 = function (ssml) {
     return new Promise(function (resolve, reject) {
-        // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
-        var mp3StaticPath = process.cwd() + "/public/" + path;
-        var mp3StaticFilePath = mp3StaticPath + "/" + fileName;
-        var mp3PodcastPath = process.cwd() + "/podcast/" + path;
-        var mp3PodcastFilePath = mp3PodcastPath + "/" + fileName;
-        var uri = "/" + path + "/" + fileName;
         var client = new text_to_speech_1["default"].TextToSpeechClient({
             projectId: 'texttospeach-261314',
             keyFilename: 'TextToSpeach-e373fcafd2ef.json'
@@ -30,15 +22,17 @@ var getMp3 = function (ssml, fileName, path) {
         client.synthesizeSpeech(request)
             .then(function (responses) {
             var response = responses[0];
-            mkdirp(mp3StaticPath)
-                .then(function (made) {
-                var writeFile = util.promisify(fs.writeFile);
+            resolve(response);
+            /*
+                const writeFile = util.promisify(fs.writeFile);
                 writeFile(mp3StaticFilePath, response.audioContent, 'binary')
-                    .then(function () {
-                    console.log(mp3StaticFilePath);
-                    resolve(uri);
-                });
-            });
+                  .then(
+                    () => {
+                      console.log(mp3StaticFilePath);
+                      resolve(uri)
+                    }
+                  )
+            */
         });
     });
 };

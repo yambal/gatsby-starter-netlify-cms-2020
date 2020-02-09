@@ -15,5 +15,6 @@ exports.buildMpCacheValue = function (title, body, channel, date, slug) {
 };
 exports.buildFileNameShort = function (channel, slug, exe) {
     var channelFix = channel ? channel + "-" : '';
-    return "podcast-" + channelFix + slug + "." + exe;
+    var exeFix = exe ? "." + exe : '';
+    return "podcast-" + channelFix + slug + exeFix;
 };

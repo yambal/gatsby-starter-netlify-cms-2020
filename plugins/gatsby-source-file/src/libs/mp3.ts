@@ -1,21 +1,11 @@
 import textToSpeech from '@google-cloud/text-to-speech'
 import * as fs from 'fs'
-import * as util from 'util'
+
 import * as mkdirp from 'mkdirp-then'
 
-const getMp3 = (ssml: string, fileName: string, path: string) => {
-  return new Promise((resolve: (uri: string) => void, reject) => {
-
-    // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
-    const mp3StaticPath = `${process.cwd()}/public/${path}`
-    const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
-
-    const mp3PodcastPath = `${process.cwd()}/podcast/${path}`
-    const mp3PodcastFilePath = `${mp3PodcastPath}/${fileName}`
-
-
-    const uri = `/${path}/${fileName}`
-
+// const getMp3 = (ssml: string, fileName: string, path: string) => {
+const getMp3 = (ssml: string) => {
+  return new Promise((resolve: (data) => void, reject) => {
     const client = new textToSpeech.TextToSpeechClient({
       projectId: 'texttospeach-261314',
       keyFilename: 'TextToSpeach-e373fcafd2ef.json'
@@ -36,8 +26,8 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
     client.synthesizeSpeech(request)
       .then((responses) => {
         const response = responses[0]
-        mkdirp(mp3StaticPath)
-          .then(made => {
+        resolve(response)
+        /*
             const writeFile = util.promisify(fs.writeFile);
             writeFile(mp3StaticFilePath, response.audioContent, 'binary')
               .then(
@@ -46,7 +36,7 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
                   resolve(uri)
                 }
               )
-          })
+        */
       })
   })
 }

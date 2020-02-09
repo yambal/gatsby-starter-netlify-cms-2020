@@ -15,7 +15,9 @@ export const buildMpCacheValue = (title: string, body: string, channel: string, 
     return crypto.createHash('md5').update(hashSeed , 'utf8').digest('hex')
 }
 
-export const buildFileNameShort = (channel: string, slug: string, exe :string) => {
+export const buildFileNameShort = (channel: string, slug: string, exe?:string) => {
     const channelFix = channel ? `${channel}-` : ''
-    return `podcast-${channelFix}${slug}.${exe}`
+    const exeFix = exe ? `.${exe}` : ''
+
+    return `podcast-${channelFix}${slug}${exeFix}`
 }
