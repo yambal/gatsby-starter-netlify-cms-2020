@@ -37,7 +37,7 @@ let MP3Type = new GraphQLObjectType({
           const audioPath = getAudioPath(option)
   
           const fileName = buildFileNameShort(channel, slug, 'mp3') // (slug, title, rawMarkdownBody, 'mp3')
-          const mp3FilePath = `${process.cwd()}/public/${audioPath}/${fileName}`
+          const mp3FilePath = `${process.cwd()}/.cache/${audioPath}/${fileName}`
           const absoluteUrl = siteUrl ? `${siteUrl}/${audioPath}/${fileName}` : 'siteUrl not set @option'
   
           if (templateKey === 'PodCast'){
