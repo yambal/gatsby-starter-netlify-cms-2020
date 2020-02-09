@@ -25,6 +25,20 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
 
     console.log(`\t\t${fileName}:${chacheValue}`)
 
+    const mp3StaticPath = `${process.cwd()}/public/${getAudioPath(pluginOption)}`
+    const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
+    try {
+      fs.statSync(mp3StaticFilePath);
+      console.log('ファイル・ディレクトリは存在します。');
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        console.log('ファイル・ディレクトリは存在しません。');
+      } else {
+        console.log(error);
+      }
+    }
+
+
     cashier.get(fileName)
     .then(
       chachedValue => {

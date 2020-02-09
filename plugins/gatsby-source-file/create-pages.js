@@ -4,6 +4,7 @@ var mp3_1 = require("./libs/mp3");
 var html_to_ssml_1 = require("./libs/html-to-ssml");
 var file_name_builder_1 = require("./libs/file-name-builder");
 var option_parser_1 = require("./libs/option-parser");
+var fs = require("fs");
 var podcastCacheCheck = function (edge, pluginOption, cashier) {
     console.log('\tpodcastCacheCheck');
     return new Promise(function (resolve) {
@@ -12,6 +13,20 @@ var podcastCacheCheck = function (edge, pluginOption, cashier) {
         var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
         var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
         console.log("\t\t" + fileName + ":" + chacheValue);
+        var mp3StaticPath = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOption);
+        var mp3StaticFilePath = mp3StaticPath + "/" + fileName;
+        try {
+            fs.statSync(mp3StaticFilePath);
+            console.log('ファイル・ディレクトリは存在します。');
+        }
+        catch (error) {
+            if (error.code === 'ENOENT') {
+                console.log('ファイル・ディレクトリは存在しません。');
+            }
+            else {
+                console.log(error);
+            }
+        }
         cashier.get(fileName)
             .then(function (chachedValue) {
             console.log("\t\tchachedValue:" + chachedValue);

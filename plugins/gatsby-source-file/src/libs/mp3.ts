@@ -7,8 +7,10 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
   return new Promise((resolve: (uri: string) => void, reject) => {
 
     // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
-    const mp3StaticPath = `${process.cwd()}/static/${path}`
+    const mp3StaticPath = `${process.cwd()}/public/${path}`
     const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
+
+
     const uri = `/${path}/${fileName}`
 
     const client = new textToSpeech.TextToSpeechClient({
@@ -37,7 +39,7 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
             writeFile(mp3StaticFilePath, response.audioContent, 'binary')
               .then(
                 () => {
-                  console.log(`\tAudio content written to file: ${fileName}`);
+                  console.log(mp3StaticFilePath);
                   resolve(uri)
                 }
               )
