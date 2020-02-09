@@ -6,7 +6,7 @@ var util = require("util");
 var mkdirp = require("mkdirp-then");
 var getMp3 = function (ssml, fileName, path) {
     return new Promise(function (resolve, reject) {
-        var mp3FilePath = "./public/" + path + "/" + fileName;
+        var mp3FilePath = process.cwd() + "/public/" + path + "/" + fileName;
         var uri = "/" + path + "/" + fileName;
         var client = new text_to_speech_1["default"].TextToSpeechClient({
             projectId: 'texttospeach-261314',

@@ -18,8 +18,18 @@ module.exports = function (_a, pluginOptions, cb) {
         edges.forEach(function (edge) {
             var html = edge.node.html;
             var title = edge.node.frontmatter.title;
-            // const cacheKey = `podcast-${edge.node.id}`
-            // const hash = buildMDHash(title, edge.node.rawMarkdownBody)
+            cache.get('test')
+                .then(function (cacheValue) {
+                if (cacheValue) {
+                    console.log(46, cacheValue);
+                }
+                else {
+                    cache.set('test', 'test calue')
+                        .then(function () {
+                        console.log(52, 'cached');
+                    });
+                }
+            });
             var fileName = file_name_builder_1.buildFileName(edge.node.frontmatter.slug, title, edge.node.rawMarkdownBody, 'mp3');
             var checkPath = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOptions) + "/" + fileName;
             try {

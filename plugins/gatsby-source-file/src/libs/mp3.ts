@@ -6,7 +6,7 @@ import * as mkdirp from 'mkdirp-then'
 const getMp3 = (ssml: string, fileName: string, path: string) => {
   return new Promise((resolve: (uri: string) => void, reject) => {
 
-    const mp3FilePath = `./public/${path}/${fileName}`
+    const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
     const uri = `/${path}/${fileName}`
 
     const client = new textToSpeech.TextToSpeechClient({

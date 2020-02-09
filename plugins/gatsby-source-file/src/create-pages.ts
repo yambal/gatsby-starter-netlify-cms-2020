@@ -39,11 +39,27 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
         (edge) => {
           const html = edge.node.html
           const title = edge.node.frontmatter.title
+
+          cache.get('test')
+            .then(
+              (cacheValue) => {
+                if(cacheValue) {
+                  console.log(46, cacheValue)
+                } else {
+                  cache.set('test', 'test calue')
+                    .then(
+                      () => {
+                        console.log(52, 'cached')
+                      }
+                    )
+                }
+              }
+            )
           
-          // const cacheKey = `podcast-${edge.node.id}`
-          // const hash = buildMDHash(title, edge.node.rawMarkdownBody)
           const fileName = buildFileName(edge.node.frontmatter.slug, title, edge.node.rawMarkdownBody, 'mp3')
           const checkPath = `${process.cwd()}/public/${getAudioPath(pluginOptions)}/${fileName}`
+
+
 
           try {
             fs.statSync(checkPath);

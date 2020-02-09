@@ -10,6 +10,12 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: "gatsby-plugin-netlify-cache",
+      options: {
+        cachePublic: true
+      }
+    },
+    {
       resolve: 'gatsby-source-file',
       options: {
         siteURL: 'https://www.yambal.net',
