@@ -10,7 +10,7 @@ var mkdirp = require("mkdirp-then");
 var util = require("util");
 var podcastCacheGet = function (key) {
     return new Promise(function (resolve) {
-        var cacheDir = process.cwd() + "/.cache/podcast";
+        var cacheDir = process.cwd() + "/podcast";
         var cacheFilePath = cacheDir + "/cache-" + key + ".txt";
         try {
             fs.statSync(cacheFilePath);
@@ -29,7 +29,7 @@ var podcastCacheGet = function (key) {
 };
 var podcastCashSet = function (key, value) {
     return new Promise(function (resolve) {
-        var cacheDir = process.cwd() + "/.cache/podcast";
+        var cacheDir = process.cwd() + "/podcast";
         var cacheFilePath = cacheDir + "/cache-" + key + ".txt";
         mkdirp(cacheDir)
             .then(function () {
@@ -47,7 +47,7 @@ var podcastCacheCheck = function (edge, pluginOption) {
         var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
         var cacheKey = file_name_builder_1.buildFileNameShort(channel, slug);
         var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
-        var cacheDir = process.cwd() + "/.cache/podcast";
+        var cacheDir = process.cwd() + "/podcast";
         var publicDir = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOption);
         var ssml = html_to_ssml_1["default"](title, html);
         podcastCacheGet(cacheKey)
@@ -161,7 +161,7 @@ module.exports = function (_a, pluginOptions, cb) {
             result.errors.forEach(function (e) { return console.error(e.toString()); });
             return Promise.reject(result.errors);
         }
-        var list = file_checker_1.listFiles(process.cwd() + "/.cache");
+        var list = file_checker_1.listFiles(process.cwd() + "/podcast");
         console.log('file check', list.length);
         var edges = result.data.allMarkdownRemark.edges;
         Promise.all(edges.map(function (edge) {

@@ -21,7 +21,7 @@ export interface iPodcastBuild {
 
 const podcastCacheGet = (key: string) => {
   return new Promise((resolve: (resolve: string) => void) => {
-    const cacheDir = `${process.cwd()}/.cache/podcast`
+    const cacheDir = `${process.cwd()}/podcast`
     const cacheFilePath = `${cacheDir}/cache-${key}.txt`
     try {
       fs.statSync(cacheFilePath)
@@ -40,7 +40,7 @@ const podcastCacheGet = (key: string) => {
 
 const podcastCashSet = (key: string, value: string) => {
   return new Promise((resolve: () => void) => {
-    const cacheDir = `${process.cwd()}/.cache/podcast`
+    const cacheDir = `${process.cwd()}/podcast`
     const cacheFilePath = `${cacheDir}/cache-${key}.txt`
     mkdirp(cacheDir)
     .then(
@@ -64,7 +64,7 @@ const podcastCacheCheck = (edge, pluginOption) => {
     const cacheKey = buildFileNameShort(channel, slug)
     const chacheValue = buildMpCacheValue(title, html, channel, date, slug)
 
-    const cacheDir = `${process.cwd()}/.cache/podcast`
+    const cacheDir = `${process.cwd()}/podcast`
     const publicDir = `${process.cwd()}/public/${getAudioPath(pluginOption)}`
 
     const ssml = HtmlToSSML(title, html)
@@ -232,7 +232,7 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
       return Promise.reject(result.errors)
     }
 
-    const list = listFiles(`${process.cwd()}/.cache`);
+    const list = listFiles(`${process.cwd()}/podcast`);
     console.log('file check', list.length);
 
     const edges = result.data.allMarkdownRemark.edges

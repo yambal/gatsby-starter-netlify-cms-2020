@@ -24,19 +24,24 @@ var getFileType = function (path) {
 };
 exports.listFiles = function (dirPath) {
     var ret = [];
-    var paths = fs.readdirSync(dirPath);
-    paths.forEach(function (a) {
-        var path = dirPath + "/" + a;
-        switch (getFileType(path)) {
-            case FileType.File:
-                ret.push(path);
-                break;
-            case FileType.Directory:
-                ret.push.apply(ret, exports.listFiles(path));
-                break;
-            default:
-            /* noop */
-        }
-    });
-    return ret;
+    try {
+        var paths = fs.readdirSync(dirPath);
+        paths.forEach(function (a) {
+            var path = dirPath + "/" + a;
+            switch (getFileType(path)) {
+                case FileType.File:
+                    ret.push(path);
+                    break;
+                case FileType.Directory:
+                    ret.push.apply(ret, exports.listFiles(path));
+                    break;
+                default:
+                /* noop */
+            }
+        });
+        return ret;
+    }
+    catch (e) {
+        return [];
+    }
 };
