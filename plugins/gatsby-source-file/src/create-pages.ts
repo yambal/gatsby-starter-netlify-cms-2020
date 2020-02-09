@@ -9,20 +9,19 @@ import * as util from 'util'
 
 export interface iPodcastBuild {
   edge: any
-  option: any
-  cashier: any
-  reflesh?:boolean
-  title?: string
-  html?: string
+  cacheDir: string
+  publicDir: string
+  ssml: string
   fileName?: string
   chacheValue?: string
   cacheKey?: string,
   cachedFilePath?: string
+  isNeedReflash?:boolean
 }
 
 const podcastCacheGet = (key: string) => {
   return new Promise((resolve: (resolve: string) => void) => {
-    const cacheDir = `${process.cwd()}/podcast`
+    const cacheDir = `${process.cwd()}/.cache/podcast`
     const cacheFilePath = `${cacheDir}/cache-${key}.txt`
     try {
       fs.statSync(cacheFilePath)
@@ -41,11 +40,8 @@ const podcastCacheGet = (key: string) => {
 
 const podcastCashSet = (key: string, value: string) => {
   return new Promise((resolve: () => void) => {
-    const cacheDir = `${process.cwd()}/podcast`
+    const cacheDir = `${process.cwd()}/.cache/podcast`
     const cacheFilePath = `${cacheDir}/cache-${key}.txt`
-
-    console.log('podcastCashSet', key, value, cacheDir, cacheFilePath )
-    
     mkdirp(cacheDir)
     .then(
       () => {
@@ -57,8 +53,7 @@ const podcastCashSet = (key: string, value: string) => {
   })
 }
 
-
-const podcastCacheCheck = (edge, pluginOption, cashier) => {
+const podcastCacheCheck = (edge, pluginOption) => {
   console.log('\tpodcastCacheCheck')
   return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
     const html = edge.node.html
@@ -68,32 +63,37 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
     
     const cacheKey = buildFileNameShort(channel, slug)
     const chacheValue = buildMpCacheValue(title, html, channel, date, slug)
+
+    const cacheDir = `${process.cwd()}/.cache/podcast`
+    const publicDir = `${process.cwd()}/public/${getAudioPath(pluginOption)}`
+
+    const ssml = HtmlToSSML(title, html)
+    
     podcastCacheGet(cacheKey)
     .then(
       cachedValue => {
         let res = {
           edge,
-          option: pluginOption,
-          cashier,
-          reflesh: true,
-          title,
-          html,
+          cacheDir,
+          publicDir,
+          ssml,
           fileName,
           cacheKey,
-          chacheValue
+          chacheValue,
+          isNeedReflash: true,
         }
 
         if (cachedValue) {
           if (cachedValue === chacheValue){
             // 変更なし
-            res.reflesh = false
+            res.isNeedReflash = false
           } else {
             // 変更あり
-            res.reflesh = true
+            res.isNeedReflash = true
           }
         } else {
           // キャッシュなし
-          res.reflesh = true
+          res.isNeedReflash = true
         }
 
         resolve(res)
@@ -105,17 +105,16 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
 const podcastBuildMp3 = (i: iPodcastBuild) => {
   console.log('\tpodcastBuildMp3')
   return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    const cacheDir = `${process.cwd()}/podcast`
-    const cacheFilePath = `${cacheDir}/${i.fileName}`
+    const cacheFilePath = `${i.cacheDir}/${i.fileName}`
 
-    if (i.reflesh) {
+    if (i.isNeedReflash) {
       console.log(`\t\tmake:${i.fileName}`)
-      const ssml = HtmlToSSML(i.title, i.html)
-      mp3(ssml)
+      
+      mp3(i.ssml)
       .then(
         data => {
           
-          mkdirp(cacheDir)
+          mkdirp(i.cacheDir)
           .then(
             () => {
               const writeFile = util.promisify(fs.writeFile)
@@ -153,11 +152,14 @@ const podcastCacheSaver = (i: iPodcastBuild) => {
 
 const cacheToPablic = (i: iPodcastBuild) => {
   return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    var publicDir = `${process.cwd()}/public/${getAudioPath(i.option)}`
-    var publicPath = `${publicDir}/${i.fileName}`
-    console.log('cacheToPablic', publicPath)
+    
+    var publicPath = `${i.publicDir}/${i.fileName}`
 
-    mkdirp(publicDir)
+    console.log('cacheToPablic')
+    console.log(`\t${i.cachedFilePath}`)
+    console.log(`\t${publicPath}`)
+
+    mkdirp(i.publicDir)
     .then(
       () => {
         fs.copyFile(i.cachedFilePath, publicPath, (err) => {
@@ -172,10 +174,10 @@ const cacheToPablic = (i: iPodcastBuild) => {
   })
 }
 
-const podcastEdgeToFile = (edge, options, cashier):Promise<iPodcastBuild> => {
+const podcastEdgeToFile = (edge, options):Promise<iPodcastBuild> => {
   console.log('podcastEdgeToFile')
   return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    return podcastCacheCheck(edge, options, cashier)
+    return podcastCacheCheck(edge, options)
     .then(
       (res) => {
         return podcastBuildMp3(res)
@@ -227,13 +229,13 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
       return Promise.reject(result.errors)
     }
 
-    const list = listFiles(`${process.cwd()}/public`);
+    const list = listFiles(`${process.cwd()}/.cache`);
     console.log('file check', list.length);
 
     const edges = result.data.allMarkdownRemark.edges
     Promise.all(edges.map(
       edge => {
-        return podcastEdgeToFile(edge, pluginOptions, cache)
+        return podcastEdgeToFile(edge, pluginOptions)
       }
     ))
     .then(

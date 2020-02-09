@@ -10,7 +10,7 @@ var mkdirp = require("mkdirp-then");
 var util = require("util");
 var podcastCacheGet = function (key) {
     return new Promise(function (resolve) {
-        var cacheDir = process.cwd() + "/podcast";
+        var cacheDir = process.cwd() + "/.cache/podcast";
         var cacheFilePath = cacheDir + "/cache-" + key + ".txt";
         try {
             fs.statSync(cacheFilePath);
@@ -29,9 +29,8 @@ var podcastCacheGet = function (key) {
 };
 var podcastCashSet = function (key, value) {
     return new Promise(function (resolve) {
-        var cacheDir = process.cwd() + "/podcast";
+        var cacheDir = process.cwd() + "/.cache/podcast";
         var cacheFilePath = cacheDir + "/cache-" + key + ".txt";
-        console.log('podcastCashSet', key, value, cacheDir, cacheFilePath);
         mkdirp(cacheDir)
             .then(function () {
             fs.writeFile(cacheFilePath, value, 'utf8', function () {
@@ -40,7 +39,7 @@ var podcastCashSet = function (key, value) {
         });
     });
 };
-var podcastCacheCheck = function (edge, pluginOption, cashier) {
+var podcastCacheCheck = function (edge, pluginOption) {
     console.log('\tpodcastCacheCheck');
     return new Promise(function (resolve) {
         var html = edge.node.html;
@@ -48,32 +47,34 @@ var podcastCacheCheck = function (edge, pluginOption, cashier) {
         var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
         var cacheKey = file_name_builder_1.buildFileNameShort(channel, slug);
         var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
+        var cacheDir = process.cwd() + "/.cache/podcast";
+        var publicDir = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOption);
+        var ssml = html_to_ssml_1["default"](title, html);
         podcastCacheGet(cacheKey)
             .then(function (cachedValue) {
             var res = {
                 edge: edge,
-                option: pluginOption,
-                cashier: cashier,
-                reflesh: true,
-                title: title,
-                html: html,
+                cacheDir: cacheDir,
+                publicDir: publicDir,
+                ssml: ssml,
                 fileName: fileName,
                 cacheKey: cacheKey,
-                chacheValue: chacheValue
+                chacheValue: chacheValue,
+                isNeedReflash: true
             };
             if (cachedValue) {
                 if (cachedValue === chacheValue) {
                     // 変更なし
-                    res.reflesh = false;
+                    res.isNeedReflash = false;
                 }
                 else {
                     // 変更あり
-                    res.reflesh = true;
+                    res.isNeedReflash = true;
                 }
             }
             else {
                 // キャッシュなし
-                res.reflesh = true;
+                res.isNeedReflash = true;
             }
             resolve(res);
         });
@@ -82,14 +83,12 @@ var podcastCacheCheck = function (edge, pluginOption, cashier) {
 var podcastBuildMp3 = function (i) {
     console.log('\tpodcastBuildMp3');
     return new Promise(function (resolve) {
-        var cacheDir = process.cwd() + "/podcast";
-        var cacheFilePath = cacheDir + "/" + i.fileName;
-        if (i.reflesh) {
+        var cacheFilePath = i.cacheDir + "/" + i.fileName;
+        if (i.isNeedReflash) {
             console.log("\t\tmake:" + i.fileName);
-            var ssml = html_to_ssml_1["default"](i.title, i.html);
-            mp3_1["default"](ssml)
+            mp3_1["default"](i.ssml)
                 .then(function (data) {
-                mkdirp(cacheDir)
+                mkdirp(i.cacheDir)
                     .then(function () {
                     var writeFile = util.promisify(fs.writeFile);
                     writeFile(cacheFilePath, data, 'binary')
@@ -118,10 +117,11 @@ var podcastCacheSaver = function (i) {
 };
 var cacheToPablic = function (i) {
     return new Promise(function (resolve) {
-        var publicDir = process.cwd() + "/public/" + option_parser_1.getAudioPath(i.option);
-        var publicPath = publicDir + "/" + i.fileName;
-        console.log('cacheToPablic', publicPath);
-        mkdirp(publicDir)
+        var publicPath = i.publicDir + "/" + i.fileName;
+        console.log('cacheToPablic');
+        console.log("\t" + i.cachedFilePath);
+        console.log("\t" + publicPath);
+        mkdirp(i.publicDir)
             .then(function () {
             fs.copyFile(i.cachedFilePath, publicPath, function (err) {
                 if (!err) {
@@ -133,10 +133,10 @@ var cacheToPablic = function (i) {
         });
     });
 };
-var podcastEdgeToFile = function (edge, options, cashier) {
+var podcastEdgeToFile = function (edge, options) {
     console.log('podcastEdgeToFile');
     return new Promise(function (resolve) {
-        return podcastCacheCheck(edge, options, cashier)
+        return podcastCacheCheck(edge, options)
             .then(function (res) {
             return podcastBuildMp3(res);
         })
@@ -158,11 +158,11 @@ module.exports = function (_a, pluginOptions, cb) {
             result.errors.forEach(function (e) { return console.error(e.toString()); });
             return Promise.reject(result.errors);
         }
-        var list = file_checker_1.listFiles(process.cwd() + "/public");
+        var list = file_checker_1.listFiles(process.cwd() + "/.cache");
         console.log('file check', list.length);
         var edges = result.data.allMarkdownRemark.edges;
         Promise.all(edges.map(function (edge) {
-            return podcastEdgeToFile(edge, pluginOptions, cache);
+            return podcastEdgeToFile(edge, pluginOptions);
         }))
             .then(function () {
             console.log('/podcast');
