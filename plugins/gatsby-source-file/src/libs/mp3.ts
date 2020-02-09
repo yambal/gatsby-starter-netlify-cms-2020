@@ -6,7 +6,9 @@ import * as mkdirp from 'mkdirp-then'
 const getMp3 = (ssml: string, fileName: string, path: string) => {
   return new Promise((resolve: (uri: string) => void, reject) => {
 
-    const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
+    // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
+    const mp3StaticPath = `${process.cwd()}/static/${path}`
+    const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
     const uri = `/${path}/${fileName}`
 
     const client = new textToSpeech.TextToSpeechClient({
@@ -26,13 +28,13 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
       audioConfig: {audioEncoding: 'MP3'},
     };
   
-    return client.synthesizeSpeech(request)
+    client.synthesizeSpeech(request)
       .then((responses) => {
         const response = responses[0]
-        return mkdirp(`${process.cwd()}/public/${path}`)
+        mkdirp(mp3StaticPath)
           .then(made => {
             const writeFile = util.promisify(fs.writeFile);
-            return writeFile(mp3FilePath, response.audioContent, 'binary')
+            writeFile(mp3StaticFilePath, response.audioContent, 'binary')
               .then(
                 () => {
                   console.log(`\tAudio content written to file: ${fileName}`);

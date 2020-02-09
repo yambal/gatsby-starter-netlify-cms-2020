@@ -6,7 +6,9 @@ var util = require("util");
 var mkdirp = require("mkdirp-then");
 var getMp3 = function (ssml, fileName, path) {
     return new Promise(function (resolve, reject) {
-        var mp3FilePath = process.cwd() + "/public/" + path + "/" + fileName;
+        // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
+        var mp3StaticPath = process.cwd() + "/static/" + path;
+        var mp3StaticFilePath = mp3StaticPath + "/" + fileName;
         var uri = "/" + path + "/" + fileName;
         var client = new text_to_speech_1["default"].TextToSpeechClient({
             projectId: 'texttospeach-261314',
@@ -23,13 +25,13 @@ var getMp3 = function (ssml, fileName, path) {
             },
             audioConfig: { audioEncoding: 'MP3' }
         };
-        return client.synthesizeSpeech(request)
+        client.synthesizeSpeech(request)
             .then(function (responses) {
             var response = responses[0];
-            return mkdirp(process.cwd() + "/public/" + path)
+            mkdirp(mp3StaticPath)
                 .then(function (made) {
                 var writeFile = util.promisify(fs.writeFile);
-                return writeFile(mp3FilePath, response.audioContent, 'binary')
+                writeFile(mp3StaticFilePath, response.audioContent, 'binary')
                     .then(function () {
                     console.log("\tAudio content written to file: " + fileName);
                     resolve(uri);
