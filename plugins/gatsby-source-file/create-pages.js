@@ -5,6 +5,7 @@ var html_to_ssml_1 = require("./libs/html-to-ssml");
 var file_name_builder_1 = require("./libs/file-name-builder");
 var option_parser_1 = require("./libs/option-parser");
 var podcastCacheCheck = function (edge, pluginOption, cashier) {
+    console.log('\tpodcastCacheCheck');
     return new Promise(function (resolve) {
         var html = edge.node.html;
         var _a = edge.node.frontmatter, title = _a.title, date = _a.date, channel = _a.channel, slug = _a.slug;

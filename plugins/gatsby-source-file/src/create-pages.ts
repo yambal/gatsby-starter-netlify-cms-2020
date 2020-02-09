@@ -15,6 +15,7 @@ interface iPodcastBuild {
   chacheValue?: string
 }
 const podcastCacheCheck = (edge, pluginOption, cashier) => {
+  console.log('\tpodcastCacheCheck')
   return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
     const html = edge.node.html
     const { title, date, channel, slug } = edge.node.frontmatter
@@ -85,7 +86,7 @@ const podcastCacheSaver = (i: iPodcastBuild) => {
   })
 }
 
-const podcastEdgeToFile = (edge, options, cashier) => {
+const podcastEdgeToFile = (edge, options, cashier):Promise<iPodcastBuild> => {
   console.log('podcastEdgeToFile')
   return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
     return podcastCacheCheck(edge, options, cashier)
