@@ -28,13 +28,10 @@ var getMp3 = function (ssml, fileName, path) {
             var response = responses[0];
             return mkdirp(process.cwd() + "/public/" + path)
                 .then(function (made) {
-                console.log("mkdir -p:" + made);
                 var writeFile = util.promisify(fs.writeFile);
                 return writeFile(mp3FilePath, response.audioContent, 'binary')
                     .then(function () {
                     console.log("\tAudio content written to file: " + fileName);
-                    console.log('- - - - - -');
-                    console.groupEnd();
                     resolve(uri);
                 });
             });

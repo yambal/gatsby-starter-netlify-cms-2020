@@ -31,14 +31,11 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
         const response = responses[0]
         return mkdirp(`${process.cwd()}/public/${path}`)
           .then(made => {
-            console.log(`mkdir -p:${made}`)
             const writeFile = util.promisify(fs.writeFile);
             return writeFile(mp3FilePath, response.audioContent, 'binary')
               .then(
                 () => {
                   console.log(`\tAudio content written to file: ${fileName}`);
-                  console.log('- - - - - -')
-                  console.groupEnd()
                   resolve(uri)
                 }
               )
