@@ -13,11 +13,15 @@ var podcastCacheCheck = function (edge, pluginOption, cashier) {
         var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
         var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
         console.log("\t\t" + fileName + ":" + chacheValue);
-        var mp3StaticPath = process.cwd() + "/.cache/" + option_parser_1.getAudioPath(pluginOption);
-        var mp3StaticFilePath = mp3StaticPath + "/" + fileName;
+        var mp3CachePath = process.cwd() + "/.cache/" + option_parser_1.getAudioPath(pluginOption);
+        var mp3CacheFilePath = mp3CachePath + "/" + fileName;
+        var mp3PublicPath = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOption);
+        var mp3PublicFilePath = mp3PublicPath + "/" + fileName;
         try {
-            fs.statSync(mp3StaticFilePath);
+            fs.statSync(mp3CacheFilePath);
             console.log('ファイル・ディレクトリは存在します。');
+            fs.copyFileSync(mp3CacheFilePath, mp3PublicFilePath);
+            console.log('コピー');
         }
         catch (error) {
             if (error.code === 'ENOENT') {

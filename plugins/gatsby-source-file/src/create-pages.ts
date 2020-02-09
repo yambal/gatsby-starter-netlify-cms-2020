@@ -25,11 +25,18 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
 
     console.log(`\t\t${fileName}:${chacheValue}`)
 
-    const mp3StaticPath = `${process.cwd()}/.cache/${getAudioPath(pluginOption)}`
-    const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
+    const mp3CachePath = `${process.cwd()}/.cache/${getAudioPath(pluginOption)}`
+    const mp3CacheFilePath = `${mp3CachePath}/${fileName}`
+
+    const mp3PublicPath = `${process.cwd()}/public/${getAudioPath(pluginOption)}`
+    const mp3PublicFilePath = `${mp3PublicPath}/${fileName}`
+
+
     try {
-      fs.statSync(mp3StaticFilePath);
+      fs.statSync(mp3CacheFilePath);
       console.log('ファイル・ディレクトリは存在します。');
+      fs.copyFileSync(mp3CacheFilePath, mp3PublicFilePath);
+      console.log('コピー');
     } catch (error) {
       if (error.code === 'ENOENT') {
         console.log('ファイル・ディレクトリは存在しません。');
