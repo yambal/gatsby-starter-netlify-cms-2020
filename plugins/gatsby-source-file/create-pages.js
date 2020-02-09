@@ -120,12 +120,13 @@ var podcastEdgeToFile = function (edge, options, cashier) {
 };
 module.exports = function (_a, pluginOptions, cb) {
     var cache = _a.cache, actions = _a.actions, graphql = _a.graphql;
-    return graphql("\n    {\n      allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n        edges {\n          node {\n            id\n            fields {\n              slug\n            }\n            frontmatter {\n              slug\n              title\n              date\n              channel\n            }\n            rawMarkdownBody\n            html\n          }\n        }\n      }\n    }\n    ").then(function (result) {
+    return graphql("\n  {\n    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n      edges {\n        node {\n          id\n          fields {\n            slug\n          }\n          frontmatter {\n            slug\n            title\n            date\n            channel\n          }\n          rawMarkdownBody\n          html\n        }\n      }\n    }\n  }\n  ").then(function (result) {
         if (result.errors) {
             result.errors.forEach(function (e) { return console.error(e.toString()); });
             return Promise.reject(result.errors);
         }
-        console.log('podcast');
+        var list = listFiles(process.cwd() + "/public");
+        console.log(list);
         var edges = result.data.allMarkdownRemark.edges;
         Promise.all(edges.map(function (edge) {
             return podcastEdgeToFile(edge, pluginOptions, cache);
@@ -135,4 +136,43 @@ module.exports = function (_a, pluginOptions, cb) {
             cb && cb();
         });
     });
+};
+var FileType = {
+    File: 'file',
+    Directory: 'directory',
+    Unknown: 'unknown'
+};
+var getFileType = function (path) {
+    try {
+        var stat = fs.statSync(path);
+        switch (true) {
+            case stat.isFile():
+                return FileType.File;
+            case stat.isDirectory():
+                return FileType.Directory;
+            default:
+                return FileType.Unknown;
+        }
+    }
+    catch (e) {
+        return FileType.Unknown;
+    }
+};
+var listFiles = function (dirPath) {
+    var ret = [];
+    var paths = fs.readdirSync(dirPath);
+    paths.forEach(function (a) {
+        var path = dirPath + "/" + a;
+        switch (getFileType(path)) {
+            case FileType.File:
+                ret.push(path);
+                break;
+            case FileType.Directory:
+                ret.push.apply(ret, listFiles(path));
+                break;
+            default:
+            /* noop */
+        }
+    });
+    return ret;
 };

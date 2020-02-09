@@ -146,46 +146,97 @@ const podcastEdgeToFile = (edge, options, cashier):Promise<iPodcastBuild> => {
 }
 
 module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) => {
-    return graphql(`
-    {
-      allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "PodCast"}}}, limit: 10) {
-        edges {
-          node {
-            id
-            fields {
-              slug
-            }
-            frontmatter {
-              slug
-              title
-              date
-              channel
-            }
-            rawMarkdownBody
-            html
+  return graphql(`
+  {
+    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "PodCast"}}}, limit: 10) {
+      edges {
+        node {
+          id
+          fields {
+            slug
           }
+          frontmatter {
+            slug
+            title
+            date
+            channel
+          }
+          rawMarkdownBody
+          html
         }
       }
     }
-    `).then(result => {
-      if (result.errors) {
-        result.errors.forEach(e => console.error(e.toString()))
-        return Promise.reject(result.errors)
-      }
-  
-      console.log('podcast')
-      const edges = result.data.allMarkdownRemark.edges
-      Promise.all(edges.map(
-        edge => {
-          return podcastEdgeToFile(edge, pluginOptions, cache)
-        }
-      ))
-      .then(
-        () => {
-          console.log('/podcast')
-          cb && cb()
-        }
-      )
-    })
   }
-  
+  `).then(result => {
+    if (result.errors) {
+      result.errors.forEach(e => console.error(e.toString()))
+      return Promise.reject(result.errors)
+    }
+
+    const list = listFiles(`${process.cwd()}/public`);
+    console.log(list);
+
+    const edges = result.data.allMarkdownRemark.edges
+    Promise.all(edges.map(
+      edge => {
+        return podcastEdgeToFile(edge, pluginOptions, cache)
+      }
+    ))
+    .then(
+      () => {
+        console.log('/podcast')
+        cb && cb()
+      }
+    )
+  })
+}
+
+const FileType = {
+  File: 'file',
+  Directory: 'directory',
+  Unknown: 'unknown'
+}
+
+const getFileType = path => {
+  try {
+    const stat = fs.statSync(path);
+
+    switch (true) {
+      case stat.isFile():
+        return FileType.File;
+
+      case stat.isDirectory():
+        return FileType.Directory;
+
+      default:
+        return FileType.Unknown;
+    }
+
+  } catch(e) {
+    return FileType.Unknown;
+  }
+}
+
+const listFiles = dirPath => {
+  const ret = [];
+  const paths = fs.readdirSync(dirPath);
+
+  paths.forEach(a => {
+    const path = `${dirPath}/${a}`;
+
+    switch (getFileType(path)) {
+      case FileType.File:
+        ret.push(path);
+        break;
+
+      case FileType.Directory:
+        ret.push(...listFiles(path));
+        break;
+
+      default:
+        /* noop */
+    }
+  })
+
+  return ret;
+};
