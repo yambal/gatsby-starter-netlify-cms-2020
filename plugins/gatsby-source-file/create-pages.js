@@ -4,6 +4,7 @@ var mp3_1 = require("./libs/mp3");
 var html_to_ssml_1 = require("./libs/html-to-ssml");
 var file_name_builder_1 = require("./libs/file-name-builder");
 var option_parser_1 = require("./libs/option-parser");
+var fs = require("fs");
 var podcastCacheCheck = function (edge, pluginOption, cashier) {
     console.log('\tpodcastCacheCheck');
     return new Promise(function (resolve) {
@@ -12,27 +13,22 @@ var podcastCacheCheck = function (edge, pluginOption, cashier) {
         var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
         var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
         console.log("\t\t" + fileName + ":" + chacheValue);
-        /*
-        const mp3CachePath = `${process.cwd()}/.cache/${getAudioPath(pluginOption)}`
-        const mp3CacheFilePath = `${mp3CachePath}/${fileName}`
-    
-        const mp3PublicPath = `${process.cwd()}/public/${getAudioPath(pluginOption)}`
-        const mp3PublicFilePath = `${mp3PublicPath}/${fileName}`
-    
-    
+        var mp3PublicPath = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOption);
+        var mp3PublicFilePath = mp3PublicPath + "/" + fileName;
         try {
-          fs.statSync(mp3CacheFilePath);
-          console.log('ファイル・ディレクトリは存在します。');
-          fs.copyFileSync(mp3CacheFilePath, mp3PublicFilePath);
-          console.log('コピー');
-        } catch (error) {
-          if (error.code === 'ENOENT') {
-            console.log('ファイル・ディレクトリは存在しません。');
-          } else {
-            console.log(error);
-          }
+            fs.statSync(mp3PublicFilePath);
+            console.log('ファイル・ディレクトリは存在します。');
+            // fs.copyFileSync(mp3PublicFilePath, mp3PublicFilePath);
+            // console.log('コピー');
         }
-        */
+        catch (error) {
+            if (error.code === 'ENOENT') {
+                console.log('ファイル・ディレクトリは存在しません。');
+            }
+            else {
+                console.log(error);
+            }
+        }
         cashier.get(fileName)
             .then(function (chachedValue) {
             console.log("\t\tchachedValue:" + chachedValue);
