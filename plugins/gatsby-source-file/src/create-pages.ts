@@ -86,13 +86,16 @@ const podcastCacheCheck = (edge, pluginOption) => {
         if (cachedValue) {
           if (cachedValue === chacheValue){
             // 変更なし
+            console.log(`\t\tnot change:${fileName}`)
             res.isNeedReflash = false
           } else {
             // 変更あり
+            console.log(`\t\tchange:${fileName}`)
             res.isNeedReflash = true
           }
         } else {
           // キャッシュなし
+          console.log(`\t\tnone:${fileName}`)
           res.isNeedReflash = true
         }
 
