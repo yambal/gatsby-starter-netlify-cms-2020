@@ -88,7 +88,7 @@ const podcastCacheSaver = (i: iPodcastBuild) => {
 const podcastEdgeToFile = (edge, options, cashier) => {
   console.log('podcastEdgeToFile')
   return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    podcastCacheCheck(edge, options, cashier)
+    return podcastCacheCheck(edge, options, cashier)
     .then(
       (res) => {
         return podcastBuildMp3(res)
@@ -136,7 +136,7 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
       }
   
       const edges = result.data.allMarkdownRemark.edges
-      Promise.all(edges.map(
+      return Promise.all(edges.map(
         edge => {
           return podcastEdgeToFile(edge, pluginOptions, cache)
         }

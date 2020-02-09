@@ -70,7 +70,7 @@ var podcastCacheSaver = function (i) {
 var podcastEdgeToFile = function (edge, options, cashier) {
     console.log('podcastEdgeToFile');
     return new Promise(function (resolve) {
-        podcastCacheCheck(edge, options, cashier)
+        return podcastCacheCheck(edge, options, cashier)
             .then(function (res) {
             return podcastBuildMp3(res);
         })
@@ -90,7 +90,7 @@ module.exports = function (_a, pluginOptions, cb) {
             return Promise.reject(result.errors);
         }
         var edges = result.data.allMarkdownRemark.edges;
-        Promise.all(edges.map(function (edge) {
+        return Promise.all(edges.map(function (edge) {
             return podcastEdgeToFile(edge, pluginOptions, cache);
         }))
             .then(function () {
