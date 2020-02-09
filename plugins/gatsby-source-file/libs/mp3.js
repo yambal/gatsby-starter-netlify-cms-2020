@@ -9,6 +9,8 @@ var getMp3 = function (ssml, fileName, path) {
         // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
         var mp3StaticPath = process.cwd() + "/public/" + path;
         var mp3StaticFilePath = mp3StaticPath + "/" + fileName;
+        var mp3PodcastPath = process.cwd() + "/podcast/" + path;
+        var mp3PodcastFilePath = mp3PodcastPath + "/" + fileName;
         var uri = "/" + path + "/" + fileName;
         var client = new text_to_speech_1["default"].TextToSpeechClient({
             projectId: 'texttospeach-261314',

@@ -10,6 +10,9 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
     const mp3StaticPath = `${process.cwd()}/public/${path}`
     const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
 
+    const mp3PodcastPath = `${process.cwd()}/podcast/${path}`
+    const mp3PodcastFilePath = `${mp3PodcastPath}/${fileName}`
+
 
     const uri = `/${path}/${fileName}`
 
