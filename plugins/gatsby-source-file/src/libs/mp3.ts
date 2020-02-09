@@ -7,7 +7,7 @@ const getMp3 = (ssml: string, fileName: string, path: string) => {
   return new Promise((resolve: (uri: string) => void, reject) => {
 
     // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
-    const mp3StaticPath = `${process.cwd()}/public/${path}`
+    const mp3StaticPath = `${process.cwd()}/.cache/${path}`
     const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
 
 

@@ -13,7 +13,7 @@ var podcastCacheCheck = function (edge, pluginOption, cashier) {
         var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
         var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
         console.log("\t\t" + fileName + ":" + chacheValue);
-        var mp3StaticPath = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOption);
+        var mp3StaticPath = process.cwd() + "/.cache/" + option_parser_1.getAudioPath(pluginOption);
         var mp3StaticFilePath = mp3StaticPath + "/" + fileName;
         try {
             fs.statSync(mp3StaticFilePath);

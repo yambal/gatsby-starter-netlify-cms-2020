@@ -25,7 +25,7 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
 
     console.log(`\t\t${fileName}:${chacheValue}`)
 
-    const mp3StaticPath = `${process.cwd()}/public/${getAudioPath(pluginOption)}`
+    const mp3StaticPath = `${process.cwd()}/.cache/${getAudioPath(pluginOption)}`
     const mp3StaticFilePath = `${mp3StaticPath}/${fileName}`
     try {
       fs.statSync(mp3StaticFilePath);
