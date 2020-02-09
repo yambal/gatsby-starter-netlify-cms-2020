@@ -11,19 +11,37 @@ var podcastCacheCheck = function (edge, pluginOption, cashier) {
         var _a = edge.node.frontmatter, title = _a.title, date = _a.date, channel = _a.channel, slug = _a.slug;
         var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
         var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
+        console.log("\t\t" + fileName + ":" + chacheValue);
         cashier.get(fileName)
             .then(function (chachedValue) {
-            !chachedValue || chachedValue !== chacheValue && resolve({
-                edge: edge,
-                option: pluginOption,
-                cashier: cashier,
-                reflesh: true,
-                title: title,
-                html: html,
-                fileName: fileName,
-                chacheValue: chacheValue
-            });
-            chachedValue === chacheValue && resolve({
+            console.log("\t\tchachedValue:" + chachedValue);
+            if (!chachedValue) {
+                resolve({
+                    edge: edge,
+                    option: pluginOption,
+                    cashier: cashier,
+                    reflesh: true,
+                    title: title,
+                    html: html,
+                    fileName: fileName,
+                    chacheValue: chacheValue
+                });
+                return;
+            }
+            if (chachedValue !== chacheValue) {
+                resolve({
+                    edge: edge,
+                    option: pluginOption,
+                    cashier: cashier,
+                    reflesh: true,
+                    title: title,
+                    html: html,
+                    fileName: fileName,
+                    chacheValue: chacheValue
+                });
+                return;
+            }
+            resolve({
                 edge: edge,
                 option: pluginOption,
                 cashier: cashier,
@@ -90,11 +108,13 @@ module.exports = function (_a, pluginOptions, cb) {
             result.errors.forEach(function (e) { return console.error(e.toString()); });
             return Promise.reject(result.errors);
         }
+        console.log('podcast');
         var edges = result.data.allMarkdownRemark.edges;
-        return Promise.all(edges.map(function (edge) {
+        Promise.all(edges.map(function (edge) {
             return podcastEdgeToFile(edge, pluginOptions, cache);
         }))
             .then(function () {
+            console.log('/podcast');
             cb && cb();
         });
     });

@@ -3,6 +3,7 @@ import HtmlToSSML from './libs/html-to-ssml'
 import { buildMDHash, buildFileNameShort, buildMpCacheValue } from './libs/file-name-builder'
 import { getAudioPath } from './libs/option-parser'
 import * as fs from 'fs'
+import { isRegExp } from 'util'
 
 interface iPodcastBuild {
   edge: any
@@ -22,20 +23,40 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
     const fileName = buildFileNameShort(channel, slug, 'mp3')
     const chacheValue = buildMpCacheValue(title, html, channel, date, slug)
 
+    console.log(`\t\t${fileName}:${chacheValue}`)
+
     cashier.get(fileName)
     .then(
       chachedValue => {
-        !chachedValue || chachedValue !== chacheValue && resolve({
-          edge,
-          option: pluginOption,
-          cashier,
-          reflesh: true,
-          title,
-          html,
-          fileName,
-          chacheValue
-        })
-        chachedValue === chacheValue && resolve({
+        console.log(`\t\tchachedValue:${chachedValue}`)
+        if (!chachedValue) {
+          resolve({
+            edge,
+            option: pluginOption,
+            cashier,
+            reflesh: true,
+            title,
+            html,
+            fileName,
+            chacheValue
+          })
+          return
+        }
+
+        if (chachedValue !== chacheValue) {
+          resolve({
+            edge,
+            option: pluginOption,
+            cashier,
+            reflesh: true,
+            title,
+            html,
+            fileName,
+            chacheValue
+          })
+          return 
+        }
+        resolve({
           edge,
           option: pluginOption,
           cashier,
@@ -136,14 +157,16 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
         return Promise.reject(result.errors)
       }
   
+      console.log('podcast')
       const edges = result.data.allMarkdownRemark.edges
-      return Promise.all(edges.map(
+      Promise.all(edges.map(
         edge => {
           return podcastEdgeToFile(edge, pluginOptions, cache)
         }
       ))
       .then(
         () => {
+          console.log('/podcast')
           cb && cb()
         }
       )
