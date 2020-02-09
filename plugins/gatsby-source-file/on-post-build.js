@@ -34,7 +34,7 @@ module.exports = function (_a, option) {
             var rssPath = key && key !== 'null' ? process.cwd() + "/public/podcast-" + key + ".rss" : process.cwd() + "/public/podcast.rss";
             var rss = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:googleplay=\"http://www.google.com/schemas/play-podcasts/1.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\">\n  <channel>\n    <title>" + channelTitle + "</title>\n    <googleplay:author>June YAMAMOTO</googleplay:author>\n    <description>\u30C6\u30B9\u30C8\u3067\u3059</description>\n    <googleplay:image href=\"http://placehold.jp/36/99ccff/003366/600x600.png?text=WWW.YAMBAL.NET\"/>\n    <language>ja-JP</language>\n    <link>" + siteUrl + "/</link>\n    " + channelIndex[key].join('\n') + "\n  </channel>\n</rss>";
             fs.writeFileSync(rssPath, rss);
-            console.log(rss, rssPath);
+            // console.log(rss, rssPath)
         });
     });
 };

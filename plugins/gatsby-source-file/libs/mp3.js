@@ -7,7 +7,7 @@ var mkdirp = require("mkdirp-then");
 var getMp3 = function (ssml, fileName, path) {
     return new Promise(function (resolve, reject) {
         // const mp3FilePath = `${process.cwd()}/public/${path}/${fileName}`
-        var mp3StaticPath = process.cwd() + "/.cache/" + path;
+        var mp3StaticPath = process.cwd() + "/public/" + path;
         var mp3StaticFilePath = mp3StaticPath + "/" + fileName;
         var uri = "/" + path + "/" + fileName;
         var client = new text_to_speech_1["default"].TextToSpeechClient({

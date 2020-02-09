@@ -136,7 +136,7 @@ module.exports = ({ actions, reporter, graphql }, option) => {
 </rss>`
 
         fs.writeFileSync(rssPath, rss);
-        console.log(rss, rssPath)
+        // console.log(rss, rssPath)
       }
     )
   })

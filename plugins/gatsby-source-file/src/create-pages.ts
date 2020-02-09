@@ -25,6 +25,7 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
 
     console.log(`\t\t${fileName}:${chacheValue}`)
 
+    /*
     const mp3CachePath = `${process.cwd()}/.cache/${getAudioPath(pluginOption)}`
     const mp3CacheFilePath = `${mp3CachePath}/${fileName}`
 
@@ -44,6 +45,7 @@ const podcastCacheCheck = (edge, pluginOption, cashier) => {
         console.log(error);
       }
     }
+    */
 
 
     cashier.get(fileName)
