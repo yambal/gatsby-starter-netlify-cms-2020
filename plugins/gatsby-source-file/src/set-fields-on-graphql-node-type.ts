@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLString } from 'gatsby/graphql'
-import { buildMDHash, buildFileName } from './libs/file-name-builder'
+import { buildMDHash, buildFileNameShort } from './libs/file-name-builder'
 import { getAudioPath, getSiteUrl } from './libs/option-parser'
 
 // =====================================================
@@ -33,10 +33,10 @@ let MP3Type = new GraphQLObjectType({
             rawMarkdownBody
           } = MDNode
   
-          const { templateKey, slug, title } = frontmatter
+          const { templateKey, slug, title, channel } = frontmatter
           const audioPath = getAudioPath(option)
   
-          const fileName = buildFileName(slug, title, rawMarkdownBody, 'mp3')
+          const fileName = buildFileNameShort(channel, slug, 'mp3') // (slug, title, rawMarkdownBody, 'mp3')
           const mp3FilePath = `${process.cwd()}/public/${audioPath}/${fileName}`
           const absoluteUrl = siteUrl ? `${siteUrl}/${audioPath}/${fileName}` : 'siteUrl not set @option'
   

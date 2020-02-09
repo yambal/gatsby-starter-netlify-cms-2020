@@ -4,76 +4,97 @@ var mp3_1 = require("./libs/mp3");
 var html_to_ssml_1 = require("./libs/html-to-ssml");
 var file_name_builder_1 = require("./libs/file-name-builder");
 var option_parser_1 = require("./libs/option-parser");
-var fs = require("fs");
+var podcastCacheCheck = function (edge, pluginOption, cashier) {
+    return new Promise(function (resolve) {
+        var html = edge.node.html;
+        var _a = edge.node.frontmatter, title = _a.title, date = _a.date, channel = _a.channel, slug = _a.slug;
+        var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3');
+        var chacheValue = file_name_builder_1.buildMpCacheValue(title, html, channel, date, slug);
+        cashier.get(fileName)
+            .then(function (chachedValue) {
+            !chachedValue || chachedValue !== chacheValue && resolve({
+                edge: edge,
+                option: pluginOption,
+                cashier: cashier,
+                reflesh: true,
+                title: title,
+                html: html,
+                fileName: fileName,
+                chacheValue: chacheValue
+            });
+            chachedValue === chacheValue && resolve({
+                edge: edge,
+                option: pluginOption,
+                cashier: cashier,
+                reflesh: false,
+                title: title,
+                html: html,
+                fileName: fileName,
+                chacheValue: chacheValue
+            });
+        });
+    });
+};
+var podcastBuildMp3 = function (i) {
+    console.log('\tpodcastBuildMp3');
+    return new Promise(function (resolve) {
+        if (i.reflesh) {
+            console.log("\t\tmake:" + i.fileName);
+            mp3_1["default"](html_to_ssml_1["default"](i.title, i.html), i.fileName, option_parser_1.getAudioPath(i.option))
+                .then(function () {
+                resolve(i);
+            });
+        }
+        else {
+            console.log("\t\tskip:" + i.fileName);
+            resolve(i);
+        }
+    });
+};
+var podcastCacheSaver = function (i) {
+    console.log('\tpodcastCacheSaver');
+    return new Promise(function (resolve) {
+        if (i.reflesh) {
+            i.cashier.set(i.fileName, i.chacheValue)
+                .then(function () {
+                console.log("\t\tcached:" + i.fileName + " - " + i.chacheValue);
+                resolve(i);
+            });
+        }
+        else {
+            console.log("\t\tskip:" + i.fileName + " - " + i.chacheValue);
+            resolve(i);
+        }
+    });
+};
+var podcastEdgeToFile = function (edge, options, cashier) {
+    console.log('podcastEdgeToFile');
+    return new Promise(function (resolve) {
+        podcastCacheCheck(edge, options, cashier)
+            .then(function (res) {
+            return podcastBuildMp3(res);
+        })
+            .then(function (res) {
+            return podcastCacheSaver(res);
+        })
+            .then(function (res) {
+            resolve(res);
+        });
+    });
+};
 module.exports = function (_a, pluginOptions, cb) {
     var cache = _a.cache, actions = _a.actions, graphql = _a.graphql;
-    return graphql("\n    {\n      allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n        edges {\n          node {\n            id\n            fields {\n              slug\n            }\n            frontmatter {\n              slug\n              title\n            }\n            rawMarkdownBody\n            html\n          }\n        }\n      }\n    }\n    ").then(function (result) {
+    return graphql("\n    {\n      allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: \"PodCast\"}}}, limit: 10) {\n        edges {\n          node {\n            id\n            fields {\n              slug\n            }\n            frontmatter {\n              slug\n              title\n              date\n              channel\n            }\n            rawMarkdownBody\n            html\n          }\n        }\n      }\n    }\n    ").then(function (result) {
         if (result.errors) {
             result.errors.forEach(function (e) { return console.error(e.toString()); });
             return Promise.reject(result.errors);
         }
         var edges = result.data.allMarkdownRemark.edges;
-        // MP3
-        var edgeNum = edges.length;
-        edges.forEach(function (edge) {
-            var html = edge.node.html;
-            var title = edge.node.frontmatter.title;
-            cache.get('test')
-                .then(function (cacheValue) {
-                if (cacheValue) {
-                    console.log(46, cacheValue);
-                }
-                else {
-                    cache.set('test', 'test calue')
-                        .then(function () {
-                        console.log(52, 'cached');
-                    });
-                }
-            });
-            var fileName = file_name_builder_1.buildFileName(edge.node.frontmatter.slug, title, edge.node.rawMarkdownBody, 'mp3');
-            var checkPath = process.cwd() + "/public/" + option_parser_1.getAudioPath(pluginOptions) + "/" + fileName;
-            try {
-                fs.statSync(checkPath);
-                console.log(checkPath + " is exists (" + edgeNum + "/" + edges.length + ")");
-                edgeNum--;
-                edgeNum <= 0 && cb && cb();
-            }
-            catch (error) {
-                return mp3_1["default"](html_to_ssml_1["default"](title, html), fileName, option_parser_1.getAudioPath(pluginOptions))
-                    .then(function () {
-                    console.log(checkPath + " saved (" + edgeNum + "/" + edges.length + ")");
-                    edgeNum--;
-                    edgeNum <= 0 && cb && cb();
-                });
-            }
-            /*
-            return cache.get(cacheKey)
-              .then(
-                nodeIdHash => {
-                  console.log('cache check:', cacheKey, hash, nodeIdHash)
-  
-                  if (nodeIdHash !== hash){
-                    return mp3(HtmlToSSML(title, html), fileName, getAudioPath(pluginOptions))
-                      .then(
-                        (response) => {
-                          console.log(response)
-                          return cache.set(cacheKey, hash)
-                            .then(
-                              () => {
-                                console.log('cache saved:', cacheKey, hash)
-                                cb && cb()
-                              }
-                            )
-                        }
-                      )
-                  } else {
-                    console.log(`\tskip: hash ${hash}`)
-                    cb && cb()
-                    return
-                  }
-                }
-              )
-            */
+        Promise.all(edges.map(function (edge) {
+            return podcastEdgeToFile(edge, pluginOptions, cache);
+        }))
+            .then(function () {
+            cb && cb();
         });
     });
 };

@@ -1,8 +1,111 @@
 import mp3 from './libs/mp3'
 import HtmlToSSML from './libs/html-to-ssml'
-import { buildMDHash, buildFileName } from './libs/file-name-builder'
+import { buildMDHash, buildFileNameShort, buildMpCacheValue } from './libs/file-name-builder'
 import { getAudioPath } from './libs/option-parser'
 import * as fs from 'fs'
+
+interface iPodcastBuild {
+  edge: any
+  option: any
+  cashier: any
+  reflesh?:boolean
+  title?: string
+  html?: string
+  fileName?: string
+  chacheValue?: string
+}
+const podcastCacheCheck = (edge, pluginOption, cashier) => {
+  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
+    const html = edge.node.html
+    const { title, date, channel, slug } = edge.node.frontmatter
+    const fileName = buildFileNameShort(channel, slug, 'mp3')
+    const chacheValue = buildMpCacheValue(title, html, channel, date, slug)
+
+    cashier.get(fileName)
+    .then(
+      chachedValue => {
+        !chachedValue || chachedValue !== chacheValue && resolve({
+          edge,
+          option: pluginOption,
+          cashier,
+          reflesh: true,
+          title,
+          html,
+          fileName,
+          chacheValue
+        })
+        chachedValue === chacheValue && resolve({
+          edge,
+          option: pluginOption,
+          cashier,
+          reflesh: false,
+          title,
+          html,
+          fileName,
+          chacheValue
+        })
+      }
+    )
+  })
+}
+
+const podcastBuildMp3 = (i: iPodcastBuild) => {
+  console.log('\tpodcastBuildMp3')
+  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
+    if (i.reflesh) {
+      console.log(`\t\tmake:${i.fileName}`)
+      mp3(HtmlToSSML(i.title, i.html), i.fileName, getAudioPath(i.option))
+      .then(
+        () => {
+          resolve(i)
+        }
+      )
+    } else {
+      console.log(`\t\tskip:${i.fileName}`)
+      resolve(i)
+    }
+  })
+}
+
+const podcastCacheSaver = (i: iPodcastBuild) => {
+  console.log('\tpodcastCacheSaver')
+  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
+    if (i.reflesh){
+      i.cashier.set(i.fileName, i.chacheValue)
+      .then(
+        () => {
+          console.log(`\t\tcached:${i.fileName} - ${i.chacheValue}`)
+          resolve(i)
+        }
+      )
+    } else {
+      console.log(`\t\tskip:${i.fileName} - ${i.chacheValue}`)
+      resolve(i)
+    }
+  })
+}
+
+const podcastEdgeToFile = (edge, options, cashier) => {
+  console.log('podcastEdgeToFile')
+  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
+    podcastCacheCheck(edge, options, cashier)
+    .then(
+      (res) => {
+        return podcastBuildMp3(res)
+      }
+    )
+    .then(
+      (res) => {
+        return podcastCacheSaver(res)
+      }
+    )
+    .then(
+      (res) => {
+        resolve(res)
+      }
+    )
+  })
+}
 
 module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) => {
     return graphql(`
@@ -17,6 +120,8 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
             frontmatter {
               slug
               title
+              date
+              channel
             }
             rawMarkdownBody
             html
@@ -31,80 +136,14 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
       }
   
       const edges = result.data.allMarkdownRemark.edges
-  
-
-      // MP3
-      let edgeNum = edges.length
-      edges.forEach(
-        (edge) => {
-          const html = edge.node.html
-          const title = edge.node.frontmatter.title
-
-          cache.get('test')
-            .then(
-              (cacheValue) => {
-                if(cacheValue) {
-                  console.log(46, cacheValue)
-                } else {
-                  cache.set('test', 'test calue')
-                    .then(
-                      () => {
-                        console.log(52, 'cached')
-                      }
-                    )
-                }
-              }
-            )
-          
-          const fileName = buildFileName(edge.node.frontmatter.slug, title, edge.node.rawMarkdownBody, 'mp3')
-          const checkPath = `${process.cwd()}/public/${getAudioPath(pluginOptions)}/${fileName}`
-
-
-
-          try {
-            fs.statSync(checkPath);
-            console.log(`${checkPath} is exists (${edgeNum}/${edges.length})`);
-            edgeNum--
-            edgeNum <= 0 && cb && cb()
-          } catch (error) {
-            return mp3(HtmlToSSML(title, html), fileName, getAudioPath(pluginOptions))
-            .then(
-              () => {
-                console.log(`${checkPath} saved (${edgeNum}/${edges.length})`);
-                edgeNum--
-                edgeNum <= 0 && cb && cb()
-              }
-            )
-          }
-  
-          /*
-          return cache.get(cacheKey)
-            .then(
-              nodeIdHash => {
-                console.log('cache check:', cacheKey, hash, nodeIdHash)
-
-                if (nodeIdHash !== hash){
-                  return mp3(HtmlToSSML(title, html), fileName, getAudioPath(pluginOptions))
-                    .then(
-                      (response) => {
-                        console.log(response)
-                        return cache.set(cacheKey, hash)
-                          .then(
-                            () => {
-                              console.log('cache saved:', cacheKey, hash)
-                              cb && cb()
-                            }
-                          )
-                      }
-                    )
-                } else {
-                  console.log(`\tskip: hash ${hash}`)
-                  cb && cb()
-                  return
-                }
-              }
-            )
-          */
+      Promise.all(edges.map(
+        edge => {
+          return podcastEdgeToFile(edge, pluginOptions, cache)
+        }
+      ))
+      .then(
+        () => {
+          cb && cb()
         }
       )
     })

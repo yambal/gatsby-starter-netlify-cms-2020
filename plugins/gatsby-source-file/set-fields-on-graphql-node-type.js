@@ -28,9 +28,9 @@ module.exports = function (_a, option) {
             },
             resolve: function (MDNode, args) {
                 var frontmatter = MDNode.frontmatter, rawMarkdownBody = MDNode.rawMarkdownBody;
-                var templateKey = frontmatter.templateKey, slug = frontmatter.slug, title = frontmatter.title;
+                var templateKey = frontmatter.templateKey, slug = frontmatter.slug, title = frontmatter.title, channel = frontmatter.channel;
                 var audioPath = option_parser_1.getAudioPath(option);
-                var fileName = file_name_builder_1.buildFileName(slug, title, rawMarkdownBody, 'mp3');
+                var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3'); // (slug, title, rawMarkdownBody, 'mp3')
                 var mp3FilePath = process.cwd() + "/public/" + audioPath + "/" + fileName;
                 var absoluteUrl = siteUrl ? siteUrl + "/" + audioPath + "/" + fileName : 'siteUrl not set @option';
                 if (templateKey === 'PodCast') {

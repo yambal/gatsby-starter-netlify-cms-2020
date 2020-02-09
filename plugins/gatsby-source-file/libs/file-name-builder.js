@@ -4,6 +4,16 @@ var crypto = require("crypto");
 exports.buildMDHash = function (title, rawMarkdownBody) {
     return crypto.createHash('md5').update(title + "-" + rawMarkdownBody, 'utf8').digest('hex');
 };
-exports.buildFileName = function (slag, title, rawMarkdownBody, exe) {
-    return slag + "-" + exports.buildMDHash(title, rawMarkdownBody) + "." + exe;
+/*
+export const buildFileName = (slag: string, title: string, rawMarkdownBody: string, exe: string) => {
+    return `${slag}-${buildMDHash(title, rawMarkdownBody)}.${exe}`
+}
+*/
+exports.buildMpCacheValue = function (title, body, channel, date, slug) {
+    var hashSeed = title + "-" + body + "-" + channel + "-" + date + "-" + slug;
+    return crypto.createHash('md5').update(hashSeed, 'utf8').digest('hex');
+};
+exports.buildFileNameShort = function (channel, slug, exe) {
+    var channelFix = channel ? channel + "-" : '';
+    return "podcast-" + channelFix + slug + "." + exe;
 };
