@@ -16,10 +16,12 @@ module.exports = {
         audioDir: 'audio',
         channels: {
           default : {
-            title: 'WWW.YAMBAL.NET'
+            title: 'WWW.YAMBAL.NET',
+            description: 'WWW.YAMBAL.NET'
           },
           test :{
-            title: 'テスト'
+            title: 'テスト',
+            description: 'Text To Speech によるポッドキャスト配信のテストです。'
           }
         }
       }

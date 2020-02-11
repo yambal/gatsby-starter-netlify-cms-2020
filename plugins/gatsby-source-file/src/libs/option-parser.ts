@@ -6,6 +6,7 @@ interface iOption{
 
 interface iChannelOption {
   title: string
+  description: string
 }
 
 export const getChannelOption = (channel?: string, option?: iOption):iChannelOption | null => {
@@ -28,4 +29,7 @@ export const getChannelTitle = (channel?: string, option?: any) => {
   return channelOption ? channelOption.title : 'channel title is not set'
 }
 
-
+export const getChannelDescription = (channel?: string, option?: any) => {
+  const channelOption = getChannelOption(channel, option)
+  return channelOption ? channelOption.description : 'channel description is not set'
+}

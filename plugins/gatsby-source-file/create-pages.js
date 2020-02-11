@@ -4,6 +4,7 @@ var mp3_1 = require("./libs/mp3");
 var html_to_ssml_1 = require("./libs/html-to-ssml");
 var file_checker_1 = require("./file-checker");
 var cache_1 = require("./libs/cache");
+var option_parser_1 = require("./libs/option-parser");
 var podcastBuildMp3 = function (checkCacheResponse, ssml) {
     return new Promise(function (resolve) {
         if (!checkCacheResponse.hasCashe || checkCacheResponse.isOld) {
@@ -41,8 +42,10 @@ var podcastEdgeToFile = function (edge, options) {
         return cache_1.checkCache(edge, options)
             .then(function (checkCacheResponse) {
             var html = edge.node.html;
-            var title = edge.node.frontmatter.title;
-            var ssml = html_to_ssml_1["default"](title, html);
+            var _a = edge.node.frontmatter, title = _a.title, channel = _a.channel;
+            var channelTitle = option_parser_1.getChannelTitle(channel, options);
+            var channelDescription = option_parser_1.getChannelDescription(channel, options);
+            var ssml = html_to_ssml_1["default"](channelTitle, channelDescription, title, html);
             return podcastBuildMp3(checkCacheResponse, ssml);
         })
             .then(function (res) {

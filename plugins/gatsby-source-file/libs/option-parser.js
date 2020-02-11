@@ -16,3 +16,7 @@ exports.getChannelTitle = function (channel, option) {
     var channelOption = exports.getChannelOption(channel, option);
     return channelOption ? channelOption.title : 'channel title is not set';
 };
+exports.getChannelDescription = function (channel, option) {
+    var channelOption = exports.getChannelOption(channel, option);
+    return channelOption ? channelOption.description : 'channel description is not set';
+};

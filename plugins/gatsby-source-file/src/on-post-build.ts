@@ -1,5 +1,5 @@
 import { getITunesDuration } from './libs/getI-itunes-duration'
-import { getChannelTitle, getSiteUrl } from './libs/option-parser'
+import { getChannelTitle, getSiteUrl, getChannelDescription } from './libs/option-parser'
 var fs = require('fs')
 /**
  * https://www.gatsbyjs.org/docs/node-apis/#onPostBuild
@@ -118,6 +118,7 @@ module.exports = ({ actions, reporter, graphql }, option) => {
       key => {
         /** チャンネルのタイトル */
         const channelTitle = getChannelTitle(key, option)
+        const channelDescription = getChannelDescription(key, option)
 
         /** rss の パス */
         const rssPath = key && key !== 'null' ? `${process.cwd()}/public/podcast-${key}.rss` : `${process.cwd()}/public/podcast.rss`
@@ -127,7 +128,7 @@ module.exports = ({ actions, reporter, graphql }, option) => {
   <channel>
     <title>${channelTitle}</title>
     <googleplay:author>June YAMAMOTO</googleplay:author>
-    <description>テストです</description>
+    <description>${channelDescription}</description>
     <googleplay:image href="http://placehold.jp/36/99ccff/003366/600x600.png?text=WWW.YAMBAL.NET"/>
     <language>ja-JP</language>
     <link>${siteUrl}/</link>

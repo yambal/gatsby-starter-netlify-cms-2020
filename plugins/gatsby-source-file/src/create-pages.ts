@@ -2,6 +2,7 @@ import mp3 from './libs/mp3'
 import HtmlToSSML from './libs/html-to-ssml'
 import { listFiles } from './file-checker'
 import { cacheToPablic, podcastCashSet, checkCache, iPodcastCacheCheckResponse } from './libs/cache'
+import { getChannelTitle, getSiteUrl, getChannelDescription } from './libs/option-parser'
 
 export interface iPodcastBuild {
   edge: any
@@ -69,8 +70,12 @@ const podcastEdgeToFile = (edge, options):Promise<iPodcastCacheCheckResponse> =>
     .then(
       (checkCacheResponse) => {
         const html = edge.node.html
-        const { title } = edge.node.frontmatter
-        const ssml = HtmlToSSML(title, html)
+        const { title, channel } = edge.node.frontmatter
+
+        const channelTitle = getChannelTitle(channel, options)
+        const channelDescription = getChannelDescription(channel, options)
+
+        const ssml = HtmlToSSML(channelTitle, channelDescription, title, html)
         return podcastBuildMp3(checkCacheResponse, ssml)
       }
     )
