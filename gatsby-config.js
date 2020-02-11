@@ -20,7 +20,7 @@ module.exports = {
             description: 'WWW.YAMBAL.NET'
           },
           test :{
-            title: 'テスト',
+            title: 'HAL4500',
             description: 'Text To Speech によるポッドキャスト配信のテストです。'
           }
         }
