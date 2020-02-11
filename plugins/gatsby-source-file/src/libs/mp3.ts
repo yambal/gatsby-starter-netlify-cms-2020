@@ -27,16 +27,6 @@ const getMp3 = (ssml: string) => {
       .then((responses) => {
         const response = responses[0]
         resolve(response)
-        /*
-            const writeFile = util.promisify(fs.writeFile);
-            writeFile(mp3StaticFilePath, response.audioContent, 'binary')
-              .then(
-                () => {
-                  console.log(mp3StaticFilePath);
-                  resolve(uri)
-                }
-              )
-        */
       })
   })
 }

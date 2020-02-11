@@ -84,7 +84,7 @@ module.exports = {
       resolve: "gatsby-plugin-netlify-cache",
       options: {
         cachePublic: true,
-        extraDirsToCache: ['podcast']
+        extraDirsToCache: ['.podcast']
       }
     },
     {

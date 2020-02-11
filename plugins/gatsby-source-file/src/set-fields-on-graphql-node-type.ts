@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLString } from 'gatsby/graphql'
-import { buildMDHash, buildFileNameShort } from './libs/file-name-builder'
+import { path } from './libs/filePath'
 import { getAudioPath, getSiteUrl } from './libs/option-parser'
 
 // =====================================================
@@ -13,8 +13,6 @@ let MP3Type = new GraphQLObjectType({
   });
   
   module.exports = ({ type }, option) => {
-    const siteUrl = getSiteUrl(option)
-  
     if (type.name !== `MarkdownRemark`) {
       return {}
     }
@@ -29,22 +27,22 @@ let MP3Type = new GraphQLObjectType({
         },
         resolve: (MDNode, args) => {
           const {
-            frontmatter,
-            rawMarkdownBody
+            frontmatter
           } = MDNode
   
-          const { templateKey, slug, title, channel } = frontmatter
+          const { templateKey, slug, channel } = frontmatter
           const audioPath = getAudioPath(option)
-  
-          const fileName = buildFileNameShort(channel, slug, 'mp3') // (slug, title, rawMarkdownBody, 'mp3')
-          const mp3FilePath = `${process.cwd()}/public/${audioPath}/${fileName}`
-          const absoluteUrl = siteUrl ? `${siteUrl}/${audioPath}/${fileName}` : 'siteUrl not set @option'
+          const fileName = path.edgeMp3FileName(channel, slug)
+          const mp3PublicFilePath = path.edgeMp3PublicFilePath(channel, slug, option)
+          const absoluteUrl = path.edgeMp3AbsoluteUrl(channel, slug, option)
+
+          console.log(42, absoluteUrl)
   
           if (templateKey === 'PodCast'){
             return {
               absoluteUrl: absoluteUrl,
               url: `/${audioPath}/${fileName}`,
-              path: mp3FilePath
+              path: mp3PublicFilePath
             }
           }
   

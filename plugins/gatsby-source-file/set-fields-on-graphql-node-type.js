@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var graphql_1 = require("gatsby/graphql");
-var file_name_builder_1 = require("./libs/file-name-builder");
+var filePath_1 = require("./libs/filePath");
 var option_parser_1 = require("./libs/option-parser");
 // =====================================================
 var MP3Type = new graphql_1.GraphQLObjectType({
@@ -14,7 +14,6 @@ var MP3Type = new graphql_1.GraphQLObjectType({
 });
 module.exports = function (_a, option) {
     var type = _a.type;
-    var siteUrl = option_parser_1.getSiteUrl(option);
     if (type.name !== "MarkdownRemark") {
         return {};
     }
@@ -27,17 +26,18 @@ module.exports = function (_a, option) {
                 }
             },
             resolve: function (MDNode, args) {
-                var frontmatter = MDNode.frontmatter, rawMarkdownBody = MDNode.rawMarkdownBody;
-                var templateKey = frontmatter.templateKey, slug = frontmatter.slug, title = frontmatter.title, channel = frontmatter.channel;
+                var frontmatter = MDNode.frontmatter;
+                var templateKey = frontmatter.templateKey, slug = frontmatter.slug, channel = frontmatter.channel;
                 var audioPath = option_parser_1.getAudioPath(option);
-                var fileName = file_name_builder_1.buildFileNameShort(channel, slug, 'mp3'); // (slug, title, rawMarkdownBody, 'mp3')
-                var mp3FilePath = process.cwd() + "/public/" + audioPath + "/" + fileName;
-                var absoluteUrl = siteUrl ? siteUrl + "/" + audioPath + "/" + fileName : 'siteUrl not set @option';
+                var fileName = filePath_1.path.edgeMp3FileName(channel, slug);
+                var mp3PublicFilePath = filePath_1.path.edgeMp3PublicFilePath(channel, slug, option);
+                var absoluteUrl = filePath_1.path.edgeMp3AbsoluteUrl(channel, slug, option);
+                console.log(42, absoluteUrl);
                 if (templateKey === 'PodCast') {
                     return {
                         absoluteUrl: absoluteUrl,
                         url: "/" + audioPath + "/" + fileName,
-                        path: mp3FilePath
+                        path: mp3PublicFilePath
                     };
                 }
                 return null;

@@ -1,11 +1,7 @@
 import mp3 from './libs/mp3'
 import HtmlToSSML from './libs/html-to-ssml'
-import { buildFileNameShort, buildMpCacheValue } from './libs/file-name-builder'
-import { getAudioPath } from './libs/option-parser'
-import * as fs from 'fs'
 import { listFiles } from './file-checker'
-import * as mkdirp from 'mkdirp-then'
-import * as util from 'util'
+import { cacheToPablic, podcastCashSet, checkCache, iPodcastCacheCheckResponse } from './libs/cache'
 
 export interface iPodcastBuild {
   edge: any
@@ -19,171 +15,57 @@ export interface iPodcastBuild {
   isNeedReflash?:boolean
 }
 
-const podcastCacheGet = (key: string) => {
-  return new Promise((resolve: (resolve: string) => void) => {
-    const cacheDir = `${process.cwd()}/podcast`
-    const cacheFilePath = `${cacheDir}/cache-${key}.txt`
-    try {
-      fs.statSync(cacheFilePath)
-      fs.readFile(cacheFilePath, "utf-8", (err, data) => {
-        if(!err) {
-          resolve(data)
-          return
-        }
-        resolve(null)
-      })
-    } catch (error) {
-      resolve(null)
-    }
-  })
-}
+const podcastBuildMp3 = (
+  checkCacheResponse: iPodcastCacheCheckResponse,
+  ssml: string
+) => {
 
-const podcastCashSet = (key: string, value: string) => {
-  return new Promise((resolve: () => void) => {
-    const cacheDir = `${process.cwd()}/podcast`
-    const cacheFilePath = `${cacheDir}/cache-${key}.txt`
-    mkdirp(cacheDir)
-    .then(
-      () => {
-        fs.writeFile(cacheFilePath, value, 'utf8', () => {
-          resolve()
-        });
-      }
-    )
-  })
-}
-
-const podcastCacheCheck = (edge, pluginOption) => {
-  console.log('\tpodcastCacheCheck')
-  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    const html = edge.node.html
-    const { title, date, channel, slug } = edge.node.frontmatter
-
-    const fileName = buildFileNameShort(channel, slug, 'mp3')
-    
-    const cacheKey = buildFileNameShort(channel, slug)
-    const chacheValue = buildMpCacheValue(title, html, channel, date, slug)
-
-    const cacheDir = `${process.cwd()}/podcast`
-    const publicDir = `${process.cwd()}/public/${getAudioPath(pluginOption)}`
-
-    const ssml = HtmlToSSML(title, html)
-    
-    podcastCacheGet(cacheKey)
-    .then(
-      cachedValue => {
-        let res = {
-          edge,
-          cacheDir,
-          publicDir,
-          ssml,
-          fileName,
-          cacheKey,
-          chacheValue,
-          isNeedReflash: true,
-        }
-
-        if (cachedValue) {
-          if (cachedValue === chacheValue){
-            // 変更なし
-            console.log(`\t\tnot change:${fileName}`)
-            res.isNeedReflash = false
-          } else {
-            // 変更あり
-            console.log(`\t\tchange:${fileName}`)
-            res.isNeedReflash = true
-          }
-        } else {
-          // キャッシュなし
-          console.log(`\t\tnone:${fileName}`)
-          res.isNeedReflash = true
-        }
-
-        resolve(res)
-      }
-    )
-  })
-}
-
-const podcastBuildMp3 = (i: iPodcastBuild) => {
-  console.log('\tpodcastBuildMp3')
-  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    const cacheFilePath = `${i.cacheDir}/${i.fileName}`
-
-    if (i.isNeedReflash) {
-      console.log(`\t\tmake:${i.fileName}`)
-      
-      mp3(i.ssml)
+  return new Promise((resolve: (resolve: iPodcastCacheCheckResponse) => void) => {
+    if (!checkCacheResponse.hasCashe || checkCacheResponse.isOld) {
+      console.log('podcast: make mp3')
+      mp3(ssml)
       .then(
-        data => {
-          
-          mkdirp(i.cacheDir)
-          .then(
-            () => {
-              const writeFile = util.promisify(fs.writeFile)
-              writeFile(cacheFilePath, data, 'binary')
-              .then(
-                () => {
-                  i.cachedFilePath = cacheFilePath
-                  resolve(i)
-                }
-              )
-            }
-          )
+        audioData => {
+          checkCacheResponse.audioData = audioData
+          resolve(checkCacheResponse)
         }
       )
 
     } else {
-      console.log(`\t\tskip:${i.fileName}`)
-      i.cachedFilePath = cacheFilePath
-      resolve(i)
+      console.log('podcast: make mp3 skip')
+      resolve(checkCacheResponse)
     }
   })
 }
 
-const podcastCacheSaver = (i: iPodcastBuild) => {
-  console.log('\tpodcastCacheSaver')
-  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    podcastCashSet(i.cacheKey, i.chacheValue)
+const podcastCacheSaver = (checkCacheResponse: iPodcastCacheCheckResponse) => {
+  return new Promise((resolve: (resolve: iPodcastCacheCheckResponse) => void) => {
+    podcastCashSet(
+      checkCacheResponse.cacheKey,
+      checkCacheResponse.cacheValue,
+      checkCacheResponse.channel,
+      checkCacheResponse.slug,
+      checkCacheResponse.audioData
+    )
     .then(
       () => {
-        resolve(i)
+        resolve(checkCacheResponse)
       }
     )
   })
 }
 
-const cacheToPablic = (i: iPodcastBuild) => {
-  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    
-    var publicPath = `${i.publicDir}/${i.fileName}`
-
-    console.log('cacheToPablic')
-    console.log(`\t${i.cachedFilePath}`)
-    console.log(`\t${publicPath}`)
-
-    mkdirp(i.publicDir)
-    .then(
-      () => {
-        fs.copyFile(i.cachedFilePath, publicPath, (err) => {
-          if (!err) {
-            resolve(i)
-            return
-          }
-          resolve(i)
-        });
-      }
-    )
-  })
-}
-
-const podcastEdgeToFile = (edge, options):Promise<iPodcastBuild> => {
+const podcastEdgeToFile = (edge, options):Promise<iPodcastCacheCheckResponse> => {
   console.log('podcastEdgeToFile')
-  return new Promise((resolve: (resolve: iPodcastBuild) => void) => {
-    return podcastCacheCheck(edge, options)
+
+  return new Promise((resolve: (resolve: iPodcastCacheCheckResponse) => void) => {
+    return checkCache(edge, options)
     .then(
-      (res) => {
-        return podcastBuildMp3(res)
+      (checkCacheResponse) => {
+        const html = edge.node.html
+        const { title } = edge.node.frontmatter
+        const ssml = HtmlToSSML(title, html)
+        return podcastBuildMp3(checkCacheResponse, ssml)
       }
     )
     .then(
