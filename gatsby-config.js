@@ -82,6 +82,10 @@ module.exports = {
     },
     {
       resolve: "gatsby-plugin-netlify-cache",
+      options: {
+        cachePublic: true,
+        extraDirsToCache: ['.podcast']
+      }
     },
     {
       resolve: 'gatsby-plugin-netlify-cms',
