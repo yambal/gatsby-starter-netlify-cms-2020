@@ -32,7 +32,6 @@ module.exports = function (_a, option) {
                 var fileName = filePath_1.path.edgeMp3FileName(channel, slug);
                 var mp3PublicFilePath = filePath_1.path.edgeMp3PublicFilePath(channel, slug, option);
                 var absoluteUrl = filePath_1.path.edgeMp3AbsoluteUrl(channel, slug, option);
-                console.log(42, absoluteUrl);
                 if (templateKey === 'PodCast') {
                     return {
                         absoluteUrl: absoluteUrl,

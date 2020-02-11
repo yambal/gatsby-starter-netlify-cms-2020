@@ -99,6 +99,7 @@ exports.cacheToPablic = function (podcastCacheCheckResponse) {
             .then(function () {
             fs.copyFile(podcastCacheCheckResponse.mp3CacheFilePath, podcastCacheCheckResponse.mp3PublicFilePath, function (err) {
                 if (!err) {
+                    console.log('podcast: cache recovered');
                     resolve(podcastCacheCheckResponse);
                     return;
                 }

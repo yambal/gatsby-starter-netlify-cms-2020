@@ -18,7 +18,7 @@ export const path = {
     publicDir: `${process.cwd()}/public`,
     publicMp3Dir: (option) => {
         const audioPath = getAudioPath(option)
-        return `${path.publicDir}/audio/${audioPath}`
+        return `${path.publicDir}/${audioPath}`
     },
     cacheFilePath: (key: string):string => {
         return `${path.cacheDir}/cache-${key}.txt`
@@ -38,7 +38,7 @@ export const path = {
         return `${path.cacheDir}/${path.edgeMp3FileName(channel, slug)}`
     },
     edgeMp3PublicFilePath: (channel: string, slug: string, option: any):string => {
-        return `${path.publicMp3Dir(option)}${path.edgeMp3FileName(channel, slug)}`
+        return `${path.publicMp3Dir(option)}/${path.edgeMp3FileName(channel, slug)}`
     },
     edgeMp3AbsoluteUrl: (channel: string, slug: string, option: any) => {
         const siteUrl = getSiteUrl(option)

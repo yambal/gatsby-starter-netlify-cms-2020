@@ -26,6 +26,7 @@ const podcastBuildMp3 = (
       mp3(ssml)
       .then(
         audioData => {
+          console.log('podcast: make mp3 success')
           checkCacheResponse.audioData = audioData
           resolve(checkCacheResponse)
         }
@@ -40,24 +41,29 @@ const podcastBuildMp3 = (
 
 const podcastCacheSaver = (checkCacheResponse: iPodcastCacheCheckResponse) => {
   return new Promise((resolve: (resolve: iPodcastCacheCheckResponse) => void) => {
-    podcastCashSet(
-      checkCacheResponse.cacheKey,
-      checkCacheResponse.cacheValue,
-      checkCacheResponse.channel,
-      checkCacheResponse.slug,
-      checkCacheResponse.audioData
-    )
-    .then(
-      () => {
-        resolve(checkCacheResponse)
-      }
-    )
+    if (checkCacheResponse.audioData) {
+      podcastCashSet(
+        checkCacheResponse.cacheKey,
+        checkCacheResponse.cacheValue,
+        checkCacheResponse.channel,
+        checkCacheResponse.slug,
+        checkCacheResponse.audioData
+      )
+      .then(
+        () => {
+          console.log('podcast: cached')
+          resolve(checkCacheResponse)
+        }
+      )
+    } else {
+      console.log('podcast: cacheing skip')
+      resolve(checkCacheResponse)
+    }
+
   })
 }
 
 const podcastEdgeToFile = (edge, options):Promise<iPodcastCacheCheckResponse> => {
-  console.log('podcastEdgeToFile')
-
   return new Promise((resolve: (resolve: iPodcastCacheCheckResponse) => void) => {
     return checkCache(edge, options)
     .then(

@@ -121,6 +121,7 @@ export const cacheToPablic = (podcastCacheCheckResponse: iPodcastCacheCheckRespo
       () => {
         fs.copyFile(podcastCacheCheckResponse.mp3CacheFilePath, podcastCacheCheckResponse.mp3PublicFilePath, (err) => {
           if (!err) {
+            console.log('podcast: cache recovered')
             resolve(podcastCacheCheckResponse)
             return
           }

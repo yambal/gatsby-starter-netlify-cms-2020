@@ -10,6 +10,7 @@ var podcastBuildMp3 = function (checkCacheResponse, ssml) {
             console.log('podcast: make mp3');
             mp3_1["default"](ssml)
                 .then(function (audioData) {
+                console.log('podcast: make mp3 success');
                 checkCacheResponse.audioData = audioData;
                 resolve(checkCacheResponse);
             });
@@ -22,14 +23,20 @@ var podcastBuildMp3 = function (checkCacheResponse, ssml) {
 };
 var podcastCacheSaver = function (checkCacheResponse) {
     return new Promise(function (resolve) {
-        cache_1.podcastCashSet(checkCacheResponse.cacheKey, checkCacheResponse.cacheValue, checkCacheResponse.channel, checkCacheResponse.slug, checkCacheResponse.audioData)
-            .then(function () {
+        if (checkCacheResponse.audioData) {
+            cache_1.podcastCashSet(checkCacheResponse.cacheKey, checkCacheResponse.cacheValue, checkCacheResponse.channel, checkCacheResponse.slug, checkCacheResponse.audioData)
+                .then(function () {
+                console.log('podcast: cached');
+                resolve(checkCacheResponse);
+            });
+        }
+        else {
+            console.log('podcast: cacheing skip');
             resolve(checkCacheResponse);
-        });
+        }
     });
 };
 var podcastEdgeToFile = function (edge, options) {
-    console.log('podcastEdgeToFile');
     return new Promise(function (resolve) {
         return cache_1.checkCache(edge, options)
             .then(function (checkCacheResponse) {

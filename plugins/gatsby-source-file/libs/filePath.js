@@ -16,7 +16,7 @@ exports.path = {
     publicDir: process.cwd() + "/public",
     publicMp3Dir: function (option) {
         var audioPath = option_parser_1.getAudioPath(option);
-        return exports.path.publicDir + "/audio/" + audioPath;
+        return exports.path.publicDir + "/" + audioPath;
     },
     cacheFilePath: function (key) {
         return exports.path.cacheDir + "/cache-" + key + ".txt";
@@ -36,7 +36,7 @@ exports.path = {
         return exports.path.cacheDir + "/" + exports.path.edgeMp3FileName(channel, slug);
     },
     edgeMp3PublicFilePath: function (channel, slug, option) {
-        return "" + exports.path.publicMp3Dir(option) + exports.path.edgeMp3FileName(channel, slug);
+        return exports.path.publicMp3Dir(option) + "/" + exports.path.edgeMp3FileName(channel, slug);
     },
     edgeMp3AbsoluteUrl: function (channel, slug, option) {
         var siteUrl = option_parser_1.getSiteUrl(option);

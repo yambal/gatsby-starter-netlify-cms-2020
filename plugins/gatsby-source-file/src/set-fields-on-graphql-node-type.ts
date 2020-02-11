@@ -36,8 +36,6 @@ let MP3Type = new GraphQLObjectType({
           const mp3PublicFilePath = path.edgeMp3PublicFilePath(channel, slug, option)
           const absoluteUrl = path.edgeMp3AbsoluteUrl(channel, slug, option)
 
-          console.log(42, absoluteUrl)
-  
           if (templateKey === 'PodCast'){
             return {
               absoluteUrl: absoluteUrl,

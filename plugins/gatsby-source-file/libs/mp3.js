@@ -1,7 +1,6 @@
 "use strict";
 exports.__esModule = true;
 var text_to_speech_1 = require("@google-cloud/text-to-speech");
-// const getMp3 = (ssml: string, fileName: string, path: string) => {
 var getMp3 = function (ssml) {
     return new Promise(function (resolve, reject) {
         var client = new text_to_speech_1["default"].TextToSpeechClient({
@@ -21,8 +20,8 @@ var getMp3 = function (ssml) {
         };
         client.synthesizeSpeech(request)
             .then(function (responses) {
-            var response = responses[0];
-            resolve(response);
+            var audioContent = responses[0].audioContent;
+            resolve(audioContent);
         });
     });
 };

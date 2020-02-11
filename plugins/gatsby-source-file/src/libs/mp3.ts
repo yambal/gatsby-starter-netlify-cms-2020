@@ -1,9 +1,5 @@
 import textToSpeech from '@google-cloud/text-to-speech'
-import * as fs from 'fs'
 
-import * as mkdirp from 'mkdirp-then'
-
-// const getMp3 = (ssml: string, fileName: string, path: string) => {
 const getMp3 = (ssml: string) => {
   return new Promise((resolve: (data) => void, reject) => {
     const client = new textToSpeech.TextToSpeechClient({
@@ -25,8 +21,8 @@ const getMp3 = (ssml: string) => {
   
     client.synthesizeSpeech(request)
       .then((responses) => {
-        const response = responses[0]
-        resolve(response)
+        const audioContent = responses[0].audioContent
+        resolve(audioContent)
       })
   })
 }
