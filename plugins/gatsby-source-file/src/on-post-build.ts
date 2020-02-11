@@ -130,6 +130,9 @@ module.exports = ({ actions, reporter, graphql }, option) => {
     <googleplay:author>June YAMAMOTO</googleplay:author>
     <description>${channelDescription}</description>
     <googleplay:image href="http://placehold.jp/36/99ccff/003366/600x600.png?text=WWW.YAMBAL.NET"/>
+    <itunes:image href="http://placehold.jp/36/99ccff/003366/1400x1400.png?text=${channelTitle}" />
+    <itunes:category text="テクノロジー">
+    <itunes:explicit>no</itunes:explicit>
     <language>ja-JP</language>
     <link>${siteUrl}/</link>
     ${channelIndex[key].join('\n')}
