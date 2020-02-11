@@ -131,7 +131,7 @@ module.exports = ({ actions, reporter, graphql }, option) => {
     <description>${channelDescription}</description>
     <googleplay:image href="http://placehold.jp/36/99ccff/003366/600x600.png?text=${channelTitle}"/>
     <itunes:image href="http://placehold.jp/36/99ccff/003366/1400x1400.png?text=${channelTitle}"/>
-    <itunes:category>テクノロジー</itunes:category>
+    <itunes:category>Technology</itunes:category>
     <itunes:explicit>no</itunes:explicit>
     <language>ja-JP</language>
     <link>${siteUrl}/</link>
