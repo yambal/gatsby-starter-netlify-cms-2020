@@ -1,6 +1,8 @@
+
 const HtmlToSSML = (channelTitle, cnannelDescription, title, markdown) => {
 
-  console.log(cnannelDescription)
+  console.log(markdown)
+
   const openning = `
   <par>
     <media begin="4s" xml:id="openingtalk">
@@ -22,7 +24,7 @@ const HtmlToSSML = (channelTitle, cnannelDescription, title, markdown) => {
   <emphasis level="strong">
       ${title}
   </emphasis>
-  <break time="3s" />`
+  <break time="2s" />`
 
   let ssml = `<speak>
     <prosody rate="125%">
@@ -32,10 +34,49 @@ const HtmlToSSML = (channelTitle, cnannelDescription, title, markdown) => {
     </prosody>
   </speak>`
 
+  // H1
+  ssml = ssml.split('<h1>').join(`
+    <par>
+      <media begin="1.2s">
+        <emphasis level="strong">`)
+  ssml = ssml.split('</h1>').join(`
+        </emphasis>
+      </media>
+      <media begin="0s" soundLevel="-10dB">
+        <audio src="https://www.yambal.net/audio/se/title01.mp3"/>
+      </media>
+    </par><break time="2s" />`)
+
+  // H2
+  ssml = ssml.split('<h2>').join(`
+    <par>
+      <media begin="1.2s">
+        <emphasis level="strong">`)
+  ssml = ssml.split('</h2>').join(`
+        </emphasis>
+      </media>
+      <media begin="0s" soundLevel="-20dB">
+        <audio src="https://www.yambal.net/audio/se/title01.mp3"/>
+      </media>
+    </par><break time="1.75s" />`)
+
+
+  // H3
+  ssml = ssml.split('<h3>').join('<emphasis level="strong">')
+  ssml = ssml.split('</h3>').join('</emphasis><break time="1.5s" />')
+
+  // H4
+  ssml = ssml.split('<h4>').join('<emphasis level="strong">')
+  ssml = ssml.split('</h4>').join('</emphasis><break time="1.25s" />')
+
+  // H5
+  ssml = ssml.split('<h5>').join('<emphasis level="strong">')
+  ssml = ssml.split('</h5>').join('</emphasis><break time="1s" />')
+
   ssml = ssml.split('</p>').join('</p><break time="2s" />');
   ssml = ssml.split('<br>').join('<break time="1s" />');
 
-  // console.log(ssml)
+  console.log(ssml)
 
   return ssml
 }
