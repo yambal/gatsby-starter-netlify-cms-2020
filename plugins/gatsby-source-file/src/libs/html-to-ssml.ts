@@ -1,7 +1,7 @@
 
 const HtmlToSSML = (channelTitle, cnannelDescription, title, markdown) => {
 
-  console.log(markdown)
+  // console.log(markdown)
 
   const openning = `
   <par>
@@ -76,7 +76,7 @@ const HtmlToSSML = (channelTitle, cnannelDescription, title, markdown) => {
   ssml = ssml.split('</p>').join('</p><break time="2s" />');
   ssml = ssml.split('<br>').join('<break time="1s" />');
 
-  console.log(ssml)
+  // console.log(ssml)
 
   return ssml
 }

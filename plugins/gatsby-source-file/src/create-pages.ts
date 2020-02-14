@@ -3,6 +3,7 @@ import HtmlToSSML from './libs/html-to-ssml'
 import { listFiles } from './file-checker'
 import { cacheToPablic, podcastCashSet, checkCache, iPodcastCacheCheckResponse } from './libs/cache'
 import { getChannelTitle, getSiteUrl, getChannelDescription } from './libs/option-parser'
+import { mdToSsml } from './libs/mdToSsml'
 
 export interface iPodcastBuild {
   edge: any
@@ -66,16 +67,20 @@ const podcastCacheSaver = (checkCacheResponse: iPodcastCacheCheckResponse) => {
 
 const podcastEdgeToFile = (edge, options):Promise<iPodcastCacheCheckResponse> => {
   return new Promise((resolve: (resolve: iPodcastCacheCheckResponse) => void) => {
+    
     return checkCache(edge, options)
     .then(
       (checkCacheResponse) => {
         const html = edge.node.html
         const { title, channel } = edge.node.frontmatter
+        const { rawMarkdownBody } = edge.node
 
         const channelTitle = getChannelTitle(channel, options)
         const channelDescription = getChannelDescription(channel, options)
 
-        const ssml = HtmlToSSML(channelTitle, channelDescription, title, html)
+        //const ssml = HtmlToSSML(channelTitle, channelDescription, title, html)
+        const ssml = mdToSsml(rawMarkdownBody, title, channelDescription)
+        
         return podcastBuildMp3(checkCacheResponse, ssml)
       }
     )
@@ -125,10 +130,11 @@ module.exports = ({ cache, actions, graphql }, pluginOptions, cb: () => void) =>
       return Promise.reject(result.errors)
     }
 
-    const list = listFiles(`${process.cwd()}/podcast`);
+    const list = listFiles(`${process.cwd()}/.podcast`);
     console.log('file check', list.length);
 
     const edges = result.data.allMarkdownRemark.edges
+
     Promise.all(edges.map(
       edge => {
         return podcastEdgeToFile(edge, pluginOptions)

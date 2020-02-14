@@ -1,10 +1,10 @@
 "use strict";
 exports.__esModule = true;
 var mp3_1 = require("./libs/mp3");
-var html_to_ssml_1 = require("./libs/html-to-ssml");
 var file_checker_1 = require("./file-checker");
 var cache_1 = require("./libs/cache");
 var option_parser_1 = require("./libs/option-parser");
+var mdToSsml_1 = require("./libs/mdToSsml");
 var podcastBuildMp3 = function (checkCacheResponse, ssml) {
     return new Promise(function (resolve) {
         if (!checkCacheResponse.hasCashe || checkCacheResponse.isOld) {
@@ -43,9 +43,11 @@ var podcastEdgeToFile = function (edge, options) {
             .then(function (checkCacheResponse) {
             var html = edge.node.html;
             var _a = edge.node.frontmatter, title = _a.title, channel = _a.channel;
+            var rawMarkdownBody = edge.node.rawMarkdownBody;
             var channelTitle = option_parser_1.getChannelTitle(channel, options);
             var channelDescription = option_parser_1.getChannelDescription(channel, options);
-            var ssml = html_to_ssml_1["default"](channelTitle, channelDescription, title, html);
+            //const ssml = HtmlToSSML(channelTitle, channelDescription, title, html)
+            var ssml = mdToSsml_1.mdToSsml(rawMarkdownBody, title, channelDescription);
             return podcastBuildMp3(checkCacheResponse, ssml);
         })
             .then(function (res) {
@@ -66,7 +68,7 @@ module.exports = function (_a, pluginOptions, cb) {
             result.errors.forEach(function (e) { return console.error(e.toString()); });
             return Promise.reject(result.errors);
         }
-        var list = file_checker_1.listFiles(process.cwd() + "/podcast");
+        var list = file_checker_1.listFiles(process.cwd() + "/.podcast");
         console.log('file check', list.length);
         var edges = result.data.allMarkdownRemark.edges;
         Promise.all(edges.map(function (edge) {
