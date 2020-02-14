@@ -51,7 +51,7 @@ export const mdToSsml = (markdown, title?: string, description?: string) => {
 <break time="2s" />
 <p>${description}</p><break time="2s" />\n`
 
-  return `<speak>${openning}${parsed}</speak>`
+  return `<speak><prosody rate="125%">${openning}${parsed}</prosody></speak>`
 }
 
 // <audio src="https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg"></audio>

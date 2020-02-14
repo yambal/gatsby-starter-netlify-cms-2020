@@ -36,6 +36,6 @@ exports.mdToSsml = function (markdown, title, description) {
     };
     var parsed = marked(markdown, { renderer: renderer });
     var openning = "<emphasis level=\"strong\">\n  <prosody rate=\"slow\" pitch=\"+0.12st\">" + title + "</prosody>\n</emphasis>\n<break time=\"2s\" />\n<p>" + description + "</p><break time=\"2s\" />\n";
-    return "<speak>" + openning + parsed + "</speak>";
+    return "<speak><prosody rate=\"125%\">" + openning + parsed + "</prosody></speak>";
 };
 // <audio src="https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg"></audio>
