@@ -80,6 +80,7 @@ const podcastEdgeToFile = (edge, options):Promise<iPodcastCacheCheckResponse> =>
 
         //const ssml = HtmlToSSML(channelTitle, channelDescription, title, html)
         const ssml = mdToSsml(rawMarkdownBody, title, channelDescription)
+        console.log(ssml)
         
         return podcastBuildMp3(checkCacheResponse, ssml)
       }

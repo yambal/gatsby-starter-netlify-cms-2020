@@ -5,7 +5,7 @@ exports.mdToSsml = function (markdown, title, description) {
     var renderer = new marked.Renderer();
     renderer.heading = function (text, level, raw, slug) {
         // console.log(slug)
-        return "<par>\n  <media>\n    <emphasis level=\"strong\">\n    " + text + "\n    </emphasis>\n  </media>\n</par>\n";
+        return "<par>\n  <media>\n    <emphasis level=\"strong\">\n    " + text + "\n    </emphasis>\n  </media>\n</par>\n<break time=\"1.5s\" />\n";
     };
     // Blockquote
     renderer.blockquote = function (text) {
@@ -28,14 +28,14 @@ exports.mdToSsml = function (markdown, title, description) {
     };
     // Strong
     renderer.strong = function (text) {
-        return "<emphasis level=\"strong\">" + text + "</emphasis>";
+        return "<break time=\"0.25s\" /><emphasis level=\"strong\">" + text + "</emphasis><break time=\"0.25s\" />";
     };
     // BR
     renderer.br = function () {
         return "<break time=\"1s\" />\n";
     };
     var parsed = marked(markdown, { renderer: renderer });
-    var openning = "<emphasis level=\"strong\">\n  <prosody rate=\"slow\" pitch=\"+1st\">" + title + "</prosody>\n</emphasis>\n<break time=\"2s\" />" + description + "<break time=\"2s\" />\n";
-    return "" + openning + parsed;
+    var openning = "<emphasis level=\"strong\">\n  <prosody rate=\"slow\" pitch=\"+0.12st\">" + title + "</prosody>\n</emphasis>\n<break time=\"2s\" />\n<p>" + description + "</p><break time=\"2s\" />\n";
+    return "<speak>" + openning + parsed + "</speak>";
 };
 // <audio src="https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg"></audio>

@@ -48,6 +48,7 @@ var podcastEdgeToFile = function (edge, options) {
             var channelDescription = option_parser_1.getChannelDescription(channel, options);
             //const ssml = HtmlToSSML(channelTitle, channelDescription, title, html)
             var ssml = mdToSsml_1.mdToSsml(rawMarkdownBody, title, channelDescription);
+            console.log(ssml);
             return podcastBuildMp3(checkCacheResponse, ssml);
         })
             .then(function (res) {

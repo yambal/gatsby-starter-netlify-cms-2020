@@ -3,8 +3,6 @@ import * as marked from 'marked'
 export const mdToSsml = (markdown, title?: string, description?: string) => {
   const renderer = new marked.Renderer()
 
-
-
   renderer.heading = function (text, level, raw, slug) {
     // console.log(slug)
     return `<par>
@@ -14,6 +12,7 @@ export const mdToSsml = (markdown, title?: string, description?: string) => {
     </emphasis>
   </media>
 </par>
+<break time="1.5s" />
 `};
 
   // Blockquote
@@ -36,7 +35,7 @@ export const mdToSsml = (markdown, title?: string, description?: string) => {
 
   // Strong
   renderer.strong = function (text) {
-    return `<emphasis level="strong">${text}</emphasis>`
+    return `<break time="0.25s" /><emphasis level="strong">${text}</emphasis><break time="0.25s" />`
   };
 
   // BR
@@ -47,11 +46,12 @@ export const mdToSsml = (markdown, title?: string, description?: string) => {
   const parsed = marked(markdown, { renderer: renderer })
 
   const openning = `<emphasis level="strong">
-  <prosody rate="slow" pitch="+1st">${title}</prosody>
+  <prosody rate="slow" pitch="+0.12st">${title}</prosody>
 </emphasis>
-<break time="2s" />${description}<break time="2s" />\n`
+<break time="2s" />
+<p>${description}</p><break time="2s" />\n`
 
-  return `${openning}${parsed}`
+  return `<speak>${openning}${parsed}</speak>`
 }
 
 // <audio src="https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg"></audio>
