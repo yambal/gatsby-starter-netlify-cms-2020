@@ -6574,10 +6574,10 @@ gatsby-plugin-sharp@^2.2.9:
     svgo "1.3.2"
     uuid "^3.3.3"
 
-gatsby-plugin-speach-podcast@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.0.4.tgz#aa5ff1fb373fdac847e8dd64323ddef175debe9d"
-  integrity sha512-1vOaYIePJ9wqs7DtjJxiqtLfZDUOwP7OrFGxDuR63oP5nM3BOJF+0TFMLJFbIR29a3rGGtQcPMgj/+8FIdqADw==
+gatsby-plugin-speach-podcast@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.0.5.tgz#815d3090148a9287308e1c52466efc36db632fd8"
+  integrity sha512-OxxTQHrz2lSSmTTVrWknBtSa7DdW8bGG13dMLeTV4EyKS1jNfs9PxQfUVcfveVWhpoTOasBXIT+oT5SWMM/MrQ==
   dependencies:
     "@google-cloud/text-to-speech" "^2.2.0"
     crypto "^1.0.1"
