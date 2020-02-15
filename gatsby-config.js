@@ -27,6 +27,7 @@ module.exports = {
           }
         }
       }
+      
     },
     // 'gatsby-transformer-md-opengraph',
     `gatsby-plugin-typescript`,

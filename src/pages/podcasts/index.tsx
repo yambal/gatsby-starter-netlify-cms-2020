@@ -34,11 +34,6 @@ export const pageQuery = graphql`
             date
             channel
           }
-          mp3 {
-            absoluteUrl
-            url
-            path
-          }
         }
       }
     }
