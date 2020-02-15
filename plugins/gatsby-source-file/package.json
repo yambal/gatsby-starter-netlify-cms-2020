@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "md-to-ssl": "1.0.1",
     "mkdirp-then": "^1.2.0"
   }
 }
