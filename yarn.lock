@@ -986,10 +986,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@google-cloud/text-to-speech@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@google-cloud/text-to-speech/-/text-to-speech-2.1.2.tgz#4fc19ed45d3fae1818a2b31e745ccf02ec8af9fc"
-  integrity sha512-iJqUrVCmYrYGhUNkcBmUNzMz/+jS6cOvt2yI8Tz+/Y74GOJtcEIVe+Nf6TqP6MNFoVzR+KlMiu2It4O7UkO/kQ==
+"@google-cloud/text-to-speech@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/text-to-speech/-/text-to-speech-2.2.0.tgz#5feb7e2618a9eec3595375d77e8004178d8d5e86"
+  integrity sha512-RM0CQEHs7HdtS0nYNHrK5a0zgoqS47OxTdQQJ7jdm3+JuEfZyIM2Xw+VOJvZpAClv/Ac64DQwLeA0y4TYZ3sRw==
   dependencies:
     google-gax "^1.9.0"
 
@@ -6574,6 +6574,18 @@ gatsby-plugin-sharp@^2.2.9:
     svgo "1.3.2"
     uuid "^3.3.3"
 
+gatsby-plugin-speach-podcast@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.0.2.tgz#e2e4812588ee620af11957623033a39dd10961ef"
+  integrity sha512-4u4+3L2qWBqe9eV51F0bQmpNS8D7lBNL6V9iOoFiO6v/huiuQhgDp5syunFDG6Z7WEqt67fOyJX+/C4m1/z1iA==
+  dependencies:
+    "@google-cloud/text-to-speech" "^2.2.0"
+    crypto "^1.0.1"
+    fs "^0.0.1-security"
+    md-to-ssl "^1.0.1"
+    mkdirp-then "^1.2.0"
+    util "^0.12.1"
+
 gatsby-plugin-typescript@^2.1.23:
   version "2.1.23"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-typescript/-/gatsby-plugin-typescript-2.1.23.tgz#02b29bf1986816d74a3f94231437b17b32bf1d12"
@@ -8603,6 +8615,11 @@ is-function@^1.0.1:
   resolved "https://registry.yarnpkg.com/is-function/-/is-function-1.0.1.tgz#12cfb98b65b57dd3d193a3121f5f6e2f437602b5"
   integrity sha1-Es+5i2W1fdPRk6MSH19uL0N2ArU=
 
+is-generator-function@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/is-generator-function/-/is-generator-function-1.0.7.tgz#d2132e529bb0000a7f80794d4bdf5cd5e5813522"
+  integrity sha512-YZc5EwyO4f2kWCax7oegfuSr9mFz1ZvieNYBEjmukLxgXfBUbxAWGVF7GZf0zidYtoBl3WvC07YK0wT76a+Rtw==
+
 is-glob@^2.0.0, is-glob@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-2.0.1.tgz#d096f926a3ded5600f3fdfd91198cb0888c2d863"
@@ -9716,6 +9733,14 @@ math-random@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/math-random/-/math-random-1.0.4.tgz#5dd6943c938548267016d4e34f057583080c514c"
   integrity sha512-rUxjysqif/BZQH2yhd5Aaq7vXMSx9NdEsQcyA07uEzIvxgI7zIr33gGsh+RU0/XjmQpCW7RsVof1vlkvQVCK5A==
+
+md-to-ssl@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/md-to-ssl/-/md-to-ssl-1.0.1.tgz#e56a843997b67841436fc7db42ce92ae5b99d099"
+  integrity sha512-7NNkKfW5EMYjljSUY5M6eVL8OIeOoMMxfQlDxtic0TYjemIefsEwhS6t0tBPmp0KbKX7bDTGvjYf02WBYpPpHg==
+  dependencies:
+    marked "^0.8.0"
+    xml-formatter "^1.2.0"
 
 md5-file@^3.1.1, md5-file@^3.2.3:
   version "3.2.3"
@@ -15830,6 +15855,17 @@ util@^0.11.0:
   dependencies:
     inherits "2.0.3"
 
+util@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/util/-/util-0.12.1.tgz#f908e7b633e7396c764e694dd14e716256ce8ade"
+  integrity sha512-MREAtYOp+GTt9/+kwf00IYoHZyjM8VU4aVrkzUlejyqaIjd2GztVl5V9hGXKlvBKE3gENn/FMfHE5v6hElXGcQ==
+  dependencies:
+    inherits "^2.0.3"
+    is-arguments "^1.0.4"
+    is-generator-function "^1.0.7"
+    object.entries "^1.1.0"
+    safe-buffer "^5.1.2"
+
 utila@^0.4.0, utila@~0.4:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/utila/-/utila-0.4.0.tgz#8a16a05d445657a3aea5eecc5b12a4fa5379772c"
@@ -16333,10 +16369,24 @@ xhr@^2.0.1:
     parse-headers "^2.0.0"
     xtend "^4.0.0"
 
+xml-formatter@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/xml-formatter/-/xml-formatter-1.2.0.tgz#cfbf2fd7250b5b77fcb484d9df4adf7ab30b3b2d"
+  integrity sha512-+7hrQv9ZmmDzbCchRdQIyL3Y+Twp35ZbuLDJRi3mV9KYJWKLcRI/fo8oVgbx4+GxI6MrZZhvVy/5i+f2g5fhUg==
+  dependencies:
+    xml-parser-xo "^2.1.1"
+
 xml-parse-from-string@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/xml-parse-from-string/-/xml-parse-from-string-1.0.1.tgz#a9029e929d3dbcded169f3c6e28238d95a5d5a28"
   integrity sha1-qQKekp09vN7RafPG4oI42VpdWig=
+
+xml-parser-xo@^2.1.1:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/xml-parser-xo/-/xml-parser-xo-2.1.3.tgz#4ea8eb856dfa4dd75c4ab54b251558de0adc1c61"
+  integrity sha1-TqjrhW36TddcSrVLJRVY3grcHGE=
+  dependencies:
+    debug "^2.2.0"
 
 xml2js@^0.4.5:
   version "0.4.23"

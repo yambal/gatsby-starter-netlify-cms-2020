@@ -3,7 +3,8 @@ import HtmlToSSML from './libs/html-to-ssml'
 import { listFiles } from './file-checker'
 import { cacheToPablic, podcastCashSet, checkCache, iPodcastCacheCheckResponse } from './libs/cache'
 import { getChannelTitle, getSiteUrl, getChannelDescription } from './libs/option-parser'
-import { mdToSsml } from './libs/mdToSsml'
+// import { mdToSsml } from './libs/mdToSsml'
+import { mdToSsml } from 'md-to-ssl'
 
 export interface iPodcastBuild {
   edge: any

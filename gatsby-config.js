@@ -10,8 +10,10 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: 'gatsby-source-file',
+      resolve: 'gatsby-plugin-speach-podcast',
       options: {
+        projectId: 'texttospeach-261314',
+        keyFilename: 'TextToSpeach-e373fcafd2ef.json',
         siteURL: 'https://www.yambal.net',
         audioDir: 'audio',
         channels: {
