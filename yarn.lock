@@ -6574,15 +6574,28 @@ gatsby-plugin-sharp@^2.2.9:
     svgo "1.3.2"
     uuid "^3.3.3"
 
-gatsby-plugin-speach-podcast@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.0.7.tgz#53b5d705fd8cfd6bfdadc6b1224bf399367e7132"
-  integrity sha512-y4VLl5Ol20FrRMf43KQs33LHX0jElEyt8K4pB3hXxYyfrLWC9uTc0bUUI7m37YS+Fu+/uCPL35qRhh0zgRBVag==
+gatsby-plugin-speach-podcast@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.0.9.tgz#2a9f779a007b6139c3bd2c356fda8608b2d96514"
+  integrity sha512-bQiS/RqQvoWm0VM7xeQXJKLx0EuRc0Df5EO5Sed2Dz6kXXuWdK/kVOEIARe++XXZdvG8Vj+5DUm7svvkiJLuQw==
   dependencies:
     "@google-cloud/text-to-speech" "^2.2.0"
     crypto "^1.0.1"
     fs "^0.0.1-security"
-    md-to-ssl "^1.0.1"
+    md-to-ssl "1.0.4"
+    mkdirp-then "^1.2.0"
+    util "^0.12.1"
+
+gatsby-plugin-speach-podcast@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.1.0.tgz#bfe3144d0d806bea132f8f56eb3b63d7fd199c98"
+  integrity sha512-5eSsZZ2YpI+oJEx7VQENTlmwqrT6dJ2yEKTGNGKeIqp38b7EWNC7bccr6aVd8+c4z2RoZ30NxDJTxoTa5ikKnA==
+  dependencies:
+    "@google-cloud/text-to-speech" "^2.2.0"
+    crypto "^1.0.1"
+    fs "^0.0.1-security"
+    gatsby-plugin-speach-podcast "0.0.9"
+    md-to-ssl "1.0.5"
     mkdirp-then "^1.2.0"
     util "^0.12.1"
 
@@ -9734,10 +9747,18 @@ math-random@^1.0.1:
   resolved "https://registry.yarnpkg.com/math-random/-/math-random-1.0.4.tgz#5dd6943c938548267016d4e34f057583080c514c"
   integrity sha512-rUxjysqif/BZQH2yhd5Aaq7vXMSx9NdEsQcyA07uEzIvxgI7zIr33gGsh+RU0/XjmQpCW7RsVof1vlkvQVCK5A==
 
-md-to-ssl@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/md-to-ssl/-/md-to-ssl-1.0.1.tgz#e56a843997b67841436fc7db42ce92ae5b99d099"
-  integrity sha512-7NNkKfW5EMYjljSUY5M6eVL8OIeOoMMxfQlDxtic0TYjemIefsEwhS6t0tBPmp0KbKX7bDTGvjYf02WBYpPpHg==
+md-to-ssl@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/md-to-ssl/-/md-to-ssl-1.0.4.tgz#515f5d34ce5116a07222edcbfee7de5623655216"
+  integrity sha512-VfSJXOuB3ZLEoIltKVrAlPzHBJkZJbEqTqUA4dO8zlGSZKtNogPpCYrXROaqPc0RVvQh5cMCqsHPb1na9LTmfA==
+  dependencies:
+    marked "^0.8.0"
+    xml-formatter "^1.2.0"
+
+md-to-ssl@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/md-to-ssl/-/md-to-ssl-1.0.5.tgz#1c629eca6053a298f6678c09bfe91d5386d44d0c"
+  integrity sha512-CA7ffO+RzoJuWywk0Bc7J1yPTh3UgUxKH2qWziKf/qbtuVtOxD2BC1mXc/8lBrLKFT4ZjrgjEtFeuaH3fD2Bgg==
   dependencies:
     marked "^0.8.0"
     xml-formatter "^1.2.0"
