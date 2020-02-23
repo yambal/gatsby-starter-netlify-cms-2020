@@ -6685,10 +6685,10 @@ gatsby-plugin-speach-podcast@0.0.9:
     mkdirp-then "^1.2.0"
     util "^0.12.1"
 
-gatsby-plugin-speach-podcast@0.2.7:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.2.7.tgz#0b8ce9de9b93ad13a21455c307197ac1937cd74b"
-  integrity sha512-blVMySQi+KnL4VdrLj/Un27pj2MOG+WR+wsj23UP3X9hC6rH0rJP5sWYS0dL0nN9utB7QSvcJj1Tk7UUnLlvbQ==
+gatsby-plugin-speach-podcast@0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.2.8.tgz#fe292ae1539a3df5a496b0e04902209993258d98"
+  integrity sha512-iOAt53PfgqiLbyHRM7XvDcoSGIQUKMjNhGjm77EgA7tG2aYAIhvuoYt6c23DPtHfpL2ymUo9oWmTLWU1N8jljw==
   dependencies:
     "@google-cloud/text-to-speech" "^2.2.0"
     crypto "^1.0.1"
