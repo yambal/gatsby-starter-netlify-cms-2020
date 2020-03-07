@@ -15,9 +15,6 @@ const PodCastsIndexPage:React.FC = props => {
 
   return (
     <Layout>
-      <Helmet>
-        <link rel="alternate" type="application/rss+xml" href="/podcast.rss" title="WWW.YAMBAL.NET Podcast" />
-      </Helmet>
       <Container>
         <h1>PODCASTS</h1>
         <Router>

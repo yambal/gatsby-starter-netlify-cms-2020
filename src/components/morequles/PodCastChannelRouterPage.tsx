@@ -1,6 +1,7 @@
 import React from 'react'
 import { PodCastEpisode } from './PodCastEpisode'
 import { Link } from 'gatsby'
+import { Helmet } from 'react-helmet'
 
 interface PodCastChannelRouterPageProps{
   path: string
@@ -35,6 +36,9 @@ export const PodCastChannelRouterPage:React.FC<PodCastChannelRouterPageProps> = 
 
   return (
     <div>
+      <Helmet>
+        <link rel="alternate" type="application/rss+xml" href={`/podcast-${props.channel}.rss`} title="WWW.YAMBAL.NET Podcast" />
+      </Helmet>
       <Link to={`/podcasts`}>Podcasts</Link>
       {edges.map(
         edge => {

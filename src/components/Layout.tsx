@@ -22,7 +22,6 @@ const Layout:React.FC<iLayout> = props => {
           <title>{title}</title>
           <meta name="description" content={description} />
           <meta name="google-site-verification" content="w6usTsTWrWRLKf0S6C5g9O0G-jb5eWISBKXOTQoObd0" />
-          <link rel="alternate" type="application/rss+xml" href="/podcast-test.rss" title="WWW.YAMBAL.NET Podcast" />
         </Helmet>
         <Navbar />
         {props.children}
