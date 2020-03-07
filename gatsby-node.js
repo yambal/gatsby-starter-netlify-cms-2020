@@ -8,21 +8,6 @@ const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "deve
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  /**
-   * develop(ローカル) と Release では File の 振る舞いが違うので ここで切り分け
-   */
-  let musicAlbumsSongs = `songs {
-    file {
-      publicURL
-      prettySize
-      internal {
-        mediaType
-        contentDigest
-      }
-    }
-    title
-  }`
-
   return graphql(`
     {
       allMarkdownRemark(limit: 1000) {
@@ -35,7 +20,6 @@ exports.createPages = ({ actions, graphql }) => {
             frontmatter {
               tags
               templateKey
-              ${musicAlbumsSongs}
             }
           }
         }
@@ -51,27 +35,17 @@ exports.createPages = ({ actions, graphql }) => {
 
     posts.forEach(edge => {
       const id = edge.node.id
-      const songs = edge.node.frontmatter.songs
       const tamplateKey = edge.node.frontmatter.templateKey
-
-      switch (tamplateKey) {
-        case 'StudyPages' :
-          break;
-        case 'TopicPages' :
-          break;
-        default:
-          createPage({
-            path: edge.node.fields.slug,
-            tags: edge.node.frontmatter.tags,
-            component: path.resolve(
-              `src/containers/${String(tamplateKey)}Container.tsx`
-            ),
-            context: {
-              id,
-              songs
-            },
-          })
-      }
+      createPage({
+        path: edge.node.fields.slug,
+        tags: edge.node.frontmatter.tags,
+        component: path.resolve(
+          `src/containers/${String(tamplateKey)}Container.tsx`
+        ),
+        context: {
+          id,
+        },
+      })
     })
 
     // Tag pages:
@@ -113,18 +87,4 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     })
   }
   
-}
-
-exports.onCreatePage = async ({ page, actions }) => {
-  const { createPage } = actions
-  // study配下のPageはRouting で処理する
-  if (page.path.match(/^\/study/)) {
-    page.matchPath = "/study/*"
-    createPage(page)
-  }
-
-  if (page.path.match(/^\/topics/)) {
-    page.matchPath = "/topics/*"
-    createPage(page)
-  }
 }
