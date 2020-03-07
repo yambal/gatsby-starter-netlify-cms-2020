@@ -5,8 +5,14 @@ import Layout from '../../components/Layout'
 import Container from '../../components/Container'
 import Column from '../../components/atoms/Column'
 import { Helmet } from 'react-helmet'
+import { Router, RouteComponentProps } from "@reach/router"
+import PodCastIndex from '../../components/morequles/PodCastIndex'
+import { PodCastChannelRouterPage } from '../../components/morequles/PodCastChannelRouterPage'
+import { PodCastEpisodeRouterPage } from '../../components/morequles/PodCastEpisodeRouterPage'
 
-const BlogIndexPage:React.FC = props => {
+const PodCastsIndexPage:React.FC = props => {
+  const { edges } = props.data.allMarkdownRemark
+
   return (
     <Layout>
       <Helmet>
@@ -14,17 +20,32 @@ const BlogIndexPage:React.FC = props => {
       </Helmet>
       <Container>
         <h1>PODCASTS</h1>
-        <pre>{JSON.stringify(props, null, 2)}</pre>
+        <Router>
+          <PodCastEpisodeRouterPage
+            path={`/podcasts/:channel/:id`}
+            edges={edges}
+          />
+          <PodCastChannelRouterPage
+            path={`/podcasts/:channel`}
+            edges={edges}
+          />
+          <PodCastIndex
+            path={`/podcasts`}
+            edges={edges}
+          />
+        </Router>
       </Container>
     </Layout>
   )
 }
 
+
 export const pageQuery = graphql`
   query PodcastIndexQuery {
-    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "PodCast"}}}, limit: 10) {
+    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "PodCast"}}}, sort: {fields: frontmatter___date, order: DESC}) {
       edges {
         node {
+          id
           fields {
             slug
           }
@@ -34,10 +55,14 @@ export const pageQuery = graphql`
             date
             channel
           }
+          mp3 {
+            url
+            absoluteUrl
+          }
         }
       }
     }
   }
 `
 
-export default BlogIndexPage
+export default PodCastsIndexPage

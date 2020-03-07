@@ -6,7 +6,7 @@ module.exports = {
     title: 'WWW.YAMBAL.NET',
     description: 'テスト中',
     lang: 'ja',
-    activeEnv
+    activeEnv,
   },
   plugins: [
     {

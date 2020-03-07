@@ -36,6 +36,8 @@ exports.createPages = ({ actions, graphql }) => {
     posts.forEach(edge => {
       const id = edge.node.id
       const tamplateKey = edge.node.frontmatter.templateKey
+
+
       createPage({
         path: edge.node.fields.slug,
         tags: edge.node.frontmatter.tags,
@@ -87,4 +89,13 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     })
   }
   
+}
+
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage } = actions
+  // study配下のPageはRouting で処理する
+  if (page.path.match(/^\/podcasts/)) {
+    page.matchPath = "/podcasts/*"
+    createPage(page)
+  }
 }
