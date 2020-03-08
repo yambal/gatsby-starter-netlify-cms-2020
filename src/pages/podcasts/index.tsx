@@ -1,16 +1,36 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-
 import Layout from '../../components/Layout'
 import Container from '../../components/Container'
-import Column from '../../components/atoms/Column'
-import { Helmet } from 'react-helmet'
-import { Router, RouteComponentProps } from "@reach/router"
+import { Router } from "@reach/router"
 import PodCastIndex from '../../components/morequles/PodCastIndex'
 import { PodCastChannelRouterPage } from '../../components/morequles/PodCastChannelRouterPage'
 import { PodCastEpisodeRouterPage } from '../../components/morequles/PodCastEpisodeRouterPage'
 
-const PodCastsIndexPage:React.FC = props => {
+interface PodCastsIndexPageProps {
+  data: {
+    allMarkdownRemark: {
+      edges: {
+        node: {
+          id: string
+          field: string
+          frontmatter: {
+            title: string
+            description: string
+            date: string
+            channel: string
+          }
+          mp3: {
+            url: string
+            absoluteUrl: string
+          }
+        }
+      }[]
+    }
+  }
+}
+
+const PodCastsIndexPage:React.FC<PodCastsIndexPageProps> = props => {
   const { edges } = props.data.allMarkdownRemark
 
   return (
@@ -35,7 +55,6 @@ const PodCastsIndexPage:React.FC = props => {
     </Layout>
   )
 }
-
 
 export const pageQuery = graphql`
   query PodcastIndexQuery {
