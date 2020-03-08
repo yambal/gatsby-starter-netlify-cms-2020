@@ -6795,15 +6795,15 @@ gatsby-plugin-sharp@^2.4.5:
     svgo "1.3.2"
     uuid "^3.3.3"
 
-gatsby-plugin-speach-podcast@0.3.9:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.3.9.tgz#7a6ee8ceaaf6428dd1d95fc1a0c2fd02c8dcb944"
-  integrity sha512-9hFzACN2+8POqJKcqF0qlNc10jXZ8eEqjgO1LGZZI/SDPVc3Ntk0Gci8Wkv2hGXhZVnzI2C5JjvM4N9oQ3oWzg==
+gatsby-plugin-speach-podcast@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.4.1.tgz#66f1b3f516a066eda37386a6be64e14871204e79"
+  integrity sha512-GPVzwOy87auPCFLr6DISsl5Quq4xTWqTf/F4yV2or30A6JCQLUZQDarLpO/e0Ws1/B/ilLxpKOj0Qemhg+wRQA==
   dependencies:
     "@google-cloud/text-to-speech" "^2.2.0"
     crypto "^1.0.1"
     fs "^0.0.1-security"
-    md-to-google-ssml "0.0.8"
+    md-to-google-ssml "0.0.9"
     mkdirp-then "^1.2.0"
     util "^0.12.1"
 
@@ -9986,10 +9986,10 @@ math-random@^1.0.1:
   resolved "https://registry.yarnpkg.com/math-random/-/math-random-1.0.4.tgz#5dd6943c938548267016d4e34f057583080c514c"
   integrity sha512-rUxjysqif/BZQH2yhd5Aaq7vXMSx9NdEsQcyA07uEzIvxgI7zIr33gGsh+RU0/XjmQpCW7RsVof1vlkvQVCK5A==
 
-md-to-google-ssml@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/md-to-google-ssml/-/md-to-google-ssml-0.0.8.tgz#e80f4b01f11600e093122f0782114afe4aba452b"
-  integrity sha512-0YmEEMuvrQXRM+2AuRIPycWM0+4118TwKkQ1HYjT367/gy87jvYRpQ7KNbHPSNUHhHnLM+ox5ABBH9169tN1ug==
+md-to-google-ssml@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/md-to-google-ssml/-/md-to-google-ssml-0.0.9.tgz#660a64e4d756b465dd91144e2cff7648e782fca7"
+  integrity sha512-0MDHh7cculZT8MdSgVjQucfZ4VyHSD6x6zYjnvQvffDA9vSFRaWWRTdvbkyDRrDyCPTTZ9X7NKmHiHqUcQYOeA==
   dependencies:
     "@ffmpeg-installer/ffmpeg" "^1.0.20"
     "@google-cloud/text-to-speech" "^2.2.0"
