@@ -21,7 +21,7 @@ export const PodCastEpisode:React.FC<PodCastEpisodeProps> = props => {
       <div>{description}</div>
       <div>{date}</div>
       <div>{channel}</div>
-      <div><Link to={mp3Url}>mp3</Link></div>
+      <div><a href={mp3Url}>mp3</a></div>
     </Wrapper>
   )
 }
