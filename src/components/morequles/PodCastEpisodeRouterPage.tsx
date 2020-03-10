@@ -46,7 +46,7 @@ export const PodCastEpisodeRouterPage:React.FC<PodCastChannelRouterPageProps> = 
         title={edge.node.frontmatter.title}
         description={edge.node.frontmatter.description}
         date={edge.node.frontmatter.date}
-        mp3Url={edge.node.mp3.absoluteUrl}
+        mp3Url={edge.node.mp3.url}
         channel={edge.node.frontmatter.channel}
       />
     </Wrapper>
