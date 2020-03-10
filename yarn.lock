@@ -6226,7 +6226,7 @@ file-type@^12.4.0:
   resolved "https://registry.yarnpkg.com/file-type/-/file-type-12.4.2.tgz#a344ea5664a1d01447ee7fb1b635f72feb6169d9"
   integrity sha512-UssQP5ZgIOKelfsaB5CuGAL+Y+q7EmONuiwF3N5HAH0t27rvrttgi6Ra9k/+DVaY9UF6+ybxu5pOXLUdA8N7Vg==
 
-file-type@^14.1.2:
+file-type@^14.1.3:
   version "14.1.3"
   resolved "https://registry.yarnpkg.com/file-type/-/file-type-14.1.3.tgz#cac43fc6ecc1348f7cc4477b420c936c90b917c0"
   integrity sha512-fTTNfpY1QxlpKCrA5bRxZL/6f7+6jUCJkOCCzFkAI+tmLu5lfX+4Zo22GG1orRhVH7Dx0fHtMFXq0++NDjKn/w==
@@ -6795,10 +6795,10 @@ gatsby-plugin-sharp@^2.4.5:
     svgo "1.3.2"
     uuid "^3.3.3"
 
-gatsby-plugin-speach-podcast@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.4.1.tgz#66f1b3f516a066eda37386a6be64e14871204e79"
-  integrity sha512-GPVzwOy87auPCFLr6DISsl5Quq4xTWqTf/F4yV2or30A6JCQLUZQDarLpO/e0Ws1/B/ilLxpKOj0Qemhg+wRQA==
+gatsby-plugin-speach-podcast@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-speach-podcast/-/gatsby-plugin-speach-podcast-0.5.2.tgz#3f6576d85051b4d8c75a2540faca2787540608e4"
+  integrity sha512-7KJiZk0cxpEwJh8MddTYDDemg4txlEGKQM3i4nIORYR0LT/af+jCdckrgNgGeAKDYQ67t3CAZm4gQFg0dl7l+w==
   dependencies:
     "@google-cloud/text-to-speech" "^2.2.0"
     crypto "^1.0.1"
@@ -10596,13 +10596,13 @@ multicast-dns@^6.0.1:
     thunky "^1.0.2"
 
 music-metadata@^6.3.4:
-  version "6.3.4"
-  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-6.3.4.tgz#18778e204327f4a4cc436f399945ac06015d3c51"
-  integrity sha512-vbik20L5QdZp975slS9T43JTjN+dCrqBpz2RAJHE63008TFiVLT7liqInccmY6NI/6eB2lmLDxAjWsh5hkTLag==
+  version "6.3.5"
+  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-6.3.5.tgz#c2a4100ce3a0021c7654406a0ea6ed04e8a54a91"
+  integrity sha512-CF2V3wQKbI/khi5sEMHi754IknYH3lOrcD/LScx4AkGn/YvPXLMryxxmT8wkEhvYgQT1k00oW50z+NB7lqV3ag==
   dependencies:
     content-type "^1.0.4"
     debug "^4.1.0"
-    file-type "^14.1.2"
+    file-type "^14.1.3"
     media-typer "^1.1.0"
     strtok3 "^6.0.0"
     token-types "^2.0.0"
