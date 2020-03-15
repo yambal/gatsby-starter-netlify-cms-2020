@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import { PodCastEpisode } from './PodCastEpisode'
-import { Router, RouteComponentProps } from "@reach/router"
+import { iPodCast } from '../../pages/podcasts/index'
 
 interface iiPodCastIndexPage {
   path: string
@@ -14,10 +13,7 @@ interface iiPodCastIndexPage {
         date: string
         channel: string
       }
-      mp3: {
-        url: string
-        absoluteUrl: string
-      }
+      mp3: iPodCast
     }
   }[]
 }

@@ -7,6 +7,19 @@ import PodCastIndex from '../../components/morequles/PodCastIndex'
 import { PodCastChannelRouterPage } from '../../components/morequles/PodCastChannelRouterPage'
 import { PodCastEpisodeRouterPage } from '../../components/morequles/PodCastEpisodeRouterPage'
 
+export interface iPodCast {
+  url: string
+  absoluteUrl: string,
+  headers: {
+    text: string,
+    level: number
+  }[]
+  links: {
+    text: string,
+    href: string
+  }[]
+}
+
 interface PodCastsIndexPageProps {
   data: {
     allMarkdownRemark: {
@@ -20,10 +33,7 @@ interface PodCastsIndexPageProps {
             date: string
             channel: string
           }
-          mp3: {
-            url: string
-            absoluteUrl: string
-          }
+          mp3: iPodCast
         }
       }[]
     }
@@ -74,6 +84,14 @@ export const pageQuery = graphql`
           mp3 {
             url
             absoluteUrl
+            headers {
+              text
+              level
+            }
+            links {
+              href
+              text
+            }
           }
         }
       }

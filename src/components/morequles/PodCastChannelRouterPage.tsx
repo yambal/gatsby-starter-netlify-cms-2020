@@ -2,6 +2,7 @@ import React from 'react'
 import { PodCastEpisode } from './PodCastEpisode'
 import { Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
+import { iPodCast } from '../../pages/podcasts/index'
 
 interface PodCastChannelRouterPageProps{
   path: string
@@ -15,10 +16,7 @@ interface PodCastChannelRouterPageProps{
         date: string
         channel: string
       }
-      mp3: {
-        url: string
-        absoluteUrl: string
-      }
+      mp3: iPodCast
     }
   }[] 
 }

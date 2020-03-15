@@ -5,6 +5,7 @@
   "author": "Austin Green",
   "dependencies": {
     "bulma": "^0.8.0",
+    "dateformat": "^3.0.3",
     "fs": "^0.0.1-security",
     "gatsby": "^2.19.19",
     "gatsby-image": "^2.2.41",
@@ -15,7 +16,7 @@
     "gatsby-plugin-react-helmet": "^3.1.22",
     "gatsby-plugin-sass": "^2.1.29",
     "gatsby-plugin-sharp": "^2.4.5",
-    "gatsby-plugin-speach-podcast": "0.5.3",
+    "gatsby-plugin-speach-podcast": "0.5.5",
     "gatsby-plugin-typescript": "^2.1.27",
     "gatsby-remark-copy-linked-files": "^2.1.37",
     "gatsby-remark-images": "^3.1.44",

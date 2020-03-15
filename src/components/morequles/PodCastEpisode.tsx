@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import styled from 'styled-components'
+import {DateView} from '../atoms/DateView'
 
 interface PodCastEpisodeProps {
   id: string
@@ -19,7 +20,7 @@ export const PodCastEpisode:React.FC<PodCastEpisodeProps> = props => {
     <Wrapper>
       <h2><Link to={`/podcasts/${channel}/${id}`}>{title}</Link></h2>
       <div>{description}</div>
-      <div>{date}</div>
+      <DateView rfc={date} />
       <div>{channel}</div>
       <div><a href={mp3Url}>mp3</a></div>
     </Wrapper>
