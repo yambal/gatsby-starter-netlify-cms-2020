@@ -6,19 +6,8 @@ import { Router } from "@reach/router"
 import PodCastIndex from '../../components/morequles/PodCastIndex'
 import { PodCastChannelRouterPage } from '../../components/morequles/PodCastChannelRouterPage'
 import { PodCastEpisodeRouterPage } from '../../components/morequles/PodCastEpisodeRouterPage'
+import { iPodCast } from '../../components/morequles/PodcastInterface'
 
-export interface iPodCast {
-  url: string
-  absoluteUrl: string,
-  headers: {
-    text: string,
-    level: number
-  }[]
-  links: {
-    text: string,
-    href: string
-  }[]
-}
 
 interface PodCastsIndexPageProps {
   data: {

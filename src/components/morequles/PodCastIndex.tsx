@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
-import { iPodCast } from '../../pages/podcasts/index'
+import { iPodCast } from './PodcastInterface'
 
 interface iiPodCastIndexPage {
   path: string

@@ -2,7 +2,10 @@ import React from 'react'
 import { PodCastEpisode } from './PodCastEpisode'
 import styled from 'styled-components'
 import { Link } from 'gatsby'
-import { iPodCast } from '../../pages/podcasts/index'
+import { iPodCast } from './PodcastInterface'
+import { PodCastHeaders } from './PodCastHeaders'
+import { PodCastLinks } from './PodCastLinks'
+import Column from '../atoms/Column'
 
 interface PodCastChannelRouterPageProps{
   path: string
@@ -47,7 +50,8 @@ export const PodCastEpisodeRouterPage:React.FC<PodCastChannelRouterPageProps> = 
         mp3Url={edge.node.mp3.url}
         channel={edge.node.frontmatter.channel}
       />
-      <pre>50:{JSON.stringify(edge.node.mp3, null, 2)}</pre>
+      <PodCastHeaders headers={edge.node.mp3.headers} />
+      <PodCastLinks links={edge.node.mp3.links} />
     </Wrapper>
   )
 }
