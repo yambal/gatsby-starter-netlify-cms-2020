@@ -12,4 +12,5 @@ CMS.registerMediaLibrary(cloudinary)
 
 CMS.registerPreviewTemplate('index', IndexPagePreview)
 CMS.registerPreviewTemplate('about', AboutPagePreview)
-CMS.registerPreviewTemplate('podcast', PodcastPreview)
+CMS.registerPreviewTemplate('blog', BlogPostPreview)
+CMS.registerPreviewTemplate('PodCast', PodcastPreview)
