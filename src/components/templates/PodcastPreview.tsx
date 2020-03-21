@@ -6,10 +6,11 @@ const PodcastPreview: React.FC<any> = props => {
   const PostContent = props.contentComponent || Content
   const { entry, widgetFor } = props
 
-  const content = widgetFor('body')
+  const content: string = widgetFor('body')
 
   return (
     <React.Fragment>
+      <pre>{JSON.stringify(ssmlMaxLength, null,2)}</pre>
       <PostContent content={content} />
     </React.Fragment>
   )
