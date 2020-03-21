@@ -20,16 +20,12 @@ interface iPodCastContainer {
   data: {
     markdownRemark: {
       rawMarkdownBody: string
-
     }
   }
 }
 
 const PodCastContainer:React.FC<iPodCastContainer> = (props) => {
 
-  const { data: { markdownRemark: { mp3 } }} = props
-
-  
   return (
     <Layout>
     ???
