@@ -6,13 +6,16 @@ const PodcastPreview: React.FC<any> = props => {
   const PostContent = props.contentComponent || Content
   const { entry, widgetFor } = props
 
-  const content: string = widgetFor('body')
-  console.log(10, content.props.value)
-  console.log(11, ssmlMaxLength(content.props.valuet))
+  const content: any = widgetFor('body')
+
+  let maxLexgth = 0
+  if (content.props.value) {
+    maxLexgth = ssmlMaxLength(content.props.value)
+  }
 
   return (
     <React.Fragment>
-      <pre>{JSON.stringify(ssmlMaxLength, null,2)}</pre>
+      <pre>{maxLexgth}</pre>
       <PostContent content={content} />
     </React.Fragment>
   )
