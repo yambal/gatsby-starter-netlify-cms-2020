@@ -7,8 +7,8 @@ const PodcastPreview: React.FC<any> = props => {
   const { entry, widgetFor } = props
 
   const content: string = widgetFor('body')
-  console.log(10, content)
-  console.log(11, ssmlMaxLength(content))
+  console.log(10, content.props.value)
+  console.log(11, ssmlMaxLength(content.props.valuet))
 
   return (
     <React.Fragment>
