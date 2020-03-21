@@ -7,9 +7,10 @@ const PodcastPreview: React.FC<any> = props => {
   const { entry, widgetFor } = props
 
   const content: any = widgetFor('body')
+  console.log(10, content)
 
   let maxLexgth = 0
-  if (content.props.value) {
+  if (content && content.props && content.props.value) {
     maxLexgth = ssmlMaxLength(content.props.value)
   }
 
