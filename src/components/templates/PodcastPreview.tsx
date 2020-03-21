@@ -10,7 +10,6 @@ const PodcastPreview: React.FC<any> = props => {
 
   return (
     <React.Fragment>
-      <div>{ssmlMaxLength(content)}</div>
       <PostContent content={content} />
     </React.Fragment>
   )
