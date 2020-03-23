@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
 import { Helmet } from 'react-helmet'
+import Img from 'gatsby-image'
 
 export const pageQuery = graphql`
   query IndexContainer {
@@ -17,27 +18,7 @@ export const pageQuery = graphql`
             }
           }
         }
-        heading
-        subheading
-        mainpitch {
-          title
-          description
-        }
         description
-        intro {
-          blurbs {
-            image {
-              childImageSharp {
-                fluid(maxWidth: 240, quality: 64) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-            text
-          }
-          heading
-          description
-        }
       }
     }
   }
@@ -46,18 +27,39 @@ export const pageQuery = graphql`
 interface iIndexContainer {
   data: {
     markdownRemark: {
-      frontmatter: any
+      frontmatter: {
+        title: string
+        description: string
+        image: any
+      }
     }
   }
 }
 
 const IndexContainer:React.FC<iIndexContainer> = (props) => {
-  const { frontmatter } = props.data.markdownRemark
+  const { frontmatter: { title, description } } = props.data.markdownRemark
   return (
     <Layout>
       <Helmet>
         <link rel="alternate" type="application/rss+xml" href="/podcast.rss" title="WWW.YAMBAL.NET Podcast" />
       </Helmet>
+      <pre>{JSON.stringify(props.data.markdownRemark.frontmatter.image.childImageSharp.fluid, null, 2)}</pre>
+      <Container>
+        {title}
+        {description}
+        <Img
+          style={{width: '100%', height: '200px'}}
+          fixed={props.data.markdownRemark.frontmatter.image.childImageSharp.fluid}
+        />
+      </Container>
+    </Layout>
+  )
+}
+
+export default IndexContainer
+
+/*
+
       <IndexPagePage
         image={frontmatter.image}
         title={frontmatter.title}
@@ -66,9 +68,4 @@ const IndexContainer:React.FC<iIndexContainer> = (props) => {
         mainpitch={frontmatter.mainpitch}
         description={frontmatter.description}
         intro={frontmatter.intro}
-      />
-    </Layout>
-  )
-}
-
-export default IndexContainer
+      />*/
