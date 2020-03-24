@@ -32,7 +32,7 @@ export const PodCastChannelRouterPage:React.FC<PodCastChannelRouterPageProps> = 
     [props.channel, props.edges]
   )
 
-  const AudioRefs = []
+  const AudioRefs = {}
 
   const onPlayHandler = (track: number) => {
     console.log('play', track, JSON.stringify(AudioRefs, null, 2))
@@ -65,7 +65,12 @@ export const PodCastChannelRouterPage:React.FC<PodCastChannelRouterPageProps> = 
             onEndHandler={onEndHandler}
             onPauseHandler={onPauseHandler}
             onPlayHandler={onPlayHandler}
-            ref={el => {AudioRefs.push(el)}}
+            ref={el => {
+              const track = el.track
+              if (!AudioRefs[track]) {
+                AudioRefs[track] = el
+              }
+            }}
           />
         }
       )}
