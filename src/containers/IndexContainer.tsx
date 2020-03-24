@@ -5,6 +5,7 @@ import IndexPagePage from '../components/pages/IndexPagePage'
 import Container from '../components/Container'
 import { Helmet } from 'react-helmet'
 import Img from 'gatsby-image'
+import PageTitle from '../components/atoms/PageTitle'
 
 export const pageQuery = graphql`
   query IndexContainer {
@@ -43,10 +44,12 @@ const IndexContainer:React.FC<iIndexContainer> = (props) => {
       <Helmet>
         <link rel="alternate" type="application/rss+xml" href="/podcast.rss" title="WWW.YAMBAL.NET Podcast" />
       </Helmet>
-      <pre>{JSON.stringify(props.data.markdownRemark.frontmatter.image.childImageSharp.fluid, null, 2)}</pre>
+      <PageTitle
+          description={description}
+        >
+          {title}
+      </PageTitle>
       <Container>
-        {title}
-        {description}
         <Img
           style={{width: '100%', height: '200px'}}
           fixed={props.data.markdownRemark.frontmatter.image.childImageSharp.fluid}
