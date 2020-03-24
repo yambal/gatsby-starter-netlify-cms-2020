@@ -67,7 +67,7 @@ export const PodCastChannelRouterPage:React.FC<PodCastChannelRouterPageProps> = 
             onPlayHandler={onPlayHandler}
             ref={el => {
               const track = el.track
-              if (!AudioRefs[track]) {
+              if (track && !AudioRefs[track]) {
                 AudioRefs[track] = el
               }
             }}
