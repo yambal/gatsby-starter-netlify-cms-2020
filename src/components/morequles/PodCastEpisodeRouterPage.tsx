@@ -6,7 +6,7 @@ import { iPodCast } from './PodcastInterface'
 import { PodCastHeaders } from './PodCastHeaders'
 import { PodCastLinks } from './PodCastLinks'
 import Column from '../atoms/Column'
-import { AudioPlayerWithRef } from '../atoms/AudioPlayer'
+
 
 interface PodCastChannelRouterPageProps{
   path: string
@@ -51,7 +51,6 @@ export const PodCastEpisodeRouterPage:React.FC<PodCastChannelRouterPageProps> = 
         mp3Url={edge.node.mp3.url}
         channel={edge.node.frontmatter.channel}
       />
-      <AudioPlayerWithRef audioFile={edge.node.mp3.url} />
       <PodCastHeaders headers={edge.node.mp3.headers} />
       <PodCastLinks links={edge.node.mp3.links} />
     </Wrapper>
