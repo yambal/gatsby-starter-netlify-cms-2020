@@ -55,11 +55,12 @@ export const PodCastChannelRouterPage:React.FC<PodCastChannelRouterPageProps> = 
       {edges.map(
         (edge, index) => {
           return <PodCastEpisode
+            key={index}
             id={edge.node.id}
             title={edge.node.frontmatter.title}
             description={edge.node.frontmatter.description}
             date={edge.node.frontmatter.date}
-            mp3Url={edge.node.mp3.url}
+            mp3Url={edge.node.mp3.absoluteUrl}
             channel={edge.node.frontmatter.channel}
             track={index}
             onEndHandler={onEndHandler}

@@ -9,11 +9,11 @@ interface iProgress {
 interface iInner {
   progress: number
 }
-const Inner = styled.div<iInner>`
+export const Inner = styled.div<iInner>`
   width: ${props => props.progress}%;
 `
-const Wrapper = styled.div`
-  border: solid ${props => props.theme.fontSize.basePx / 5}px ${props => props.theme.color.font.base};
+export const Wrapper = styled.div`
+  border: solid ${props => Math.round(props.theme.fontSize.basePx / 5)}px ${props => props.theme.color.font.base};
   & ${Inner} {
     background-color: ${props => props.theme.color.font.base};
     height: ${props => props.theme.fontSize.basePx / 5}px;

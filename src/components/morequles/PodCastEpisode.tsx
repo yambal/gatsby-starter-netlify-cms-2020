@@ -17,7 +17,9 @@ interface PodCastEpisodeProps {
   onEndHandler?: (track: number) => void
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  display: flex;
+`
 
 export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisodeProps> = (props, ref) => {
   const {
@@ -35,10 +37,6 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
 
   return(
     <Wrapper>
-      <h2><Link to={`/podcasts/${channel}/${id}`}>{title}</Link></h2>
-      <div>{description}</div>
-      <DateView rfc={date} />
-      <div>{channel}</div>
       <AudioPlayerWithRef
         audioFile={mp3Url}
         track={track}
@@ -47,6 +45,11 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
         onEndHandler={onEndHandler}
         ref={ref}
       />
+      <div>
+        <DateView rfc={date} />
+        <h2><Link to={`/podcasts/${channel}/${id}`}>{title}</Link></h2>
+        <div>{description}</div>
+      </div>
     </Wrapper>
   )
 }

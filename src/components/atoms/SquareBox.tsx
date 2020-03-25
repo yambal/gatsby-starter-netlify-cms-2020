@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const InnereInner = styled.div``
 const Inner = styled.div``
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   position: relative;
   &:before {
     display: block;
