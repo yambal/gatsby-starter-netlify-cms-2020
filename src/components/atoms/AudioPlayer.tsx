@@ -1,45 +1,72 @@
 import React from 'react'
 import styled from 'styled-components'
 import SquareBox, {Wrapper as SquareBoxWrapper} from './SquareBox'
+import { lighten, modularScale } from 'polished'
 
-interface iSongCompo {
+interface iAudioPlayerBase {
   audioFile: string
+  children?: React.ReactNode
   track?: number
   onEndHandler?: (track: number) => void
   onPlayHandler?: (track: number) => void
   onPauseHandler?: (track: number) => void
 }
 
-const Front = styled.div``
-
 interface iProgress {
   parcent: number
   angle: number
   color: string
 }
+
+const ProgressInner = styled.div``
+const ChildWrapper = styled.div``
+const PlayButtonOuter = styled.div``
+const PlayButtonInner = styled.div``
+
 const Progress = styled.div<iProgress>`
-  cursor: pointer;
   height: 100%;
-  /* border: solid 4px ${props => props.color}; */
-  background:linear-gradient(${props => props.angle}deg, rgba(0, 0, 0, 0.01) ${props => props.parcent}%, ${props => props.color} ${props => props.parcent}%);
+  width: 100%;
+  background:linear-gradient(${props => props.angle}deg, rgb(182,198,206) ${props => props.parcent}%, ${props => props.color} ${props => props.parcent}%);
+
+  & ${ProgressInner} {
+    display: flex;
+  }
+
+  & ${ChildWrapper} {
+    padding: 1rem;
+    color: white;
+  }
 `
 
 const Wrapper = styled.div`
-  position: relative;
   & ${SquareBoxWrapper} {
-    width: 150px;
-    height: 150px;
-  }
-  & ${Front} {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    mix-blend-mode: color-dodge;
-    color: rgb(155,55,56);
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+
+    & ${PlayButtonOuter} {
+      display: flex;
+      height: calc(100% - 12px);
+      align-items: center;
+      cursor: pointer;
+
+      margin: 6px;
+      border: dashed 3px ${props => lighten(0.2, props.theme.color.font.base)};
+      &:hover {
+        border: dashed 3px ${props => props.theme.color.font.base};
+      }
+
+      mix-blend-mode: overlay;
+      transition: border 0.5s;
+      
+      & ${PlayButtonInner} {
+        
+      }
+    }
   }
 `
 
-const AudioPlayerBase: React.RefForwardingComponent<any, iSongCompo> = (props, ref) => {
+const AudioPlayerBase: React.RefForwardingComponent<any, iAudioPlayerBase> = (props, ref) => {
   const { audioFile, onEndHandler } = props
 
   const audioRef = React.useRef(null)
@@ -162,17 +189,23 @@ const AudioPlayerBase: React.RefForwardingComponent<any, iSongCompo> = (props, r
     pause: handlePause
   }));
   return (
-    <Wrapper>
-      <SquareBox>
-        <Progress
-          onClick={togglePlay}
-          parcent={progressParcent}
-          angle={angle}
-          color={color}
-        >
-          {isPlaying ? 'pause' : 'play'}
-        </Progress>
-      </SquareBox>
+    <Wrapper className="Wapper">
+      <Progress
+        parcent={progressParcent}
+        angle={angle}
+        color={color}
+      >
+        <ProgressInner>
+          <SquareBox>
+            <PlayButtonOuter onClick={togglePlay}>
+              <PlayButtonInner>
+                {isPlaying ? 'pause' : 'play'}
+              </PlayButtonInner>
+            </PlayButtonOuter>
+          </SquareBox>
+          <ChildWrapper>{props.children}</ChildWrapper>
+        </ProgressInner>
+      </Progress>
       <audio
         src={audioFile}
         ref={audioRef}

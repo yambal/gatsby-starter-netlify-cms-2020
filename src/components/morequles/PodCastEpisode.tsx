@@ -3,6 +3,9 @@ import { Link } from 'gatsby'
 import styled from 'styled-components'
 import {DateView} from '../atoms/DateView'
 import { AudioPlayerWithRef } from '../atoms/AudioPlayer'
+import LinesEllipsis from 'react-lines-ellipsis'
+import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC'
+const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis)
 
 interface PodCastEpisodeProps {
   id: string
@@ -17,9 +20,7 @@ interface PodCastEpisodeProps {
   onEndHandler?: (track: number) => void
 }
 
-const Wrapper = styled.div`
-  display: flex;
-`
+const Wrapper = styled.div``
 
 export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisodeProps> = (props, ref) => {
   const {
@@ -44,12 +45,19 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
         onPauseHandler={onPauseHandler}
         onEndHandler={onEndHandler}
         ref={ref}
-      />
-      <div>
-        <DateView rfc={date} />
-        <h2><Link to={`/podcasts/${channel}/${id}`}>{title}</Link></h2>
-        <div>{description}</div>
-      </div>
+      >
+        <div>
+          <DateView rfc={date} />
+          <h2><Link to={`/podcasts/${channel}/${id}`}>{title}</Link></h2>
+          <ResponsiveEllipsis
+            text={description}
+            maxLine='2'
+            ellipsis='...'
+            trimRight
+            basedOn='letters'
+          />
+        </div>
+      </AudioPlayerWithRef>
     </Wrapper>
   )
 }
