@@ -7,6 +7,7 @@ import { PodCastHeaders } from './PodCastHeaders'
 import { PodCastLinks } from './PodCastLinks'
 import Column from '../atoms/Column'
 
+
 interface PodCastChannelRouterPageProps{
   path: string
   edges: {
@@ -47,8 +48,9 @@ export const PodCastEpisodeRouterPage:React.FC<PodCastChannelRouterPageProps> = 
         title={edge.node.frontmatter.title}
         description={edge.node.frontmatter.description}
         date={edge.node.frontmatter.date}
-        mp3Url={edge.node.mp3.url}
+        mp3Url={edge.node.mp3.absoluteUrl}
         channel={edge.node.frontmatter.channel}
+        track={1}
       />
       <PodCastHeaders headers={edge.node.mp3.headers} />
       <PodCastLinks links={edge.node.mp3.links} />
