@@ -11,8 +11,8 @@ const Wrapper = styled.div``
 export const DateView:React.FC<iDateView> = props => {
   var oDate = new Date(props.rfc)
   return(
-    <Wrapper>
-      {dateFormat(oDate, 'yyyy年mm月dd日')}
-    </Wrapper>
+    <React.Fragment>
+      {dateFormat(oDate, 'yyyy.mm.dd')}
+    </React.Fragment>
   )
 }

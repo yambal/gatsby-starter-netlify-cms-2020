@@ -22,6 +22,7 @@ const Layout:React.FC<iLayout> = props => {
           <title>{title}</title>
           <meta name="description" content={description} />
           <meta name="google-site-verification" content="w6usTsTWrWRLKf0S6C5g9O0G-jb5eWISBKXOTQoObd0" />
+          <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;700&family=Stardos+Stencil:wght@700&display=swap" rel="stylesheet"></link>
         </Helmet>
         <Navbar />
         {props.children}

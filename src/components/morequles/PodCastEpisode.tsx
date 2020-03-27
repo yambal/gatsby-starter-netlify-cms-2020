@@ -45,10 +45,14 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
         onPauseHandler={onPauseHandler}
         onEndHandler={onEndHandler}
         ref={ref}
+        backText={<DateView rfc={date} />}
       >
-        <div>
-          <DateView rfc={date} />
-          <h2><Link to={`/podcasts/${channel}/${id}`}>{title}</Link></h2>
+        <React.Fragment>
+          <ResponsiveEllipsis
+            maxLine='1'
+            component="h2"
+            text={title}
+          />
           <ResponsiveEllipsis
             text={description}
             maxLine='2'
@@ -56,10 +60,12 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
             trimRight
             basedOn='letters'
           />
-        </div>
+        </React.Fragment>
       </AudioPlayerWithRef>
     </Wrapper>
   )
 }
 
 export const PodCastEpisode = React.forwardRef(PodCastEpisodeBase);
+
+/* <Link to={`/podcasts/${channel}/${id}`}></Link>*/
