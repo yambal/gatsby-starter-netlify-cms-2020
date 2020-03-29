@@ -10,6 +10,8 @@ interface iAudioPlayerBase {
   onEndHandler?: (track: number) => void
   onPlayHandler?: (track: number) => void
   onPauseHandler?: (track: number) => void
+  backText?: React.ReactNode
+  colorNum: number
 }
 
 interface iProgress {
@@ -18,6 +20,7 @@ interface iProgress {
   color: string
 }
 
+const ProgressBack = styled.div``
 const ProgressInner = styled.div``
 const ChildWrapper = styled.div``
 const PlayButtonOuter = styled.div``
@@ -27,6 +30,23 @@ const Progress = styled.div<iProgress>`
   height: 100%;
   width: 100%;
   background:linear-gradient(${props => props.angle}deg, rgb(182,198,206) ${props => props.parcent}%, ${props => props.color} ${props => props.parcent}%);
+  position: relative;
+  overflow: hidden;
+
+  & ${ProgressBack} {
+    position: absolute;
+    top: 135px;
+    right: 0;
+    bottom: 0px;
+    font-family: 'Stardos Stencil', cursive;
+    font-size:180px;
+    font-height: 150px;
+    white-space: nowrap;
+    mix-blend-mode: overlay;
+    text-align: right;
+    color: ${props => lighten(0.08, props.theme.color.font.base)};
+    filter: blur(0.5px);
+  }
 
   & ${ProgressInner} {
     display: flex;
@@ -41,6 +61,7 @@ const Progress = styled.div<iProgress>`
 const Wrapper = styled.div`
   & ${SquareBoxWrapper} {
     width: 200px;
+    max-width: 20vw;
     height: 200px;
     flex-shrink: 0;
 
@@ -67,7 +88,7 @@ const Wrapper = styled.div`
 `
 
 const AudioPlayerBase: React.RefForwardingComponent<any, iAudioPlayerBase> = (props, ref) => {
-  const { audioFile, onEndHandler } = props
+  const { audioFile, onEndHandler, backText } = props
 
   const audioRef = React.useRef(null)
   const [isPlaying, setIsPlaying] = React.useState<boolean>(false)
@@ -101,11 +122,21 @@ const AudioPlayerBase: React.RefForwardingComponent<any, iAudioPlayerBase> = (pr
         'rgb(155,55,56)',
         'rgb(139,77,62)',
         'rgb(76,66,61)',
-        'rgb(184,161,54)'
+        'rgb(184,161,54)',
+        'rgb(94,96,97)',
+        'rgb(62,110,144)',
+        'rgb(103,157,174)',
+        'rgb(127,162,90)',
+        'rgb(148,58,77)',
+        'rgb(205,152,134)',
+        'rgb(146,138,126)',
+        'rgb(172,68,58)',
+        'rgb(66,143,112)',
+        'rgb(242,187,29)'
       ]
-      return colors[props.track % colors.length]
+      return colors[props.colorNum % colors.length]
     },
-    [props.track]
+    [props.colorNum]
   )
 
   // 再生(最初から)
@@ -195,6 +226,9 @@ const AudioPlayerBase: React.RefForwardingComponent<any, iAudioPlayerBase> = (pr
         angle={angle}
         color={color}
       >
+        <ProgressBack>
+          {backText}
+        </ProgressBack>
         <ProgressInner>
           <SquareBox>
             <PlayButtonOuter onClick={togglePlay}>

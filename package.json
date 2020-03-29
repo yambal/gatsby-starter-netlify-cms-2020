@@ -16,7 +16,7 @@
     "gatsby-plugin-react-helmet": "^3.1.23",
     "gatsby-plugin-sass": "^2.1.30",
     "gatsby-plugin-sharp": "^2.4.12",
-    "gatsby-plugin-speach-podcast": "0.6.0",
+    "gatsby-plugin-speach-podcast": "0.6.1",
     "gatsby-plugin-typescript": "^2.2.3",
     "gatsby-remark-copy-linked-files": "^2.1.39",
     "gatsby-remark-images": "^3.1.49",

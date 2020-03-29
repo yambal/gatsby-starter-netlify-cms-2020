@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import { iPodCast } from './PodcastInterface'
+import Container from '../Container'
 
 interface iiPodCastIndexPage {
   path: string
@@ -13,6 +14,7 @@ interface iiPodCastIndexPage {
         date: string
         channel: string
       }
+      html: string
       mp3: iPodCast
     }
   }[]
@@ -40,14 +42,14 @@ const PodCastIndexPage:React.FC<iiPodCastIndexPage> = (props) => {
   )
 
   return (
-    <React.Fragment>
+    <Container>
       {Object.keys(channels).map(
         (key) => {
           const channel = channels[key]
           return <div><Link to={`/podcasts/${key}`}>{key}:{channel.title}</Link></div>
         }
       )}
-    </React.Fragment>
+    </Container>
   )
 }
 
