@@ -11,6 +11,7 @@ interface iAudioPlayerBase {
   onPlayHandler?: (track: number) => void
   onPauseHandler?: (track: number) => void
   backText?: React.ReactNode
+  colorNum: number
 }
 
 interface iProgress {
@@ -121,11 +122,21 @@ const AudioPlayerBase: React.RefForwardingComponent<any, iAudioPlayerBase> = (pr
         'rgb(155,55,56)',
         'rgb(139,77,62)',
         'rgb(76,66,61)',
-        'rgb(184,161,54)'
+        'rgb(184,161,54)',
+        'rgb(94,96,97)',
+        'rgb(62,110,144)',
+        'rgb(103,157,174)',
+        'rgb(127,162,90)',
+        'rgb(148,58,77)',
+        'rgb(205,152,134)',
+        'rgb(146,138,126)',
+        'rgb(172,68,58)',
+        'rgb(66,143,112)',
+        'rgb(242,187,29)'
       ]
-      return colors[props.track % colors.length]
+      return colors[props.colorNum % colors.length]
     },
-    [props.track]
+    [props.colorNum]
   )
 
   // 再生(最初から)

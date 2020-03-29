@@ -36,6 +36,8 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
     onEndHandler
   } = props
 
+  var unixNum = Math.floor( new Date(date).getTime() / 1000)
+
   return(
     <Wrapper>
       <AudioPlayerWithRef
@@ -45,6 +47,7 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
         onPauseHandler={onPauseHandler}
         onEndHandler={onEndHandler}
         ref={ref}
+        colorNum={unixNum}
         /* backText={<DateView rfc={date} />}*/
       >
         <React.Fragment>
