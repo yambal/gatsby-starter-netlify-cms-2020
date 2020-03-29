@@ -45,7 +45,7 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
         onPauseHandler={onPauseHandler}
         onEndHandler={onEndHandler}
         ref={ref}
-        backText={<DateView rfc={date} />}
+        /* backText={<DateView rfc={date} />}*/
       >
         <React.Fragment>
           <ResponsiveEllipsis
@@ -60,6 +60,7 @@ export const PodCastEpisodeBase: React.RefForwardingComponent<any, PodCastEpisod
             trimRight
             basedOn='letters'
           />
+          <Link to={`/podcasts/${channel}/${id}`}>More</Link>
         </React.Fragment>
       </AudioPlayerWithRef>
     </Wrapper>

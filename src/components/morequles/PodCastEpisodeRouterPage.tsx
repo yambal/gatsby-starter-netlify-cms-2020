@@ -19,6 +19,7 @@ interface PodCastChannelRouterPageProps{
         date: string
         channel: string
       }
+      html: string
       mp3: iPodCast
     }
   }[]
@@ -54,6 +55,9 @@ export const PodCastEpisodeRouterPage:React.FC<PodCastChannelRouterPageProps> = 
       />
       <PodCastHeaders headers={edge.node.mp3.headers} />
       <PodCastLinks links={edge.node.mp3.links} />
+      <Column>
+        <div dangerouslySetInnerHTML={{ __html: edge.node.html }} />
+      </Column>
     </Wrapper>
   )
 }

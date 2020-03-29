@@ -22,6 +22,7 @@ interface PodCastsIndexPageProps {
             date: string
             channel: string
           }
+          html: string
           mp3: iPodCast
         }
       }[]
@@ -70,6 +71,7 @@ export const pageQuery = graphql`
             date
             channel
           }
+          html
           mp3 {
             url
             absoluteUrl

@@ -3,6 +3,7 @@ import { PodCastEpisode } from './PodCastEpisode'
 import { Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import { iPodCast } from './PodcastInterface'
+import Container from '../Container'
 
 interface PodCastChannelRouterPageProps{
   path: string
@@ -52,6 +53,7 @@ export const PodCastChannelRouterPage:React.FC<PodCastChannelRouterPageProps> = 
         <link rel="alternate" type="application/rss+xml" href={`/podcast-${props.channel}.rss`} title="WWW.YAMBAL.NET Podcast" />
       </Helmet>
       <Link to={`/podcasts`}>Podcasts</Link>
+      <Container>
       {edges.map(
         (edge, index) => {
           return <PodCastEpisode
@@ -74,6 +76,7 @@ export const PodCastChannelRouterPage:React.FC<PodCastChannelRouterPageProps> = 
           />
         }
       )}
+      </Container>
     </div>
   )
 }
